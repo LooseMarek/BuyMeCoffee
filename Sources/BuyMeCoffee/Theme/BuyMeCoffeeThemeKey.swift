@@ -29,7 +29,7 @@ extension EnvironmentValues {
     ///     }
     /// }
     /// ```
-    var buyMeCoffeeTheme: BuyMeCoffeeTheme {
+    public var buyMeCoffeeTheme: BuyMeCoffeeTheme {
         get { self[BuyMeCoffeeThemeKey.self] }
         set { self[BuyMeCoffeeThemeKey.self] = newValue }
     }
