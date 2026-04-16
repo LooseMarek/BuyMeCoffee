@@ -26,7 +26,15 @@
       "Bash(gh pr checkout*)",
       "Bash(gh repo*)",
       "Bash(gh label*)",
-      "Bash(swift*)"
+      "Bash(swift*)",
+      "Bash(gh api *)",
+      "mcp__MCP_DOCKER__issue_write",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('linked', d['sub_issues_summary']['total'], 'sub-issues to Epic 5'\\)\")",
+      "Bash(xcodebuild test *)",
+      "Bash(xargs ls *)",
+      "mcp__MCP_DOCKER__list_issues",
+      "mcp__MCP_DOCKER__merge_pull_request",
+      "Bash(gh pr *)"
     ],
     "deny": [
       "Bash(git push --force*)",
@@ -36,5 +44,8 @@
       "Bash(gh pr review*)",
       "Bash(gh pr merge*)"
     ]
+  },
+  "enabledPlugins": {
+    "project-development@mar-claude-plugins": true
   }
 }
