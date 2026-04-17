@@ -19,6 +19,7 @@ final class DrawerHeaderViewSnapshotTests: XCTestCase {
         .environment(\.buyMeCoffeeTheme, .default)
         .frame(width: 360)
         .padding()
+        .background(BuyMeCoffeeTheme.default.backgroundColor)
 
         // Then - the snapshot shows the header with default theme colors
 #if canImport(AppKit)
@@ -60,6 +61,7 @@ final class DrawerHeaderViewSnapshotTests: XCTestCase {
         .environment(\.buyMeCoffeeTheme, customTheme)
         .frame(width: 360)
         .padding()
+        .background(customTheme.backgroundColor)
 
         // Then - the snapshot shows the custom theme colors applied
 #if canImport(AppKit)

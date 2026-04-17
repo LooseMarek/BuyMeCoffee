@@ -33,10 +33,12 @@ struct DrawerHeaderView: View {
             if let iconImage {
                 iconImage
                     .resizable()
-                    .scaledToFill()
+                    .scaledToFit()
+                    .foregroundStyle(theme.primaryTextColor)
+                    .frame(width: 30, height: 30)
                     .frame(width: 56, height: 56)
                     .background(theme.productRowBackgroundColor)
-                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
             }
 
             // Text block (title + subtitle)
