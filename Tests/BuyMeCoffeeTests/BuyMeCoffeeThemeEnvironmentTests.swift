@@ -6,23 +6,17 @@ final class BuyMeCoffeeThemeEnvironmentTests: XCTestCase {
 
     // MARK: - Test AC 1: testDefaultValue_returnsDefaultTheme
 
-    @MainActor
     func testDefaultValue_returnsDefaultTheme() {
-        // Given - a view that reads the environment key without it being explicitly set
-        let testView = ThemeReaderView()
-
-        // When - we extract the theme from the view's environment
-        let extractedTheme = testView.extractTheme()
-
-        // Then - it should return BuyMeCoffeeTheme.default
-        XCTAssertEqual(extractedTheme, BuyMeCoffeeTheme.default)
+        // EnvironmentValues() has no injected theme, so the key's defaultValue must be returned.
+        let values = EnvironmentValues()
+        XCTAssertEqual(values.buyMeCoffeeTheme, BuyMeCoffeeTheme.default)
     }
 
     // MARK: - Test AC 2: testInjectedTheme_receivedByChildView
 
-    @MainActor
     func testInjectedTheme_receivedByChildView() {
-        // Given - a custom theme
+        // Setting the key on an EnvironmentValues instance and reading it back exercises
+        // the subscript path that SwiftUI uses when propagating values down the hierarchy.
         let customTheme = BuyMeCoffeeTheme(
             backgroundColor: .red,
             primaryTextColor: .blue,
@@ -37,50 +31,52 @@ final class BuyMeCoffeeThemeEnvironmentTests: XCTestCase {
             errorColor: .indigo
         )
 
-        // When - a parent view injects the theme and a child reads it
-        let parentView = ThemeInjectorView(theme: customTheme)
-        let childTheme = parentView.extractChildTheme()
+        var values = EnvironmentValues()
+        values.buyMeCoffeeTheme = customTheme
 
-        // Then - the child should receive the custom theme
-        XCTAssertEqual(childTheme, customTheme)
-    }
-}
-
-// MARK: - Test Helper Views
-
-/// Test view that reads the buyMeCoffeeTheme from environment
-private struct ThemeReaderView: View {
-    @Environment(\.buyMeCoffeeTheme) var theme
-
-    var body: some View {
-        EmptyView()
+        XCTAssertEqual(values.buyMeCoffeeTheme, customTheme)
     }
 
-    func extractTheme() -> BuyMeCoffeeTheme {
-        return theme
-    }
-}
+    // MARK: - Test AC 3: testSiblingSubtrees_maintainIndependentThemes
 
-/// Test view that injects a theme and provides a child that reads it
-private struct ThemeInjectorView: View {
-    let theme: BuyMeCoffeeTheme
+    func testSiblingSubtrees_maintainIndependentThemes() {
+        // Two separate EnvironmentValues instances represent two sibling subtrees.
+        // Injecting different themes into each must not bleed between them.
+        let themeA = BuyMeCoffeeTheme(
+            backgroundColor: .red,
+            primaryTextColor: .white,
+            secondaryTextColor: .gray,
+            accentStartColor: .yellow,
+            accentEndColor: .orange,
+            productRowBackgroundColor: .black,
+            separatorColor: .gray,
+            surfaceElevatedColor: .black,
+            textOnAccentColor: .white,
+            successColor: .green,
+            errorColor: .red
+        )
+        let themeB = BuyMeCoffeeTheme(
+            backgroundColor: .blue,
+            primaryTextColor: .black,
+            secondaryTextColor: .gray,
+            accentStartColor: .cyan,
+            accentEndColor: .mint,
+            productRowBackgroundColor: .white,
+            separatorColor: .gray,
+            surfaceElevatedColor: .white,
+            textOnAccentColor: .black,
+            successColor: .green,
+            errorColor: .pink
+        )
 
-    var body: some View {
-        ChildThemeReaderView()
-            .environment(\.buyMeCoffeeTheme, theme)
-    }
+        var envA = EnvironmentValues()
+        envA.buyMeCoffeeTheme = themeA
 
-    func extractChildTheme() -> BuyMeCoffeeTheme {
-        // This is a test helper to extract the theme from the child
-        // In the actual test, we'll verify this through the environment mechanism
-        return theme
-    }
-}
+        var envB = EnvironmentValues()
+        envB.buyMeCoffeeTheme = themeB
 
-private struct ChildThemeReaderView: View {
-    @Environment(\.buyMeCoffeeTheme) var theme
-
-    var body: some View {
-        EmptyView()
+        XCTAssertEqual(envA.buyMeCoffeeTheme, themeA)
+        XCTAssertEqual(envB.buyMeCoffeeTheme, themeB)
+        XCTAssertNotEqual(envA.buyMeCoffeeTheme, envB.buyMeCoffeeTheme)
     }
 }
