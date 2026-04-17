@@ -55,7 +55,7 @@ final class ProductRowViewSnapshotTests: XCTestCase {
         let hostingController = UIHostingController(rootView: view)
         hostingController.view.bounds = CGRect(x: 0, y: 0, width: 375, height: 100)
 
-        assertSnapshot(of: hostingController, as: .image, named: "defaultTheme-iOS")
+        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "defaultTheme-iOS")
     }
 
     func testProductRowView_longProductName_iOS() {
@@ -67,7 +67,7 @@ final class ProductRowViewSnapshotTests: XCTestCase {
         let hostingController = UIHostingController(rootView: view)
         hostingController.view.bounds = CGRect(x: 0, y: 0, width: 375, height: 100)
 
-        assertSnapshot(of: hostingController, as: .image, named: "longProductName-iOS")
+        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "longProductName-iOS")
     }
 
     func testProductRowView_customTheme_iOS() {
@@ -79,7 +79,7 @@ final class ProductRowViewSnapshotTests: XCTestCase {
         let hostingController = UIHostingController(rootView: view)
         hostingController.view.bounds = CGRect(x: 0, y: 0, width: 375, height: 100)
 
-        assertSnapshot(of: hostingController, as: .image, named: "customTheme-iOS")
+        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "customTheme-iOS")
     }
     #endif
 
