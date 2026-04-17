@@ -29,7 +29,7 @@ struct DrawerHeaderView: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
-            // Icon container (56×56pt, rounded 24pt corner radius)
+            // Icon container: 30pt icon centred in 56×56pt surface, 16pt corner radius
             if let iconImage {
                 iconImage
                     .resizable()
