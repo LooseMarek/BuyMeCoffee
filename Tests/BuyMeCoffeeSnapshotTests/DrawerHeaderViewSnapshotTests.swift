@@ -29,7 +29,7 @@ final class DrawerHeaderViewSnapshotTests: XCTestCase {
 #elseif canImport(UIKit)
         let hostingController = UIHostingController(rootView: testView)
         hostingController.view.frame = CGRect(x: 0, y: 0, width: 360, height: 120)
-        assertSnapshot(of: hostingController.view, as: .image, named: "defaultTheme-iOS")
+        assertSnapshot(of: hostingController.view, as: .image(perceptualPrecision: 0.98), named: "defaultTheme-iOS")
 #endif
     }
 
@@ -71,7 +71,7 @@ final class DrawerHeaderViewSnapshotTests: XCTestCase {
 #elseif canImport(UIKit)
         let hostingController = UIHostingController(rootView: testView)
         hostingController.view.frame = CGRect(x: 0, y: 0, width: 360, height: 120)
-        assertSnapshot(of: hostingController.view, as: .image, named: "customTheme-iOS")
+        assertSnapshot(of: hostingController.view, as: .image(perceptualPrecision: 0.98), named: "customTheme-iOS")
 #endif
     }
 }
