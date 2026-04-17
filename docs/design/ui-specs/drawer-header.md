@@ -42,9 +42,9 @@
 ### Icon Image (optional)
 - Source: any SwiftUI `Image` passed by the host app (SF Symbol or custom asset)
 - Container size: 56 × 56pt
-- Container shape: `RoundedRectangle(cornerRadius: radius.xl)` (24pt) — clips the image
-- Background: `color.surface` (visible when image has transparency)
-- Image rendering: `.scaledToFill()` within the container
+- Container shape: `RoundedRectangle(cornerRadius: 16pt)` — clips the image
+- Background: `color.productRowBackground` (`productRowBackgroundColor`) — visible when image has transparency
+- Image rendering: `.scaledToFit()` at 30×30pt centred inside the 56×56pt container (12pt inset on each side)
 - If omitted: the icon container is not rendered; title/subtitle stack fills the full width
 
 ### Title (optional)
@@ -109,8 +109,7 @@ Title is vertically centred relative to the icon.
 |-------|-----|
 | `color.text.primary` | Title text |
 | `color.text.secondary` | Subtitle text |
-| `color.surface` | Icon container background |
-| `radius.xl` | Icon container corner radius |
+| `color.productRowBackground` (`productRowBackgroundColor`) | Icon container background |
 
 ---
 
