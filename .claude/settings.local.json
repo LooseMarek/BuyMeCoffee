@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "permissions": {
     "allow": [
       "Read(*)",
@@ -34,7 +37,11 @@
       "Bash(xargs ls *)",
       "mcp__MCP_DOCKER__list_issues",
       "mcp__MCP_DOCKER__merge_pull_request",
-      "Bash(gh pr *)"
+      "Bash(gh pr *)",
+      "mcp__MCP_DOCKER__pull_request_read",
+      "mcp__MCP_DOCKER__issue_read",
+      "Bash(git rebase *)",
+      "Bash(gh run *)"
     ],
     "deny": [
       "Bash(git push --force*)",
@@ -47,8 +54,5 @@
   },
   "enabledPlugins": {
     "project-development@mar-claude-plugins": true
-  },
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   }
 }
