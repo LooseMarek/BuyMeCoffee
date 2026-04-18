@@ -45,7 +45,9 @@
       "Bash(bundle exec *)",
       "Bash(fastlane ios *)",
       "Bash(/opt/homebrew/opt/ruby/bin/bundle exec *)",
-      "mcp__MCP_DOCKER__list_pull_requests"
+      "mcp__MCP_DOCKER__list_pull_requests",
+      "Bash(grep -E \"\\\\.png$\")",
+      "Bash(export PATH=\"/opt/homebrew/opt/ruby/bin:$PATH\")"
     ],
     "deny": [
       "Bash(git push --force*)",
