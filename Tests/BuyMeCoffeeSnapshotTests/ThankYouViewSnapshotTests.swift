@@ -11,15 +11,10 @@ import AppKit
 
 final class ThankYouViewSnapshotTests: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-        // Disable diff output for cleaner test results
-        diffTool = "open"
-    }
-
     // MARK: - iOS Snapshots
 
     #if os(iOS)
+    @MainActor
     func testThankYouView_defaultTheme_iOS() {
         // Given
         let theme = BuyMeCoffeeTheme.default
@@ -42,6 +37,7 @@ final class ThankYouViewSnapshotTests: XCTestCase {
     // MARK: - macOS Snapshots
 
     #if os(macOS)
+    @MainActor
     func testThankYouView_defaultTheme_macOS() {
         // Given
         let theme = BuyMeCoffeeTheme.default
