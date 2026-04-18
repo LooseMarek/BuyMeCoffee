@@ -42,7 +42,8 @@
       "mcp__MCP_DOCKER__issue_read",
       "Bash(git rebase *)",
       "Bash(gh run *)",
-      "Bash(bundle exec *)"
+      "Bash(bundle exec *)",
+      "Bash(fastlane ios *)"
     ],
     "deny": [
       "Bash(git push --force*)",
