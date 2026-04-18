@@ -142,27 +142,13 @@ public struct BuyMeCoffeeView: View {
         ZStack {
             theme.backgroundColor.ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                // Header (shown in all states except thankYou)
-                if viewModel.state != .thankYou {
-                    DrawerHeaderView(
-                        iconImage: headerIcon,
-                        title: headerTitle,
-                        subtitle: headerSubtitle
-                    )
-                    .padding(.horizontal, 16)
-                    .padding(.top, 16)
-                    .padding(.bottom, 8)
-                }
-
-                // State-based content
-                Group {
-                    switch viewModel.state {
-                    case .loading:
-                        loadingView
-                    case .loaded(let products):
-                        loadedView(products: products)
-                    case .empty:
+            Group {
+                switch viewModel.state {
+                case .loading:
+                    loadingView
+                case .loaded(let products):
+                    loadedView(products: products)
+                case .empty:
                         EmptyStateView(
                             iconName: emptyIconName,
                             headline: emptyHeadline,
@@ -183,7 +169,6 @@ public struct BuyMeCoffeeView: View {
                                 dismiss()
                             }
                         )
-                    }
                 }
             }
         }
@@ -204,24 +189,35 @@ public struct BuyMeCoffeeView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    /// Product list with staggered row animations.
+    /// Product list with header and staggered row animations.
     private func loadedView(products: [TipProduct]) -> some View {
         ScrollView {
-            VStack(spacing: 12) {
-                ForEach(Array(products.enumerated()), id: \.element.id) { index, product in
-                    ProductRowView(product: product) {
-                        Task {
-                            await viewModel.purchase(product)
+            VStack(spacing: 0) {
+                DrawerHeaderView(
+                    iconImage: headerIcon,
+                    title: headerTitle,
+                    subtitle: headerSubtitle
+                )
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 8)
+
+                VStack(spacing: 12) {
+                    ForEach(Array(products.enumerated()), id: \.element.id) { index, product in
+                        ProductRowView(product: product) {
+                            Task {
+                                await viewModel.purchase(product)
+                            }
                         }
+                        .transition(.opacity.combined(with: .scale(scale: 0.95)))
+                        .animation(
+                            .easeOut(duration: 0.25).delay(Double(index) * 0.05),
+                            value: viewModel.state
+                        )
                     }
-                    .transition(.opacity.combined(with: .scale(scale: 0.95)))
-                    .animation(
-                        .easeOut(duration: 0.25).delay(Double(index) * 0.05),
-                        value: viewModel.state
-                    )
                 }
+                .padding(16)
             }
-            .padding(16)
         }
     }
 }
