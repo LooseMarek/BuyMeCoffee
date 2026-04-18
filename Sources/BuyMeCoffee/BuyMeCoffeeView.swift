@@ -53,6 +53,41 @@ public struct BuyMeCoffeeView: View {
 
     @StateObject private var viewModel: ViewModel
 
+    // MARK: - Customizable Labels
+
+    /// Header icon image. Default: SF Symbol "cup.and.saucer.fill"
+    let headerIcon: Image?
+
+    /// Header title. Default: "Buy Me a Coffee"
+    let headerTitle: String?
+
+    /// Header subtitle. Default: "Support my work with a small tip"
+    let headerSubtitle: String?
+
+    /// Empty state icon name. Default: "cart.badge.questionmark"
+    let emptyIconName: String
+
+    /// Empty state headline. Default: "No tips available"
+    let emptyHeadline: String
+
+    /// Empty state body. Default: "Check your product IDs are configured in App Store Connect."
+    let emptyBody: String
+
+    /// Error state icon name. Default: "exclamationmark.triangle"
+    let errorIconName: String
+
+    /// Error state headline. Default: "Couldn't load tips"
+    let errorHeadline: String
+
+    /// Thank you title. Default: "Thank you!"
+    let thankYouTitle: String
+
+    /// Thank you subtitle. Default: "Your support means a lot."
+    let thankYouSubtitle: String
+
+    /// Thank you icon name. Default: "cup.and.saucer.fill"
+    let thankYouIconName: String
+
     // MARK: - Initializers
 
     /// Creates a BuyMeCoffeeView with the specified product provider and prefix.
@@ -61,11 +96,44 @@ public struct BuyMeCoffeeView: View {
     ///   - provider: The product provider. Use `StoreKitProductProvider.live(knownProductIDs:)` for production,
     ///     or `MockProductProvider` for Previews/tests.
     ///   - productPrefix: The product ID prefix to filter by (e.g., "com.example.tip").
+    ///   - headerIcon: Optional header icon. Default: SF Symbol "cup.and.saucer.fill"
+    ///   - headerTitle: Optional header title. Default: "Buy Me a Coffee"
+    ///   - headerSubtitle: Optional header subtitle. Default: "Support my work with a small tip"
+    ///   - emptyIconName: Empty state icon. Default: "cart.badge.questionmark"
+    ///   - emptyHeadline: Empty state headline. Default: "No tips available"
+    ///   - emptyBody: Empty state body. Default: "Check your product IDs are configured in App Store Connect."
+    ///   - errorIconName: Error state icon. Default: "exclamationmark.triangle"
+    ///   - errorHeadline: Error state headline. Default: "Couldn't load tips"
+    ///   - thankYouTitle: Thank you title. Default: "Thank you!"
+    ///   - thankYouSubtitle: Thank you subtitle. Default: "Your support means a lot."
+    ///   - thankYouIconName: Thank you icon. Default: "cup.and.saucer.fill"
     public init(
         provider: ProductProvider,
-        productPrefix: String
+        productPrefix: String,
+        headerIcon: Image? = Image(systemName: "cup.and.saucer.fill"),
+        headerTitle: String? = "Buy Me a Coffee",
+        headerSubtitle: String? = "Support my work with a small tip",
+        emptyIconName: String = "cart.badge.questionmark",
+        emptyHeadline: String = "No tips available",
+        emptyBody: String = "Check your product IDs are configured in App Store Connect.",
+        errorIconName: String = "exclamationmark.triangle",
+        errorHeadline: String = "Couldn't load tips",
+        thankYouTitle: String = "Thank you!",
+        thankYouSubtitle: String = "Your support means a lot.",
+        thankYouIconName: String = "cup.and.saucer.fill"
     ) {
         _viewModel = StateObject(wrappedValue: ViewModel(provider: provider, productPrefix: productPrefix))
+        self.headerIcon = headerIcon
+        self.headerTitle = headerTitle
+        self.headerSubtitle = headerSubtitle
+        self.emptyIconName = emptyIconName
+        self.emptyHeadline = emptyHeadline
+        self.emptyBody = emptyBody
+        self.errorIconName = errorIconName
+        self.errorHeadline = errorHeadline
+        self.thankYouTitle = thankYouTitle
+        self.thankYouSubtitle = thankYouSubtitle
+        self.thankYouIconName = thankYouIconName
     }
 
     // MARK: - Body
@@ -74,23 +142,48 @@ public struct BuyMeCoffeeView: View {
         ZStack {
             theme.backgroundColor.ignoresSafeArea()
 
-            Group {
-                switch viewModel.state {
-                case .loading:
-                    loadingView
-                case .loaded(let products):
-                    loadedView(products: products)
-                case .empty:
-                    EmptyStateView()
-                case .error(let message):
-                    ErrorStateView(
-                        headline: "Couldn't load tips",
-                        bodyText: message
+            VStack(spacing: 0) {
+                // Header (shown in all states except thankYou)
+                if viewModel.state != .thankYou {
+                    DrawerHeaderView(
+                        iconImage: headerIcon,
+                        title: headerTitle,
+                        subtitle: headerSubtitle
                     )
-                case .thankYou:
-                    ThankYouView(onDismiss: {
-                        dismiss()
-                    })
+                    .padding(.horizontal, 16)
+                    .padding(.top, 16)
+                    .padding(.bottom, 8)
+                }
+
+                // State-based content
+                Group {
+                    switch viewModel.state {
+                    case .loading:
+                        loadingView
+                    case .loaded(let products):
+                        loadedView(products: products)
+                    case .empty:
+                        EmptyStateView(
+                            iconName: emptyIconName,
+                            headline: emptyHeadline,
+                            bodyText: emptyBody
+                        )
+                    case .error(let message):
+                        ErrorStateView(
+                            iconName: errorIconName,
+                            headline: errorHeadline,
+                            bodyText: message
+                        )
+                    case .thankYou:
+                        ThankYouView(
+                            title: thankYouTitle,
+                            subtitle: thankYouSubtitle,
+                            iconName: thankYouIconName,
+                            onDismiss: {
+                                dismiss()
+                            }
+                        )
+                    }
                 }
             }
         }
