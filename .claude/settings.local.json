@@ -43,7 +43,9 @@
       "Bash(git rebase *)",
       "Bash(gh run *)",
       "Bash(bundle exec *)",
-      "Bash(fastlane ios *)"
+      "Bash(fastlane ios *)",
+      "Bash(/opt/homebrew/opt/ruby/bin/bundle exec *)",
+      "mcp__MCP_DOCKER__list_pull_requests"
     ],
     "deny": [
       "Bash(git push --force*)",
