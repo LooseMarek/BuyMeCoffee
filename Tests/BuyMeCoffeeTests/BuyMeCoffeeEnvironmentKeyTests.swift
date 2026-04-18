@@ -18,11 +18,7 @@ final class BuyMeCoffeeEnvironmentKeyTests: XCTestCase {
     func testInjectedValue_receivedByDescendant() {
         // Setting the key on an EnvironmentValues instance and reading it back exercises
         // the subscript path that SwiftUI uses when propagating values down the hierarchy.
-        var isPresentedValue = true
-        let binding = Binding(
-            get: { isPresentedValue },
-            set: { isPresentedValue = $0 }
-        )
+        let binding = Binding.constant(true)
 
         var values = EnvironmentValues()
         values.buyMeCoffeeIsPresented = binding

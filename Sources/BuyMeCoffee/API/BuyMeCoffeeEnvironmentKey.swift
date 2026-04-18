@@ -26,7 +26,7 @@ extension EnvironmentValues {
     /// ```
     ///
     /// If no custom binding is set, the default binding (wrapping `false`) is used automatically.
-    var buyMeCoffeeIsPresented: Binding<Bool> {
+    internal var buyMeCoffeeIsPresented: Binding<Bool> {
         get { self[BuyMeCoffeeEnvironmentKey.self] }
         set { self[BuyMeCoffeeEnvironmentKey.self] = newValue }
     }
