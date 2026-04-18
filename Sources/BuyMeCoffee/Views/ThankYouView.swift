@@ -15,15 +15,63 @@ struct ThankYouView: View {
 
     // MARK: - State
 
-    @State private var containerOpacity: Double = 0
-    @State private var containerScale: CGFloat = 0.85
-    @State private var iconOpacity: Double = 0
-    @State private var iconScale: CGFloat = 0.5
+    @State private var containerOpacity: Double = 1
+    @State private var containerScale: CGFloat = 1.0
+    @State private var iconOpacity: Double = 1
+    @State private var iconScale: CGFloat = 1.0
 
     // MARK: - Properties
 
+    /// The headline text shown below the icon.
+    let title: String
+
+    /// The body text shown below the headline.
+    let subtitle: String
+
+    /// The SF Symbol name for the icon.
+    let iconName: String
+
     /// Closure called when the view should dismiss (either after timeout or on tap).
     let onDismiss: () -> Void
+
+    /// Accessibility label for the dismiss action.
+    let dismissAccessibilityLabel: String
+
+    /// Accessibility hint for the dismiss action.
+    let dismissAccessibilityHint: String
+
+    /// VoiceOver announcement text when the view appears.
+    let voiceOverAnnouncement: String
+
+    // MARK: - Initializer
+
+    /// Creates a thank-you view with customizable content.
+    ///
+    /// - Parameters:
+    ///   - title: Headline text. Default: "Thank you!"
+    ///   - subtitle: Body text. Default: "Your support means a lot."
+    ///   - iconName: SF Symbol name. Default: "cup.and.saucer.fill"
+    ///   - onDismiss: Closure called when the view dismisses.
+    ///   - dismissAccessibilityLabel: Accessibility label for dismiss action. Default: "Dismiss"
+    ///   - dismissAccessibilityHint: Accessibility hint for dismiss action. Default: "Tap to dismiss"
+    ///   - voiceOverAnnouncement: VoiceOver announcement on appear. Default: "Thank you! Purchase complete."
+    init(
+        title: String = "Thank you!",
+        subtitle: String = "Your support means a lot.",
+        iconName: String = "cup.and.saucer.fill",
+        onDismiss: @escaping () -> Void,
+        dismissAccessibilityLabel: String = "Dismiss",
+        dismissAccessibilityHint: String = "Tap to dismiss",
+        voiceOverAnnouncement: String = "Thank you! Purchase complete."
+    ) {
+        self.title = title
+        self.subtitle = subtitle
+        self.iconName = iconName
+        self.onDismiss = onDismiss
+        self.dismissAccessibilityLabel = dismissAccessibilityLabel
+        self.dismissAccessibilityHint = dismissAccessibilityHint
+        self.voiceOverAnnouncement = voiceOverAnnouncement
+    }
 
     // MARK: - Body
 
@@ -33,7 +81,7 @@ struct ThankYouView: View {
 
             VStack(spacing: 4) {
                 // Icon
-                Image(systemName: "cup.and.saucer.fill")
+                Image(systemName: iconName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 64, height: 64)
@@ -49,14 +97,14 @@ struct ThankYouView: View {
                     .accessibilityHidden(true)
 
                 // Headline
-                Text("Thank you!")
+                Text(title)
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(theme.primaryTextColor)
                     .padding(.top, 24)
                     .accessibilityAddTraits(.isHeader)
 
                 // Body
-                Text("Your support means a lot.")
+                Text(subtitle)
                     .font(.system(size: 15, weight: .regular))
                     .foregroundStyle(theme.secondaryTextColor)
                     .multilineTextAlignment(.center)
@@ -74,9 +122,9 @@ struct ThankYouView: View {
         .onTapGesture {
             onDismiss()
         }
-        .accessibilityLabel("Dismiss")
+        .accessibilityLabel(dismissAccessibilityLabel)
         .accessibilityAddTraits(.isButton)
-        .accessibilityHint("Tap to dismiss")
+        .accessibilityHint(dismissAccessibilityHint)
         .onAppear {
             playEntranceAnimation()
             scheduleAutoDismiss()
@@ -119,13 +167,13 @@ struct ThankYouView: View {
         #if os(iOS)
         UIAccessibility.post(
             notification: .announcement,
-            argument: "Thank you! Purchase complete."
+            argument: voiceOverAnnouncement
         )
         #elseif os(macOS)
         NSAccessibility.post(
             element: NSApp as Any,
             notification: .announcementRequested,
-            userInfo: [.announcement: "Thank you! Purchase complete."]
+            userInfo: [.announcement: voiceOverAnnouncement]
         )
         #endif
     }
