@@ -9,7 +9,8 @@ platform :ios do
       package_path: ".",
       scheme: "BuyMeCoffee",
       destination: destination,
-      result_bundle: true
+      result_bundle: true,
+      xcodebuild_formatter: ""
     )
   end
 
@@ -24,7 +25,8 @@ platform :mac do
       package_path: ".",
       scheme: "BuyMeCoffee",
       destination: destination,
-      result_bundle: true
+      result_bundle: true,
+      xcodebuild_formatter: ""
     )
   end
 

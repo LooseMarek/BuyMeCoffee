@@ -22,22 +22,31 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
             TipProduct(id: "test.coffee.large", displayName: "Large Coffee", description: "A large cup", displayPrice: "$2.99"),
         ]
 
-        // Snapshot the loaded state layout directly (same as BuyMeCoffeeView's loadedView)
         let view = ScrollView {
-            VStack(spacing: 12) {
-                ForEach(Array(mockProducts.enumerated()), id: \.element.id) { _, product in
-                    ProductRowView(product: product) {
-                        // No-op for snapshot
+            VStack(spacing: 0) {
+                DrawerHeaderView(
+                    iconImage: Image(systemName: "cup.and.saucer.fill"),
+                    title: "Buy Me a Coffee",
+                    subtitle: "Support my work with a small tip"
+                )
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 8)
+
+                VStack(spacing: 12) {
+                    ForEach(Array(mockProducts.enumerated()), id: \.element.id) { _, product in
+                        ProductRowView(product: product) {}
                     }
                 }
+                .padding(16)
             }
-            .padding(16)
         }
+        .background(BuyMeCoffeeTheme.default.backgroundColor)
         .environment(\.buyMeCoffeeTheme, .default)
-        .frame(width: 375, height: 400)
+        .frame(width: 375, height: 500)
 
         let hostingController = UIHostingController(rootView: view)
-        hostingController.view.frame = CGRect(x: 0, y: 0, width: 375, height: 400)
+        hostingController.view.frame = CGRect(x: 0, y: 0, width: 375, height: 500)
 
         assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "loadedState-iOS")
         #endif
@@ -51,22 +60,31 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
             TipProduct(id: "test.coffee.large", displayName: "Large Coffee", description: "A large cup", displayPrice: "$2.99"),
         ]
 
-        // Snapshot the loaded state layout directly (same as BuyMeCoffeeView's loadedView)
         let view = ScrollView {
-            VStack(spacing: 12) {
-                ForEach(Array(mockProducts.enumerated()), id: \.element.id) { _, product in
-                    ProductRowView(product: product) {
-                        // No-op for snapshot
+            VStack(spacing: 0) {
+                DrawerHeaderView(
+                    iconImage: Image(systemName: "cup.and.saucer.fill"),
+                    title: "Buy Me a Coffee",
+                    subtitle: "Support my work with a small tip"
+                )
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 8)
+
+                VStack(spacing: 12) {
+                    ForEach(Array(mockProducts.enumerated()), id: \.element.id) { _, product in
+                        ProductRowView(product: product) {}
                     }
                 }
+                .padding(16)
             }
-            .padding(16)
         }
+        .background(BuyMeCoffeeTheme.default.backgroundColor)
         .environment(\.buyMeCoffeeTheme, .default)
-        .frame(width: 360, height: 400)
+        .frame(width: 360, height: 500)
 
         let hostingView = NSHostingView(rootView: view)
-        hostingView.frame = CGRect(x: 0, y: 0, width: 360, height: 400)
+        hostingView.frame = CGRect(x: 0, y: 0, width: 360, height: 500)
 
         assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "loadedState-macOS")
         #endif
