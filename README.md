@@ -151,6 +151,24 @@ All colours are fixed (not adaptive to system appearance) so the drawer looks co
 
 ---
 
+## Xcode Previews / Mock Mode
+
+`MockProductProvider` ships in the main module so you can use it directly in Xcode Previews without any StoreKit sandbox setup:
+
+```swift
+#Preview {
+    BuyMeCoffeeView(
+        provider: MockProductProvider(),
+        productPrefix: "mock.coffee"
+    )
+    .environment(\.buyMeCoffeeTheme, .default)
+}
+```
+
+`MockProductProvider()` uses `MockProductProvider.defaultProducts` and `.success` as defaults. Pass custom products or `.failure(...)` to preview other states.
+
+---
+
 ## License
 
 Private — all rights reserved.
