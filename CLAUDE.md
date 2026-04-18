@@ -97,6 +97,17 @@ Run once to auto-record (test fails), then run again to confirm (test passes), t
 
 ---
 
+## Fastlane & Ruby
+
+**Use Homebrew Ruby, not system Ruby.** macOS ships Ruby 2.6 at `/usr/bin/ruby`, which is incompatible with the project's `Gemfile.lock`. Always use `/opt/homebrew/opt/ruby/bin/bundle` (or ensure Homebrew Ruby is first on `PATH`):
+```
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+```
+
+**xcpretty is disabled (`xcodebuild_formatter: ""`).** xcpretty 0.4.1 is incompatible with Ruby 4.0 (`Gem::Resolver::APISet::GemParser` was removed from RubyGems). The Fastfile disables it so both lanes work. Do not re-enable xcpretty unless a compatible version is available.
+
+---
+
 ## Environment & Secrets
 
 **Secret Management:** GitHub Secrets for CI/CD, `.env` files locally (not committed)
