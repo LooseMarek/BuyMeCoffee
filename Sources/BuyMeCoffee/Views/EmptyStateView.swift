@@ -13,12 +13,41 @@ struct EmptyStateView: View {
 
     @Environment(\.buyMeCoffeeTheme) private var theme
 
+    // MARK: - Properties
+
+    /// The SF Symbol name for the icon.
+    let iconName: String
+
+    /// The headline text.
+    let headline: String
+
+    /// The body text.
+    let bodyText: String
+
+    // MARK: - Initializer
+
+    /// Creates an empty state view with customizable content.
+    ///
+    /// - Parameters:
+    ///   - iconName: SF Symbol name. Default: "cart.badge.questionmark"
+    ///   - headline: Headline text. Default: "No tips available"
+    ///   - bodyText: Body text. Default: "Check your product IDs are configured in App Store Connect."
+    init(
+        iconName: String = "cart.badge.questionmark",
+        headline: String = "No tips available",
+        bodyText: String = "Check your product IDs are configured in App Store Connect."
+    ) {
+        self.iconName = iconName
+        self.headline = headline
+        self.bodyText = bodyText
+    }
+
     // MARK: - Body
 
     var body: some View {
         VStack(spacing: 0) {
             // Icon
-            Image(systemName: "cart.badge.questionmark")
+            Image(systemName: iconName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 40, height: 40)
@@ -26,13 +55,13 @@ struct EmptyStateView: View {
                 .accessibilityHidden(true)
 
             // Headline
-            Text("No tips available")
+            Text(headline)
                 .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(theme.primaryTextColor)
                 .padding(.top, 16)
 
             // Body
-            Text("Check your product IDs are configured in App Store Connect.")
+            Text(bodyText)
                 .font(.system(size: 13, weight: .regular))
                 .foregroundStyle(theme.secondaryTextColor)
                 .multilineTextAlignment(.center)
@@ -42,6 +71,7 @@ struct EmptyStateView: View {
         }
         .frame(maxWidth: .infinity, minHeight: 120)
         .frame(idealHeight: 200)
+        .background(theme.backgroundColor)
     }
 }
 
@@ -68,7 +98,11 @@ struct EmptyStateView: View {
         errorColor: .red
     )
 
-    return EmptyStateView()
+    return EmptyStateView(
+        iconName: "tray",
+        headline: "Nothing here yet",
+        bodyText: "Custom empty state message for demonstration."
+    )
         .environment(\.buyMeCoffeeTheme, customTheme)
         .frame(width: 375, height: 200)
 }
