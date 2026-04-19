@@ -17,12 +17,12 @@ public enum PurchaseError: Error, Sendable {
 /// This protocol decouples the UI layer from StoreKit, allowing both live (`StoreKitProductProvider`)
 /// and mock (`MockProductProvider`) implementations to be used interchangeably.
 public protocol ProductProvider: Sendable {
-    /// Fetches products whose IDs match the given prefix.
+    /// Fetches products for the given product IDs.
     ///
-    /// - Parameter prefix: The product ID prefix to filter by (e.g., "com.example.tip").
-    /// - Returns: An array of `TipProduct` values matching the prefix.
+    /// - Parameter productIDs: The exact product IDs to fetch (e.g., ["com.example.tip.small", "com.example.tip.large"]).
+    /// - Returns: An array of `TipProduct` values for the requested IDs.
     /// - Throws: Any error that occurs during product fetching.
-    func fetchProducts(prefix: String) async throws -> [TipProduct]
+    func fetchProducts(productIDs: [String]) async throws -> [TipProduct]
 
     /// Attempts to purchase the specified product.
     ///
