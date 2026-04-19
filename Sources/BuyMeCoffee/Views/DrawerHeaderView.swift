@@ -16,18 +16,16 @@ struct DrawerHeaderView: View {
 
     // MARK: - Properties
 
-    /// Optional icon image (SF Symbol or custom asset).
-    let iconImage: Image?
-
-    /// Optional title text (e.g., "Buy Me a Coffee").
-    let title: String?
-
-    /// Optional subtitle/description text (e.g., "Support my work with a small tip").
-    let subtitle: String?
+    /// Label customisation object.
+    let labels: DrawerHeaderLabels
 
     // MARK: - Body
 
     var body: some View {
+        let iconImage = labels.iconImage ?? DrawerHeaderLabels.default.iconImage
+        let title = labels.title ?? DrawerHeaderLabels.default.title
+        let subtitle = labels.subtitle ?? DrawerHeaderLabels.default.subtitle
+
         HStack(alignment: .center, spacing: 16) {
             // Icon container: 30pt icon centred in 56×56pt surface, 16pt corner radius
             if let iconImage {
@@ -67,15 +65,11 @@ struct DrawerHeaderView: View {
 // MARK: - Previews
 
 #Preview("Default Theme") {
-    DrawerHeaderView(
-        iconImage: Image(systemName: "cup.and.saucer.fill"),
-        title: "Buy Me a Coffee",
-        subtitle: "Support my work with a small tip"
-    )
-    .environment(\.buyMeCoffeeTheme, .default)
-    .frame(width: 360)
-    .padding()
-    .background(BuyMeCoffeeTheme.default.backgroundColor)
+    DrawerHeaderView(labels: .default)
+        .environment(\.buyMeCoffeeTheme, .default)
+        .frame(width: 360)
+        .padding()
+        .background(BuyMeCoffeeTheme.default.backgroundColor)
 }
 
 #Preview("Custom Theme") {
@@ -94,9 +88,11 @@ struct DrawerHeaderView: View {
     )
 
     return DrawerHeaderView(
-        iconImage: Image(systemName: "heart.fill"),
-        title: "Support This App",
-        subtitle: "Your tips help keep development going"
+        labels: DrawerHeaderLabels(
+            iconImage: Image(systemName: "heart.fill"),
+            title: "Support This App",
+            subtitle: "Your tips help keep development going"
+        )
     )
     .environment(\.buyMeCoffeeTheme, customTheme)
     .frame(width: 360)
@@ -106,9 +102,11 @@ struct DrawerHeaderView: View {
 
 #Preview("No Icon") {
     DrawerHeaderView(
-        iconImage: nil,
-        title: "Buy Me a Coffee",
-        subtitle: "Support my work with a small tip"
+        labels: DrawerHeaderLabels(
+            iconImage: nil,
+            title: "Buy Me a Coffee",
+            subtitle: "Support my work with a small tip"
+        )
     )
     .environment(\.buyMeCoffeeTheme, .default)
     .frame(width: 360)
@@ -118,9 +116,11 @@ struct DrawerHeaderView: View {
 
 #Preview("Title Only") {
     DrawerHeaderView(
-        iconImage: Image(systemName: "cup.and.saucer.fill"),
-        title: "Buy Me a Coffee",
-        subtitle: nil
+        labels: DrawerHeaderLabels(
+            iconImage: Image(systemName: "cup.and.saucer.fill"),
+            title: "Buy Me a Coffee",
+            subtitle: nil
+        )
     )
     .environment(\.buyMeCoffeeTheme, .default)
     .frame(width: 360)

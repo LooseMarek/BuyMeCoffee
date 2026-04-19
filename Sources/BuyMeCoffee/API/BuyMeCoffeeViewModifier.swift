@@ -35,6 +35,10 @@ struct BuyMeCoffeeViewModifier: ViewModifier {
     @Binding var isPresented: Bool
     let productIDs: [String]
     let theme: BuyMeCoffeeTheme
+    let headerLabels: DrawerHeaderLabels?
+    let emptyStateLabels: EmptyStateLabels?
+    let errorStateLabels: ErrorStateLabels?
+    let thankYouLabels: ThankYouLabels?
 
     func body(content: Content) -> some View {
         content
@@ -42,7 +46,11 @@ struct BuyMeCoffeeViewModifier: ViewModifier {
             .sheet(isPresented: $isPresented) {
                 BuyMeCoffeeView(
                     provider: StoreKitProductProvider.live(),
-                    productIDs: productIDs
+                    productIDs: productIDs,
+                    headerLabels: headerLabels,
+                    emptyStateLabels: emptyStateLabels,
+                    errorStateLabels: errorStateLabels,
+                    thankYouLabels: thankYouLabels
                 )
                 .environment(\.buyMeCoffeeTheme, theme)
             }
@@ -106,13 +114,21 @@ extension View {
     public func buyMeCoffee(
         isPresented: Binding<Bool>,
         productIDs: [String],
-        theme: BuyMeCoffeeTheme = .default
+        theme: BuyMeCoffeeTheme = .default,
+        headerLabels: DrawerHeaderLabels? = nil,
+        emptyStateLabels: EmptyStateLabels? = nil,
+        errorStateLabels: ErrorStateLabels? = nil,
+        thankYouLabels: ThankYouLabels? = nil
     ) -> some View {
         modifier(
             BuyMeCoffeeViewModifier(
                 isPresented: isPresented,
                 productIDs: productIDs,
-                theme: theme
+                theme: theme,
+                headerLabels: headerLabels,
+                emptyStateLabels: emptyStateLabels,
+                errorStateLabels: errorStateLabels,
+                thankYouLabels: thankYouLabels
             )
         )
     }

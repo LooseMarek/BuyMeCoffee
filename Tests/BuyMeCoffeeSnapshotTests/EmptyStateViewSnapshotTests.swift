@@ -53,9 +53,11 @@ final class EmptyStateViewSnapshotTests: XCTestCase {
     func testEmptyStateView_customTheme_iOS() {
         // Given
         let view = EmptyStateView(
-            iconName: "tray",
-            headline: "Nothing here yet",
-            bodyText: "Custom empty state message for demonstration."
+            labels: EmptyStateLabels(
+                iconName: "tray",
+                headline: "Nothing here yet",
+                bodyText: "Custom empty state message for demonstration."
+            )
         )
             .environment(\.buyMeCoffeeTheme, customTheme)
             .frame(width: 375, height: 200)
@@ -98,9 +100,11 @@ final class EmptyStateViewSnapshotTests: XCTestCase {
     func testEmptyStateView_customTheme_macOS() {
         // Given
         let view = EmptyStateView(
-            iconName: "tray",
-            headline: "Nothing here yet",
-            bodyText: "Custom empty state message for demonstration."
+            labels: EmptyStateLabels(
+                iconName: "tray",
+                headline: "Nothing here yet",
+                bodyText: "Custom empty state message for demonstration."
+            )
         )
             .environment(\.buyMeCoffeeTheme, customTheme)
             .frame(width: 375, height: 200)

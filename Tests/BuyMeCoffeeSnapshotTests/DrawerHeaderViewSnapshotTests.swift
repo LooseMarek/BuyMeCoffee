@@ -10,11 +10,12 @@ final class DrawerHeaderViewSnapshotTests: XCTestCase {
 
     func testDrawerHeaderView_defaultTheme() {
         // Given - a drawer header with default theme and sample content
-        let icon = Image(systemName: "cup.and.saucer.fill")
         let testView = DrawerHeaderView(
-            iconImage: icon,
-            title: "Buy Me a Coffee",
-            subtitle: "Support my work with a small tip"
+            labels: DrawerHeaderLabels(
+                iconImage: Image(systemName: "cup.and.saucer.fill"),
+                title: "Buy Me a Coffee",
+                subtitle: "Support my work with a small tip"
+            )
         )
         .environment(\.buyMeCoffeeTheme, .default)
         .frame(width: 360)
@@ -52,11 +53,12 @@ final class DrawerHeaderViewSnapshotTests: XCTestCase {
         )
 
         // When - the header is rendered with the custom theme
-        let icon = Image(systemName: "heart.fill")
         let testView = DrawerHeaderView(
-            iconImage: icon,
-            title: "Support This App",
-            subtitle: "Your tips help keep development going"
+            labels: DrawerHeaderLabels(
+                iconImage: Image(systemName: "heart.fill"),
+                title: "Support This App",
+                subtitle: "Your tips help keep development going"
+            )
         )
         .environment(\.buyMeCoffeeTheme, customTheme)
         .frame(width: 360)

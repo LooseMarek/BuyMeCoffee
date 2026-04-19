@@ -22,60 +22,36 @@ struct ThankYouView: View {
 
     // MARK: - Properties
 
-    /// The headline text shown below the icon.
-    let title: String
-
-    /// The body text shown below the headline.
-    let subtitle: String
-
-    /// The SF Symbol name for the icon.
-    let iconName: String
+    /// Label customisation object.
+    let labels: ThankYouLabels
 
     /// Closure called when the view should dismiss (either after timeout or on tap).
     let onDismiss: () -> Void
-
-    /// Accessibility label for the dismiss action.
-    let dismissAccessibilityLabel: String
-
-    /// Accessibility hint for the dismiss action.
-    let dismissAccessibilityHint: String
-
-    /// VoiceOver announcement text when the view appears.
-    let voiceOverAnnouncement: String
 
     // MARK: - Initializer
 
     /// Creates a thank-you view with customizable content.
     ///
     /// - Parameters:
-    ///   - title: Headline text. Default: "Thank you!"
-    ///   - subtitle: Body text. Default: "Your support means a lot."
-    ///   - iconName: SF Symbol name. Default: "cup.and.saucer.fill"
+    ///   - labels: Label customisation object. Defaults to `.default`.
     ///   - onDismiss: Closure called when the view dismisses.
-    ///   - dismissAccessibilityLabel: Accessibility label for dismiss action. Default: "Dismiss"
-    ///   - dismissAccessibilityHint: Accessibility hint for dismiss action. Default: "Tap to dismiss"
-    ///   - voiceOverAnnouncement: VoiceOver announcement on appear. Default: "Thank you! Purchase complete."
     init(
-        title: String = "Thank you!",
-        subtitle: String = "Your support means a lot.",
-        iconName: String = "cup.and.saucer.fill",
-        onDismiss: @escaping () -> Void,
-        dismissAccessibilityLabel: String = "Dismiss",
-        dismissAccessibilityHint: String = "Tap to dismiss",
-        voiceOverAnnouncement: String = "Thank you! Purchase complete."
+        labels: ThankYouLabels = .default,
+        onDismiss: @escaping () -> Void
     ) {
-        self.title = title
-        self.subtitle = subtitle
-        self.iconName = iconName
+        self.labels = labels
         self.onDismiss = onDismiss
-        self.dismissAccessibilityLabel = dismissAccessibilityLabel
-        self.dismissAccessibilityHint = dismissAccessibilityHint
-        self.voiceOverAnnouncement = voiceOverAnnouncement
     }
 
     // MARK: - Body
 
     var body: some View {
+        let iconName = labels.iconName ?? ThankYouLabels.default.iconName!
+        let title = labels.title ?? ThankYouLabels.default.title!
+        let subtitle = labels.subtitle ?? ThankYouLabels.default.subtitle!
+        let dismissAccessibilityLabel = labels.dismissAccessibilityLabel ?? ThankYouLabels.default.dismissAccessibilityLabel!
+        let dismissAccessibilityHint = labels.dismissAccessibilityHint ?? ThankYouLabels.default.dismissAccessibilityHint!
+
         VStack(spacing: 0) {
             Spacer()
 
@@ -164,16 +140,17 @@ struct ThankYouView: View {
 
     /// Announces purchase completion to VoiceOver users.
     private func announceToVoiceOver() {
+        let announcement = labels.voiceOverAnnouncement ?? ThankYouLabels.default.voiceOverAnnouncement!
         #if os(iOS)
         UIAccessibility.post(
             notification: .announcement,
-            argument: voiceOverAnnouncement
+            argument: announcement
         )
         #elseif os(macOS)
         NSAccessibility.post(
             element: NSApp as Any,
             notification: .announcementRequested,
-            userInfo: [.announcement: voiceOverAnnouncement]
+            userInfo: [.announcement: announcement]
         )
         #endif
     }

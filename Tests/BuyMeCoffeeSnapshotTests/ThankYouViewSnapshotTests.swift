@@ -38,9 +38,11 @@ final class ThankYouViewSnapshotTests: XCTestCase {
         // Given
         let theme = BuyMeCoffeeTheme.default
         let view = ThankYouView(
-            title: "Success!",
-            subtitle: "Your contribution helps us keep building.",
-            iconName: "checkmark.circle.fill",
+            labels: ThankYouLabels(
+                title: "Success!",
+                subtitle: "Your contribution helps us keep building.",
+                iconName: "checkmark.circle.fill"
+            ),
             onDismiss: {}
         )
             .environment(\.buyMeCoffeeTheme, theme)
@@ -85,9 +87,11 @@ final class ThankYouViewSnapshotTests: XCTestCase {
         // Given
         let theme = BuyMeCoffeeTheme.default
         let view = ThankYouView(
-            title: "Success!",
-            subtitle: "Your contribution helps us keep building.",
-            iconName: "checkmark.circle.fill",
+            labels: ThankYouLabels(
+                title: "Success!",
+                subtitle: "Your contribution helps us keep building.",
+                iconName: "checkmark.circle.fill"
+            ),
             onDismiss: {}
         )
             .environment(\.buyMeCoffeeTheme, theme)

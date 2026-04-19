@@ -25,9 +25,11 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         let view = ScrollView {
             VStack(spacing: 0) {
                 DrawerHeaderView(
-                    iconImage: Image(systemName: "cup.and.saucer.fill"),
-                    title: "Buy Me a Coffee",
-                    subtitle: "Support my work with a small tip"
+                    labels: DrawerHeaderLabels(
+                        iconImage: Image(systemName: "cup.and.saucer.fill"),
+                        title: "Buy Me a Coffee",
+                        subtitle: "Support my work with a small tip"
+                    )
                 )
                 .padding(.horizontal, 16)
                 .padding(.top, 16)
@@ -63,9 +65,11 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         let view = ScrollView {
             VStack(spacing: 0) {
                 DrawerHeaderView(
-                    iconImage: Image(systemName: "cup.and.saucer.fill"),
-                    title: "Buy Me a Coffee",
-                    subtitle: "Support my work with a small tip"
+                    labels: DrawerHeaderLabels(
+                        iconImage: Image(systemName: "cup.and.saucer.fill"),
+                        title: "Buy Me a Coffee",
+                        subtitle: "Support my work with a small tip"
+                    )
                 )
                 .padding(.horizontal, 16)
                 .padding(.top, 16)

@@ -15,36 +15,33 @@ struct ErrorStateView: View {
 
     // MARK: - Properties
 
-    /// The SF Symbol name for the icon.
-    let iconName: String
+    /// Label customisation object (icon and headline).
+    let labels: ErrorStateLabels
 
-    /// The headline text.
-    let headline: String
-
-    /// The body text.
-    let bodyText: String
+    /// The error message to display as body text (derived from the thrown error).
+    let errorMessage: String
 
     // MARK: - Initializer
 
     /// Creates an error state view with customizable content.
     ///
     /// - Parameters:
-    ///   - iconName: SF Symbol name. Default: "exclamationmark.triangle"
-    ///   - headline: Headline text. Default: "Couldn't load tips"
-    ///   - bodyText: Body text. Default: "Something went wrong. Please try again later."
+    ///   - labels: Label customisation object. Defaults to `.default`.
+    ///   - errorMessage: The error message to display as body text.
     init(
-        iconName: String = "exclamationmark.triangle",
-        headline: String = "Couldn't load tips",
-        bodyText: String = "Something went wrong. Please try again later."
+        labels: ErrorStateLabels = .default,
+        errorMessage: String = "Something went wrong. Please try again later."
     ) {
-        self.iconName = iconName
-        self.headline = headline
-        self.bodyText = bodyText
+        self.labels = labels
+        self.errorMessage = errorMessage
     }
 
     // MARK: - Body
 
     var body: some View {
+        let iconName = labels.iconName ?? ErrorStateLabels.default.iconName!
+        let headline = labels.headline ?? ErrorStateLabels.default.headline!
+
         VStack(spacing: 0) {
             // Icon
             Image(systemName: iconName)
@@ -61,7 +58,7 @@ struct ErrorStateView: View {
                 .padding(.top, 16)
 
             // Body
-            Text(bodyText)
+            Text(errorMessage)
                 .font(.system(size: 13, weight: .regular))
                 .foregroundStyle(theme.secondaryTextColor)
                 .multilineTextAlignment(.center)
@@ -98,10 +95,9 @@ struct ErrorStateView: View {
         errorColor: .red
     )
 
-    return ErrorStateView(
-        iconName: "wifi.slash",
-        headline: "Connection failed",
-        bodyText: "Custom error message for demonstration."
+    ErrorStateView(
+        labels: ErrorStateLabels(iconName: "wifi.slash", headline: "Connection failed"),
+        errorMessage: "Custom error message for demonstration."
     )
         .environment(\.buyMeCoffeeTheme, customTheme)
         .frame(width: 375, height: 200)
