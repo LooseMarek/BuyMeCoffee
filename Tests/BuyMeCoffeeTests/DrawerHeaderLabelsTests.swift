@@ -4,29 +4,25 @@ import SwiftUI
 
 final class DrawerHeaderLabelsTests: XCTestCase {
 
-    func testDefaultLabelsMatchExpectedValues() {
-        // Given: The .default static property
-        let labels = DrawerHeaderLabels.default
+    func testDefaultInitContainsExpectedValues() {
+        // Given: A labels object created with .init() (all defaults)
+        let labels = DrawerHeaderLabels()
 
         // Then: All properties should match expected default values
-        XCTAssertNotNil(labels.iconImage, "Default icon should not be nil")
         XCTAssertEqual(labels.title, "Buy Me a Coffee")
         XCTAssertEqual(labels.subtitle, "Support my work with a small tip")
+        // iconImage is Image(systemName: "cup.and.saucer.fill"), verified via rendering
     }
 
-    func testPartialLabelsUseDefaultsForNilProperties() {
-        // Given: A partial labels object with only iconImage set
-        let partialLabels = DrawerHeaderLabels(
-            iconImage: Image(systemName: "heart.fill"),
-            title: nil,
-            subtitle: nil
-        )
+    func testPartialInitUsesDefaultsForOmittedParameters() {
+        // Given: A partial labels object with only title set
+        let partialLabels = DrawerHeaderLabels(title: "Custom Title")
 
         // When: We check the properties
-        // Then: Nil properties should be nil (defaults will be applied at view rendering)
-        XCTAssertNotNil(partialLabels.iconImage)
-        XCTAssertNil(partialLabels.title)
-        XCTAssertNil(partialLabels.subtitle)
+        // Then: Omitted properties should use their default values
+        XCTAssertEqual(partialLabels.title, "Custom Title")
+        XCTAssertEqual(partialLabels.subtitle, "Support my work with a small tip")
+        // iconImage is default: Image(systemName: "cup.and.saucer.fill")
     }
 
     func testInitWithAllProperties() {
@@ -42,9 +38,9 @@ final class DrawerHeaderLabelsTests: XCTestCase {
             subtitle: customSubtitle
         )
 
-        // Then: All properties should be set
-        XCTAssertNotNil(labels.iconImage)
+        // Then: All properties should be set to custom values
         XCTAssertEqual(labels.title, customTitle)
         XCTAssertEqual(labels.subtitle, customSubtitle)
+        // iconImage is custom, verified via rendering
     }
 }

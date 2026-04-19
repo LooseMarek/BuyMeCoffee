@@ -2,44 +2,45 @@ import Foundation
 
 /// Label customisation for the thank-you view.
 ///
-/// All properties are optional. When a property is `nil`, the view uses its hardcoded default.
-/// This allows partial customisation — e.g., only override the title while keeping the default subtitle and accessibility labels.
+/// All properties have default values. Callers can provide custom values for specific
+/// properties while others retain their defaults — e.g., override only the title while
+/// keeping the default subtitle and accessibility labels.
 public struct ThankYouLabels: Sendable {
 
-    /// Optional custom title. Default: "Thank you!"
-    public var title: String?
+    /// Title text. Default: "Thank you!"
+    public var title: String
 
-    /// Optional custom subtitle. Default: "Your support means a lot."
-    public var subtitle: String?
+    /// Subtitle text. Default: "Your support means a lot."
+    public var subtitle: String
 
-    /// Optional custom icon name. Default: "cup.and.saucer.fill"
-    public var iconName: String?
+    /// SF Symbol name for the icon. Default: "cup.and.saucer.fill"
+    public var iconName: String
 
-    /// Optional custom accessibility label for the dismiss action. Default: "Dismiss"
-    public var dismissAccessibilityLabel: String?
+    /// Accessibility label for the dismiss action. Default: "Dismiss"
+    public var dismissAccessibilityLabel: String
 
-    /// Optional custom accessibility hint for the dismiss action. Default: "Tap to dismiss"
-    public var dismissAccessibilityHint: String?
+    /// Accessibility hint for the dismiss action. Default: "Tap to dismiss"
+    public var dismissAccessibilityHint: String
 
-    /// Optional custom VoiceOver announcement on appear. Default: "Thank you! Purchase complete."
-    public var voiceOverAnnouncement: String?
+    /// VoiceOver announcement on appear. Default: "Thank you! Purchase complete."
+    public var voiceOverAnnouncement: String
 
     /// Creates a thank-you labels object.
     ///
     /// - Parameters:
-    ///   - title: Optional title text. If `nil`, falls back to default.
-    ///   - subtitle: Optional subtitle text. If `nil`, falls back to default.
-    ///   - iconName: Optional SF Symbol name. If `nil`, falls back to default.
-    ///   - dismissAccessibilityLabel: Optional accessibility label. If `nil`, falls back to default.
-    ///   - dismissAccessibilityHint: Optional accessibility hint. If `nil`, falls back to default.
-    ///   - voiceOverAnnouncement: Optional VoiceOver announcement. If `nil`, falls back to default.
+    ///   - title: Title text. Defaults to "Thank you!".
+    ///   - subtitle: Subtitle text. Defaults to "Your support means a lot."
+    ///   - iconName: SF Symbol name. Defaults to "cup.and.saucer.fill".
+    ///   - dismissAccessibilityLabel: Accessibility label. Defaults to "Dismiss".
+    ///   - dismissAccessibilityHint: Accessibility hint. Defaults to "Tap to dismiss".
+    ///   - voiceOverAnnouncement: VoiceOver announcement. Defaults to "Thank you! Purchase complete."
     public init(
-        title: String? = nil,
-        subtitle: String? = nil,
-        iconName: String? = nil,
-        dismissAccessibilityLabel: String? = nil,
-        dismissAccessibilityHint: String? = nil,
-        voiceOverAnnouncement: String? = nil
+        title: String = "Thank you!",
+        subtitle: String = "Your support means a lot.",
+        iconName: String = "cup.and.saucer.fill",
+        dismissAccessibilityLabel: String = "Dismiss",
+        dismissAccessibilityHint: String = "Tap to dismiss",
+        voiceOverAnnouncement: String = "Thank you! Purchase complete."
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -48,14 +49,4 @@ public struct ThankYouLabels: Sendable {
         self.dismissAccessibilityHint = dismissAccessibilityHint
         self.voiceOverAnnouncement = voiceOverAnnouncement
     }
-
-    /// Default label values matching SPM-internal defaults.
-    public static let `default` = ThankYouLabels(
-        title: "Thank you!",
-        subtitle: "Your support means a lot.",
-        iconName: "cup.and.saucer.fill",
-        dismissAccessibilityLabel: "Dismiss",
-        dismissAccessibilityHint: "Tap to dismiss",
-        voiceOverAnnouncement: "Thank you! Purchase complete."
-    )
 }

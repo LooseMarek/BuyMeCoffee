@@ -3,9 +3,9 @@ import XCTest
 
 final class EmptyStateLabelsTests: XCTestCase {
 
-    func testDefaultLabelsMatchExpectedValues() {
-        // Given: The .default static property
-        let labels = EmptyStateLabels.default
+    func testDefaultInitContainsExpectedValues() {
+        // Given: A labels object created with .init() (all defaults)
+        let labels = EmptyStateLabels()
 
         // Then: All properties should match expected default values
         XCTAssertEqual(labels.iconName, "cart.badge.questionmark")
@@ -13,19 +13,15 @@ final class EmptyStateLabelsTests: XCTestCase {
         XCTAssertEqual(labels.bodyText, "Check your product IDs are configured in App Store Connect.")
     }
 
-    func testPartialLabelsUseDefaultsForNilProperties() {
+    func testPartialInitUsesDefaultsForOmittedParameters() {
         // Given: A partial labels object with only iconName set
-        let partialLabels = EmptyStateLabels(
-            iconName: "tray.fill",
-            headline: nil,
-            bodyText: nil
-        )
+        let partialLabels = EmptyStateLabels(iconName: "tray.fill")
 
         // When: We check the properties
-        // Then: Nil properties should be nil (defaults will be applied at view rendering)
+        // Then: Omitted properties should use their default values
         XCTAssertEqual(partialLabels.iconName, "tray.fill")
-        XCTAssertNil(partialLabels.headline)
-        XCTAssertNil(partialLabels.bodyText)
+        XCTAssertEqual(partialLabels.headline, "No tips available")
+        XCTAssertEqual(partialLabels.bodyText, "Check your product IDs are configured in App Store Connect.")
     }
 
     func testInitWithAllProperties() {
@@ -41,7 +37,7 @@ final class EmptyStateLabelsTests: XCTestCase {
             bodyText: customBody
         )
 
-        // Then: All properties should be set
+        // Then: All properties should be set to custom values
         XCTAssertEqual(labels.iconName, customIcon)
         XCTAssertEqual(labels.headline, customHeadline)
         XCTAssertEqual(labels.bodyText, customBody)

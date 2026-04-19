@@ -26,10 +26,10 @@ struct ErrorStateView: View {
     /// Creates an error state view with customizable content.
     ///
     /// - Parameters:
-    ///   - labels: Label customisation object. Defaults to `.default`.
+    ///   - labels: Label customisation object. Defaults to `.init()`.
     ///   - errorMessage: The error message to display as body text.
     init(
-        labels: ErrorStateLabels = .default,
+        labels: ErrorStateLabels = .init(),
         errorMessage: String = "Something went wrong. Please try again later."
     ) {
         self.labels = labels
@@ -39,12 +39,9 @@ struct ErrorStateView: View {
     // MARK: - Body
 
     var body: some View {
-        let iconName = labels.iconName ?? ErrorStateLabels.default.iconName!
-        let headline = labels.headline ?? ErrorStateLabels.default.headline!
-
         VStack(spacing: 0) {
             // Icon
-            Image(systemName: iconName)
+            Image(systemName: labels.iconName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 40, height: 40)
@@ -52,7 +49,7 @@ struct ErrorStateView: View {
                 .accessibilityHidden(true)
 
             // Headline
-            Text(headline)
+            Text(labels.headline)
                 .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(theme.primaryTextColor)
                 .padding(.top, 16)

@@ -58,16 +58,16 @@ public struct BuyMeCoffeeView: View {
 
     // MARK: - Customizable Labels
 
-    /// Header label customisation. Defaults to `.default`.
+    /// Header label customisation. Defaults to `.init()`.
     let headerLabels: DrawerHeaderLabels
 
-    /// Empty state label customisation. Defaults to `.default`.
+    /// Empty state label customisation. Defaults to `.init()`.
     let emptyStateLabels: EmptyStateLabels
 
-    /// Error state label customisation. Defaults to `.default`.
+    /// Error state label customisation. Defaults to `.init()`.
     let errorStateLabels: ErrorStateLabels
 
-    /// Thank-you screen label customisation. Defaults to `.default`.
+    /// Thank-you screen label customisation. Defaults to `.init()`.
     let thankYouLabels: ThankYouLabels
 
     // MARK: - Initializers
@@ -78,23 +78,23 @@ public struct BuyMeCoffeeView: View {
     ///   - provider: The product provider. Use `StoreKitProductProvider.live()` for production,
     ///     or `MockProductProvider` for Previews/tests.
     ///   - productIDs: The exact product IDs to fetch (e.g., ["com.example.tip.small", "com.example.tip.large"]).
-    ///   - headerLabels: Optional header label customisation. `nil` uses defaults.
-    ///   - emptyStateLabels: Optional empty state label customisation. `nil` uses defaults.
-    ///   - errorStateLabels: Optional error state label customisation. `nil` uses defaults.
-    ///   - thankYouLabels: Optional thank-you screen label customisation. `nil` uses defaults.
+    ///   - headerLabels: Header label customisation. Defaults to `.init()` (SPM defaults).
+    ///   - emptyStateLabels: Empty state label customisation. Defaults to `.init()` (SPM defaults).
+    ///   - errorStateLabels: Error state label customisation. Defaults to `.init()` (SPM defaults).
+    ///   - thankYouLabels: Thank-you screen label customisation. Defaults to `.init()` (SPM defaults).
     public init(
         provider: ProductProvider,
         productIDs: [String],
-        headerLabels: DrawerHeaderLabels? = nil,
-        emptyStateLabels: EmptyStateLabels? = nil,
-        errorStateLabels: ErrorStateLabels? = nil,
-        thankYouLabels: ThankYouLabels? = nil
+        headerLabels: DrawerHeaderLabels = .init(),
+        emptyStateLabels: EmptyStateLabels = .init(),
+        errorStateLabels: ErrorStateLabels = .init(),
+        thankYouLabels: ThankYouLabels = .init()
     ) {
         _viewModel = StateObject(wrappedValue: ViewModel(provider: provider, productIDs: productIDs))
-        self.headerLabels = headerLabels ?? .default
-        self.emptyStateLabels = emptyStateLabels ?? .default
-        self.errorStateLabels = errorStateLabels ?? .default
-        self.thankYouLabels = thankYouLabels ?? .default
+        self.headerLabels = headerLabels
+        self.emptyStateLabels = emptyStateLabels
+        self.errorStateLabels = errorStateLabels
+        self.thankYouLabels = thankYouLabels
     }
 
     // MARK: - Body

@@ -33,10 +33,10 @@ struct ThankYouView: View {
     /// Creates a thank-you view with customizable content.
     ///
     /// - Parameters:
-    ///   - labels: Label customisation object. Defaults to `.default`.
+    ///   - labels: Label customisation object. Defaults to `.init()`.
     ///   - onDismiss: Closure called when the view dismisses.
     init(
-        labels: ThankYouLabels = .default,
+        labels: ThankYouLabels = .init(),
         onDismiss: @escaping () -> Void
     ) {
         self.labels = labels
@@ -46,18 +46,12 @@ struct ThankYouView: View {
     // MARK: - Body
 
     var body: some View {
-        let iconName = labels.iconName ?? ThankYouLabels.default.iconName!
-        let title = labels.title ?? ThankYouLabels.default.title!
-        let subtitle = labels.subtitle ?? ThankYouLabels.default.subtitle!
-        let dismissAccessibilityLabel = labels.dismissAccessibilityLabel ?? ThankYouLabels.default.dismissAccessibilityLabel!
-        let dismissAccessibilityHint = labels.dismissAccessibilityHint ?? ThankYouLabels.default.dismissAccessibilityHint!
-
         VStack(spacing: 0) {
             Spacer()
 
             VStack(spacing: 4) {
                 // Icon
-                Image(systemName: iconName)
+                Image(systemName: labels.iconName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 64, height: 64)
@@ -73,14 +67,14 @@ struct ThankYouView: View {
                     .accessibilityHidden(true)
 
                 // Headline
-                Text(title)
+                Text(labels.title)
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(theme.primaryTextColor)
                     .padding(.top, 24)
                     .accessibilityAddTraits(.isHeader)
 
                 // Body
-                Text(subtitle)
+                Text(labels.subtitle)
                     .font(.system(size: 15, weight: .regular))
                     .foregroundStyle(theme.secondaryTextColor)
                     .multilineTextAlignment(.center)
@@ -98,9 +92,9 @@ struct ThankYouView: View {
         .onTapGesture {
             onDismiss()
         }
-        .accessibilityLabel(dismissAccessibilityLabel)
+        .accessibilityLabel(labels.dismissAccessibilityLabel)
         .accessibilityAddTraits(.isButton)
-        .accessibilityHint(dismissAccessibilityHint)
+        .accessibilityHint(labels.dismissAccessibilityHint)
         .onAppear {
             playEntranceAnimation()
             scheduleAutoDismiss()
@@ -140,17 +134,16 @@ struct ThankYouView: View {
 
     /// Announces purchase completion to VoiceOver users.
     private func announceToVoiceOver() {
-        let announcement = labels.voiceOverAnnouncement ?? ThankYouLabels.default.voiceOverAnnouncement!
         #if os(iOS)
         UIAccessibility.post(
             notification: .announcement,
-            argument: announcement
+            argument: labels.voiceOverAnnouncement
         )
         #elseif os(macOS)
         NSAccessibility.post(
             element: NSApp as Any,
             notification: .announcementRequested,
-            userInfo: [.announcement: announcement]
+            userInfo: [.announcement: labels.voiceOverAnnouncement]
         )
         #endif
     }

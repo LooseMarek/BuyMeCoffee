@@ -3,26 +3,23 @@ import XCTest
 
 final class ErrorStateLabelsTests: XCTestCase {
 
-    func testDefaultLabelsMatchExpectedValues() {
-        // Given: The .default static property
-        let labels = ErrorStateLabels.default
+    func testDefaultInitContainsExpectedValues() {
+        // Given: A labels object created with .init() (all defaults)
+        let labels = ErrorStateLabels()
 
         // Then: All properties should match expected default values
         XCTAssertEqual(labels.iconName, "exclamationmark.triangle")
         XCTAssertEqual(labels.headline, "Couldn't load tips")
     }
 
-    func testPartialLabelsUseDefaultsForNilProperties() {
+    func testPartialInitUsesDefaultsForOmittedParameters() {
         // Given: A partial labels object with only iconName set
-        let partialLabels = ErrorStateLabels(
-            iconName: "xmark.circle",
-            headline: nil
-        )
+        let partialLabels = ErrorStateLabels(iconName: "xmark.circle")
 
         // When: We check the properties
-        // Then: Nil properties should be nil (defaults will be applied at view rendering)
+        // Then: Omitted properties should use their default values
         XCTAssertEqual(partialLabels.iconName, "xmark.circle")
-        XCTAssertNil(partialLabels.headline)
+        XCTAssertEqual(partialLabels.headline, "Couldn't load tips")
     }
 
     func testInitWithAllProperties() {
@@ -36,7 +33,7 @@ final class ErrorStateLabelsTests: XCTestCase {
             headline: customHeadline
         )
 
-        // Then: All properties should be set
+        // Then: All properties should be set to custom values
         XCTAssertEqual(labels.iconName, customIcon)
         XCTAssertEqual(labels.headline, customHeadline)
     }
