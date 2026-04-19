@@ -20,8 +20,8 @@
 ## Platform Presentation
 
 ### iOS
-- Presentation: `.sheet` with `.presentationDetents([.medium, .large])`
-- Default detent: `.medium`
+- Presentation: `.sheet` with dynamic `.presentationDetents` sized to content (v1.1: fit-to-content for most states)
+- **v1.1 behaviour:** Loading, empty, error, and thank-you states size to their content with vertical padding (no longer full-screen). Loaded state uses static layout when products fit within half the screen height; scrollable when product list exceeds that threshold.
 - Drag handle: system handle bar at top centre — always visible
 - Background: `color.background` applied via `.presentationBackground`
 - Corner radius: system default (approx 16pt at top corners)
@@ -30,6 +30,7 @@
 ### macOS
 - Presentation: standard SwiftUI `.sheet` (floating window)
 - Size: fixed width 360pt, height auto (min 300pt)
+- **v1.1 behaviour:** Outside-click dismissal enabled (previously Esc-only). After purchase, popup expands to show full thank-you content without clipping.
 - Background: `color.background`
 - Shadow: `elevation.medium`
 - Corner radius: `radius.lg` (16pt)
@@ -88,12 +89,13 @@
 - `DrawerHeaderView` visible (full opacity)
 - Product list area replaced by a centred `ProgressView` (system spinner)
 - Spinner colour: `color.text.secondary`
-- Minimum height of spinner area: 120pt (so sheet does not collapse)
+- **v1.1:** Sized to content with vertical padding (no fixed height constraints)
 
 ### Loaded State
 - `DrawerHeaderView` visible
 - Separator visible
 - Product rows visible, staggered fade-in (50ms per row, `easeOut` 0.25s)
+- **v1.1 iOS:** Static `VStack` layout when products fit within half the screen height; `ScrollView` enabled when product list exceeds that threshold (drawer capped at ~half screen height)
 
 ### Empty State
 - `DrawerHeaderView` visible

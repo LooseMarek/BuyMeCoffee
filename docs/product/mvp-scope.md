@@ -45,7 +45,7 @@ dependency-free unit:
 
 - **StoreKit 2 native** — no StoreKit 1 wrappers, no external services, no server required
 - **Complete drawer UI** — bottom sheet (iOS) and floating sheet (macOS) with configurable header, product list, and animated thank-you screen
-- **Product-prefix filtering** — scope IAP product fetching by ID prefix; no conflicts with subscription or unlock products in the same app
+- **Explicit product ID configuration** — scope IAP product fetching by passing exact product IDs; no conflicts with subscription or unlock products in the same app
 - **Trigger-agnostic** — present the drawer from any view via a SwiftUI modifier or environment, not a bespoke button
 - **Built-in mock mode** — design and test without live StoreKit calls; works in Xcode Previews and CI
 - **Full test coverage** — snapshot tests for all views, unit tests for purchase logic; ships with CI configuration
@@ -150,3 +150,53 @@ All open questions resolved. No blockers for architecture planning.
 |------|------|------|--------|
 | Product Owner | Marek Loose | 2026-04-13 | Approved |
 | Architect | — | — | Pending |
+
+---
+
+## v1.1 Addendum
+
+**Date:** 2026-04-19
+**Status:** Planned
+
+### Changes from Production Testing
+
+After integration into a production app, several improvements have been identified and are being implemented in v1.1:
+
+#### 1. **productIDs API Change (Breaking)**
+- **Change:** Replace `productIDPrefix: String` with `productIDs: [String]` in all public APIs
+- **Reason:** StoreKit 2 requires the full set of product IDs upfront; prefix filtering was leaking implementation detail into the public API and causing the view modifier to pass an empty array to the provider
+- **Impact:** Breaking change — consumers must update their integration code to pass explicit product ID arrays
+
+#### 2. **Per-Screen Label Customisation**
+- **Change:** Introduce four optional label objects: `DrawerHeaderLabels`, `EmptyStateLabels`, `ErrorStateLabels`, `ThankYouLabels`
+- **Reason:** The view modifier previously exposed no label customisation; consumers who wanted custom text had to use `BuyMeCoffeeView` directly
+- **Impact:** Non-breaking — all label objects default to `nil` (use SPM defaults)
+
+#### 3. **MockProductProvider Access Change**
+- **Change:** `MockProductProvider` is now `internal` instead of `public`
+- **Reason:** Consumers should use `.storekit` configuration files for local testing, not a public mock type
+- **Impact:** Non-breaking for most consumers (mock was primarily used internally); consumers relying on the public mock must migrate to `.storekit` files
+
+#### 4. **Dynamic Drawer Height (iOS)**
+- **Change:** All drawer states now size to their content instead of filling the full screen
+  - Loading, empty, error, thank-you states: sized to content with vertical padding
+  - Loaded state: static layout for small product counts; scrollable when product list exceeds half the screen height
+- **Reason:** Full-screen sheets felt oversized for states with minimal content
+- **Impact:** Visual change only — no API changes
+
+#### 5. **macOS Popup Improvements**
+- **Change:** 
+  - Outside-click dismissal: clicking outside the popup now dismisses it (previously Esc-only)
+  - Thank-you page sizing: popup expands to show the full thank-you content after purchase
+- **Reason:** Better alignment with standard macOS sheet behaviour
+- **Impact:** UX improvement only — no API changes
+
+---
+
+## v1.1 Success Metrics
+
+| Metric | Target | Timeframe |
+|--------|--------|-----------|
+| Zero `productIDPrefix` references in host app code | 100% migration | At v1.1 cut |
+| Label customisation adoption | ≥ 1 host app uses custom labels | Within 14 days of v1.1 release |
+| Dynamic drawer height approval | Qualitative: "feels better" feedback from host app integration | At v1.1 cut |

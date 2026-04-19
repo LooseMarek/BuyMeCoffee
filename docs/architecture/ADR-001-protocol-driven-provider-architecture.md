@@ -101,5 +101,16 @@ Option 1 gives the cleanest separation of concerns and the best ergonomics for b
 | Type | Reference |
 |------|-----------|
 | Supersedes | — |
-| Related ADRs | ADR-003 (zero runtime dependencies) |
+| Related ADRs | ADR-003 (zero runtime dependencies), ADR-004 (explicit product IDs over prefix filtering) |
 | Related issues | — |
+
+---
+
+## v1.1 Update — MockProductProvider Access Change
+
+**Date:** 2026-04-19
+**Decision:** `MockProductProvider` access level changed from `public` to `internal`
+
+**Rationale:** The original decision shipped `MockProductProvider` as public to enable host-app Previews. In practice, consumers should use `.storekit` configuration files (set in the Xcode scheme's StoreKit Configuration setting) for local testing — this provides real StoreKit sandbox behaviour without needing a library-provided mock. Keeping the mock internal simplifies the public API surface and encourages best-practice local testing.
+
+**Impact:** `MockProductProvider` remains available to the library's own Previews and tests (same module). Consumers who previously used `MockProductProvider` in their Previews must migrate to `.storekit` files.

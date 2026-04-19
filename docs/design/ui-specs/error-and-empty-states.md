@@ -62,8 +62,8 @@ Shown when `ProductProvider` returns an empty product array (no matching IAP pro
 - Horizontal padding: `spacing.xl` (32pt) each side
 - Gap above headline: `spacing.xs` (4pt)
 
-### Minimum Height
-120pt — prevents the sheet from collapsing to an awkward size.
+### Height
+**v1.1:** Sized to content with vertical padding (no fixed height constraints). The sheet sizes naturally to the content height.
 
 ---
 
@@ -108,6 +108,9 @@ Shown when `ProductProvider.fetchProducts()` throws an error.
 - Line limit: 3
 - Horizontal padding: `spacing.xl` (32pt) each side
 - Gap above headline: `spacing.xs` (4pt)
+
+### Height
+**v1.1:** Sized to content with vertical padding (no fixed height constraints). Multi-line body text does not get clipped.
 
 ### Notes
 - No retry button in MVP (dismissing and reopening triggers a fresh fetch)

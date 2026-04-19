@@ -14,6 +14,7 @@
 | Role | Configurable header at the top of the tip drawer: icon, title, subtitle |
 | Parent | `BuyMeCoffeeView` |
 | Configurable by host app | Yes — icon image, title string, subtitle string are all optional |
+| **v1.1 customisation** | `DrawerHeaderLabels` is the new public API for customising header labels from `BuyMeCoffeeView` and `.buyMeCoffee()` |
 
 ---
 
