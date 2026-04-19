@@ -55,17 +55,17 @@ targets: [
 
 ## Usage
 
+> **Recommended:** Use the `.buyMeCoffee()` view modifier for the simplest integration.
+
 ### 1. Configure products in App Store Connect
 
-Create consumable in-app purchase products in App Store Connect. BuyMeCoffee discovers them by a shared prefix, so name them consistently:
+Create consumable in-app purchase products in App Store Connect. Configure them with unique product IDs:
 
 ```
 com.yourapp.tip.small
 com.yourapp.tip.medium
 com.yourapp.tip.large
 ```
-
-You can use any prefix — just make sure all tip products share it.
 
 ### 2. Apply the `.buyMeCoffee` modifier
 
@@ -84,13 +84,77 @@ struct ContentView: View {
         }
         .buyMeCoffee(
             isPresented: $showTipJar,
-            productIDPrefix: "com.yourapp.tip"
+            productIDs: [
+                "com.yourapp.tip.small",
+                "com.yourapp.tip.medium",
+                "com.yourapp.tip.large"
+            ]
         )
     }
 }
 ```
 
-The drawer fetches all products whose App Store Connect IDs begin with the supplied prefix, displays them with their localised names and prices, and handles the full StoreKit 2 purchase flow — including loading, error, and thank-you states.
+The drawer fetches the specified products, displays them with their localised names and prices, and handles the full StoreKit 2 purchase flow — including loading, error, and thank-you states.
+
+### 3. Alternative: Environment key for nested views
+
+If you need to trigger the drawer from a deeply nested view without prop-drilling, use the environment key:
+
+```swift
+struct ContentView: View {
+    @State private var showTipJar = false
+
+    var body: some View {
+        NavigationStack {
+            DeepChildView()
+        }
+        .buyMeCoffee(
+            isPresented: $showTipJar,
+            productIDs: ["com.yourapp.tip.small", "com.yourapp.tip.large"]
+        )
+    }
+}
+
+struct DeepChildView: View {
+    @Environment(\.buyMeCoffeeIsPresented) private var isPresented
+
+    var body: some View {
+        Button("Support") {
+            isPresented.wrappedValue = true
+        }
+    }
+}
+```
+
+### 4. Alternative: Direct sheet presentation
+
+For custom presentation control, use `BuyMeCoffeeView` directly in a sheet:
+
+```swift
+import SwiftUI
+import BuyMeCoffee
+
+struct ContentView: View {
+    @State private var showTipJar = false
+
+    var body: some View {
+        Button("Buy Me a Coffee") {
+            showTipJar = true
+        }
+        .sheet(isPresented: $showTipJar) {
+            BuyMeCoffeeView(
+                provider: StoreKitProductProvider.live(),
+                productIDs: [
+                    "com.yourapp.tip.small",
+                    "com.yourapp.tip.large"
+                ]
+            )
+            .presentationDetents([.medium])
+            .environment(\.buyMeCoffeeTheme, .default)
+        }
+    }
+}
+```
 
 ---
 
@@ -101,8 +165,12 @@ The drawer fetches all products whose App Store Connect IDs begin with the suppl
 | Parameter         | Type                   | Default                  | Description |
 |-------------------|------------------------|--------------------------|-------------|
 | `isPresented`     | `Binding<Bool>`        | —                        | Controls whether the drawer is presented |
-| `productIDPrefix` | `String`               | —                        | App Store Connect product ID prefix shared by all tip products |
+| `productIDs`      | `[String]`             | —                        | Exact App Store Connect product IDs to fetch |
 | `theme`           | `BuyMeCoffeeTheme`     | `.default`               | Visual theme for the drawer |
+| `headerLabels`    | `DrawerHeaderLabels`   | `.init()`                | Header label customisation (icon, title, subtitle) |
+| `emptyStateLabels`| `EmptyStateLabels`     | `.init()`                | Empty state label customisation |
+| `errorStateLabels`| `ErrorStateLabels`     | `.init()`                | Error state label customisation |
+| `thankYouLabels`  | `ThankYouLabels`       | `.init()`                | Thank-you screen label customisation |
 
 ### Theming
 
@@ -126,12 +194,32 @@ let myTheme = BuyMeCoffeeTheme(
 Button("Support") { showTipJar = true }
     .buyMeCoffee(
         isPresented: $showTipJar,
-        productIDPrefix: "com.yourapp.tip",
+        productIDs: ["com.yourapp.tip.small", "com.yourapp.tip.large"],
         theme: myTheme
     )
 ```
 
 All colours are fixed (not adaptive to system appearance) so the drawer looks consistent in both light and dark mode.
+
+### Label Customisation
+
+Customise the text and icons for specific screens while leaving others as defaults:
+
+```swift
+.buyMeCoffee(
+    isPresented: $showTipJar,
+    productIDs: ["com.yourapp.tip.small"],
+    headerLabels: DrawerHeaderLabels(
+        iconImage: Image(systemName: "heart.fill"),
+        title: "Support This App"
+        // subtitle omitted — uses SPM default
+    ),
+    thankYouLabels: ThankYouLabels(title: "You're awesome!")
+    // emptyStateLabels and errorStateLabels omitted — use SPM defaults
+)
+```
+
+Each label struct provides default values for all properties. You only need to override the specific values you want to change.
 
 #### Default theme colour tokens
 
@@ -151,21 +239,39 @@ All colours are fixed (not adaptive to system appearance) so the drawer looks co
 
 ---
 
-## Xcode Previews / Mock Mode
+## Local Testing with StoreKit Configuration
 
-`MockProductProvider` ships in the main module so you can use it directly in Xcode Previews without any StoreKit sandbox setup:
+For local testing without hitting the App Store sandbox, use a StoreKit Configuration file:
 
-```swift
-#Preview {
-    BuyMeCoffeeView(
-        provider: MockProductProvider(),
-        productPrefix: "mock.coffee"
-    )
-    .environment(\.buyMeCoffeeTheme, .default)
-}
-```
+### 1. Create a StoreKit Configuration file
 
-`MockProductProvider()` uses `MockProductProvider.defaultProducts` and `.success` as defaults. Pass custom products or `.failure(...)` to preview other states.
+In your app's Xcode project:
+1. Go to **File → New → File**
+2. Select **StoreKit Configuration File**
+3. Name it (e.g., `Products.storekit`)
+4. Save it in your app's project directory
+
+### 2. Add consumable products
+
+In the `.storekit` file, add consumable products matching your real App Store Connect product IDs:
+- Product ID: `com.yourapp.tip.small`
+- Product ID: `com.yourapp.tip.medium`
+- Product ID: `com.yourapp.tip.large`
+
+Configure the display names, prices, and descriptions as they appear in App Store Connect.
+
+### 3. Configure the scheme
+
+1. In Xcode, go to **Product → Scheme → Edit Scheme**
+2. Select **Run → Options**
+3. Under **StoreKit Configuration**, select your `.storekit` file
+4. Click **Close**
+
+### 4. Run the app
+
+Run your app in the simulator or on a device. StoreKit purchases will use the local configuration file instead of the sandbox server.
+
+**Note:** For unit tests and Xcode Previews, use `@testable import BuyMeCoffee` to access the internal `MockProductProvider`.
 
 ---
 
