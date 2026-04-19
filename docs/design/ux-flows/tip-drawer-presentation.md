@@ -111,7 +111,7 @@ Host app or Xcode Preview injects MockProductProvider
 
 | Transition | iOS | macOS |
 |-----------|-----|-------|
-| Sheet open | Spring slide-up from bottom (`easeOut`, 0.35s) — v1.1: sized to content | Fade + scale from 0.95 → 1.0 (`easeOut`, 0.25s) |
+| Sheet open | Spring slide-up from bottom (`easeOut`, 0.35s) — v1.1: fixed `.medium` detent | Fade + scale from 0.95 → 1.0 (`easeOut`, 0.25s) |
 | Sheet dismiss (user) | Swipe down / spring slide-down | Fade + scale out — v1.1: also dismisses on outside-click |
 | Loading → Loaded | Product rows fade in staggered (50ms delay per row) | Same |
 | Loaded → Loading (retry) | Crossfade | Same |
@@ -139,4 +139,4 @@ Host app or Xcode Preview injects MockProductProvider
 - Drawer title receives initial VoiceOver focus on open
 - All interactive elements have explicit `.accessibilityLabel` values
 - Sheet handle on iOS has label "Dismiss tip drawer"
-- Dynamic Type: all text scales; drawer height grows with `.large` presentation detent to accommodate larger type
+- Dynamic Type: all text scales; the `.medium` presentation detent provides sufficient height for default text sizes; very large Dynamic Type sizes may cause scrolling within the loaded state

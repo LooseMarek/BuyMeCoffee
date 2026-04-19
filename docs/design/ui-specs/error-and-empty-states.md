@@ -58,7 +58,7 @@ Shown when `ProductProvider` returns an empty product array (no matching IAP pro
 - Text: "Check your product IDs are configured in App Store Connect."
 - Font: `type.caption` — 13pt Regular
 - Colour: `color.text.secondary`
-- Line limit: 3
+- Line limit: none (wraps freely)
 - Horizontal padding: `spacing.xl` (32pt) each side
 - Gap above headline: `spacing.xs` (4pt)
 
@@ -105,7 +105,7 @@ Shown when `ProductProvider.fetchProducts()` throws an error.
 - Text: "Something went wrong. Please try again later."
 - Font: `type.caption` — 13pt Regular
 - Colour: `color.text.secondary`
-- Line limit: 3
+- Line limit: none (wraps freely)
 - Horizontal padding: `spacing.xl` (32pt) each side
 - Gap above headline: `spacing.xs` (4pt)
 

@@ -20,8 +20,8 @@
 ## Platform Presentation
 
 ### iOS
-- Presentation: `.sheet` with dynamic `.presentationDetents` sized to content (v1.1: fit-to-content for most states)
-- **v1.1 behaviour:** Loading, empty, error, and thank-you states size to their content with vertical padding (no longer full-screen). Loaded state uses static layout when products fit within half the screen height; scrollable when product list exceeds that threshold.
+- Presentation: `.sheet` with `.presentationDetents([.medium])` — fixed medium detent
+- **v1.1 behaviour:** All states (loading, loaded, empty, error, thank-you) are presented at the `.medium` sheet height. Non-list states (loading, empty, error, thank-you) size their content to natural height with 32pt vertical padding; the sheet itself remains at `.medium`. The loaded state uses a `ScrollView` to handle product lists of any length within the fixed detent height.
 - Drag handle: system handle bar at top centre — always visible
 - Background: `color.background` applied via `.presentationBackground`
 - Corner radius: system default (approx 16pt at top corners)

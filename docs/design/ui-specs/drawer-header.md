@@ -51,13 +51,13 @@
 ### Title (optional)
 - Font: `type.heading2` — 22pt Semibold
 - Colour: `color.text.primary`
-- Line limit: 2 lines; truncates with `...` if longer
+- Line limit: none (wraps freely)
 - If omitted: not rendered; subtitle takes its vertical position
 
 ### Subtitle (optional)
 - Font: `type.body` — 15pt Regular
 - Colour: `color.text.secondary`
-- Line limit: 3 lines; truncates with `...` if longer
+- Line limit: none (wraps freely)
 - If omitted: not rendered
 
 ---

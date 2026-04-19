@@ -70,7 +70,7 @@
 | Font | `type.body` — 15pt Regular |
 | Colour | `color.text.secondary` |
 | Alignment | Centre |
-| Line limit | 2 |
+| Line limit | none (wraps freely) |
 | Gap above headline | `spacing.xs` (4pt) |
 | Horizontal padding | `spacing.xl` (32pt) each side — narrower than drawer content to create breathing room |
 
