@@ -52,6 +52,7 @@ struct BuyMeCoffeeViewModifier: ViewModifier {
                     errorStateLabels: errorStateLabels,
                     thankYouLabels: thankYouLabels
                 )
+                .presentationDetents([.medium])
                 .environment(\.buyMeCoffeeTheme, theme)
             }
     }

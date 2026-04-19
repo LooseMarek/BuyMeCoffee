@@ -47,8 +47,6 @@ struct ThankYouView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Spacer()
-
             VStack(spacing: 4) {
                 // Icon
                 Image(systemName: labels.iconName)
@@ -78,13 +76,11 @@ struct ThankYouView: View {
                     .font(.system(size: 15, weight: .regular))
                     .foregroundStyle(theme.secondaryTextColor)
                     .multilineTextAlignment(.center)
-                    .lineLimit(2)
                     .padding(.horizontal, 32)
             }
-
-            Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 32)
         .background(theme.backgroundColor)
         .opacity(containerOpacity)
         .scaleEffect(containerScale)

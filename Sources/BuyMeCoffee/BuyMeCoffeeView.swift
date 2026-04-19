@@ -124,7 +124,8 @@ public struct BuyMeCoffeeView: View {
                 .progressViewStyle(CircularProgressViewStyle(tint: theme.secondaryTextColor))
                 .scaleEffect(1.2)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 32)
     }
 
     /// Product list with header and staggered row animations.
@@ -132,9 +133,9 @@ public struct BuyMeCoffeeView: View {
         ScrollView {
             VStack(spacing: 0) {
                 DrawerHeaderView(labels: headerLabels)
-                .padding(.horizontal, 16)
-                .padding(.top, 16)
-                .padding(.bottom, 8)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 16)
+                    .padding(.bottom, 24)
 
                 VStack(spacing: 12) {
                     ForEach(Array(products.enumerated()), id: \.element.id) { index, product in
@@ -150,7 +151,8 @@ public struct BuyMeCoffeeView: View {
                         )
                     }
                 }
-                .padding(16)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 16)
             }
         }
     }

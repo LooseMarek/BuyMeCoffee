@@ -59,12 +59,11 @@ struct ErrorStateView: View {
                 .font(.system(size: 13, weight: .regular))
                 .foregroundStyle(theme.secondaryTextColor)
                 .multilineTextAlignment(.center)
-                .lineLimit(3)
                 .padding(.horizontal, 32)
                 .padding(.top, 4)
         }
-        .frame(maxWidth: .infinity, minHeight: 120)
-        .frame(idealHeight: 200)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 32)
         .background(theme.backgroundColor)
     }
 }
