@@ -23,7 +23,7 @@ public final class MockProductProvider: ProductProvider, @unchecked Sendable {
         TipProduct(id: "mock.coffee.mega", displayName: "Mega Coffee", description: "An extra large cup of coffee", displayPrice: "$4.99"),
     ]
 
-    public func fetchProducts(prefix: String) async throws -> [TipProduct] {
+    public func fetchProducts(productIDs: [String]) async throws -> [TipProduct] {
         products
     }
 

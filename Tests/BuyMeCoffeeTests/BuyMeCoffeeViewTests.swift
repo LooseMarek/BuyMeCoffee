@@ -14,7 +14,7 @@ final class BuyMeCoffeeViewTests: XCTestCase {
             TipProduct(id: "test.coffee.large", displayName: "Large", description: "Desc", displayPrice: "$2"),
         ]
         let mockProvider = MockProductProvider(products: mockProducts, purchaseOutcome: .success)
-        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productPrefix: "test.coffee")
+        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productIDs: ["test.coffee.small", "test.coffee.large"])
 
         // Initial state should be loading
         XCTAssertEqual(viewModel.state, .loading)
@@ -36,7 +36,7 @@ final class BuyMeCoffeeViewTests: XCTestCase {
     @MainActor
     func testStateMachine_loadingToEmpty() async throws {
         let mockProvider = MockProductProvider(products: [], purchaseOutcome: .success)
-        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productPrefix: "test.coffee")
+        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productIDs: [])
 
         // Initial state should be loading
         XCTAssertEqual(viewModel.state, .loading)
@@ -53,7 +53,7 @@ final class BuyMeCoffeeViewTests: XCTestCase {
     func testStateMachine_loadingToError() async throws {
         struct TestError: Error {}
         let mockProvider = ThrowingMockProductProvider(error: TestError())
-        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productPrefix: "test.coffee")
+        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
 
         // Initial state should be loading
         XCTAssertEqual(viewModel.state, .loading)
@@ -76,7 +76,7 @@ final class BuyMeCoffeeViewTests: XCTestCase {
             TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1"),
         ]
         let mockProvider = MockProductProvider(products: mockProducts, purchaseOutcome: .success)
-        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productPrefix: "test.coffee")
+        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
 
         // Fetch products first
         await viewModel.fetchProducts()
@@ -97,6 +97,23 @@ final class BuyMeCoffeeViewTests: XCTestCase {
             XCTFail("Expected state to be .thankYou, got \(viewModel.state)")
         }
     }
+
+    /// Verifies that ViewModel passes productIDs to provider.fetchProducts(productIDs:)
+    @MainActor
+    func testFetchProductsCallsProviderWithCorrectIDs() async throws {
+        let requestedIDs = ["com.example.tip.small", "com.example.tip.large"]
+        let mockProducts = [
+            TipProduct(id: "com.example.tip.small", displayName: "Small", description: "Desc", displayPrice: "$1"),
+            TipProduct(id: "com.example.tip.large", displayName: "Large", description: "Desc", displayPrice: "$2"),
+        ]
+
+        let capturingProvider = CapturingProductProvider(products: mockProducts)
+        let viewModel = BuyMeCoffeeViewModel(provider: capturingProvider, productIDs: requestedIDs)
+
+        await viewModel.fetchProducts()
+
+        XCTAssertEqual(capturingProvider.capturedProductIDs, requestedIDs, "ViewModel should pass productIDs to provider.fetchProducts(productIDs:)")
+    }
 }
 
 // MARK: - Test Helpers
@@ -113,8 +130,30 @@ private final class ThrowingMockProductProvider: ProductProvider, @unchecked Sen
         throw error
     }
 
+    func fetchProducts(productIDs: [String]) async throws -> [TipProduct] {
+        throw error
+    }
+
     func purchase(_ product: TipProduct) async throws {
         throw error
+    }
+}
+
+/// A mock provider that captures the productIDs parameter for verification.
+private final class CapturingProductProvider: ProductProvider, @unchecked Sendable {
+    let products: [TipProduct]
+    var capturedProductIDs: [String]?
+
+    init(products: [TipProduct]) {
+        self.products = products
+    }
+
+    func fetchProducts(productIDs: [String]) async throws -> [TipProduct] {
+        capturedProductIDs = productIDs
+        return products
+    }
+
+    func purchase(_ product: TipProduct) async throws {
     }
 }
 
@@ -145,16 +184,16 @@ private final class BuyMeCoffeeViewModel: ObservableObject {
     @Published var state: State = .loading
 
     private let provider: ProductProvider
-    private let productPrefix: String
+    private let productIDs: [String]
 
-    init(provider: ProductProvider, productPrefix: String) {
+    init(provider: ProductProvider, productIDs: [String]) {
         self.provider = provider
-        self.productPrefix = productPrefix
+        self.productIDs = productIDs
     }
 
     func fetchProducts() async {
         do {
-            let products = try await provider.fetchProducts(prefix: productPrefix)
+            let products = try await provider.fetchProducts(productIDs: productIDs)
             if products.isEmpty {
                 state = .empty
             } else {

@@ -11,7 +11,7 @@ final class MockProductProviderTests: XCTestCase {
     func testFetchProducts_returnsConfiguredProducts() async throws {
         let provider = MockProductProvider(products: products)
 
-        let result = try await provider.fetchProducts(prefix: "anything.ignored")
+        let result = try await provider.fetchProducts(productIDs: ["mock.coffee.small", "mock.coffee.large"])
 
         XCTAssertEqual(result, products)
     }

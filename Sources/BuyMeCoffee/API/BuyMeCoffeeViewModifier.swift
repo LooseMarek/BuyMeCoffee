@@ -16,7 +16,11 @@ import SwiftUI
 ///     }
 ///     .buyMeCoffee(
 ///         isPresented: $showTipJar,
-///         productIDPrefix: "com.example.tip"
+///         productIDs: [
+///             "com.example.tip.small",
+///             "com.example.tip.medium",
+///             "com.example.tip.large"
+///         ]
 ///     )
 /// }
 /// ```
@@ -24,12 +28,12 @@ import SwiftUI
 /// ## Parameters
 ///
 /// - `isPresented`: A binding that controls whether the drawer is presented
-/// - `productIDPrefix`: The App Store Connect product ID prefix (e.g., "com.example.tip")
+/// - `productIDs`: The exact App Store Connect product IDs to fetch
 /// - `theme`: Optional theme. Defaults to `BuyMeCoffeeTheme.default`
 struct BuyMeCoffeeViewModifier: ViewModifier {
 
     @Binding var isPresented: Bool
-    let productIDPrefix: String
+    let productIDs: [String]
     let theme: BuyMeCoffeeTheme
 
     func body(content: Content) -> some View {
@@ -37,8 +41,8 @@ struct BuyMeCoffeeViewModifier: ViewModifier {
             .environment(\.buyMeCoffeeIsPresented, $isPresented)
             .sheet(isPresented: $isPresented) {
                 BuyMeCoffeeView(
-                    provider: StoreKitProductProvider.live(knownProductIDs: []),
-                    productPrefix: productIDPrefix
+                    provider: StoreKitProductProvider.live(),
+                    productIDs: productIDs
                 )
                 .environment(\.buyMeCoffeeTheme, theme)
             }
@@ -62,7 +66,11 @@ extension View {
     ///     }
     ///     .buyMeCoffee(
     ///         isPresented: $showTipJar,
-    ///         productIDPrefix: "com.example.tip"
+    ///         productIDs: [
+    ///             "com.example.tip.small",
+    ///             "com.example.tip.medium",
+    ///             "com.example.tip.large"
+    ///         ]
     ///     )
     /// }
     /// ```
@@ -71,18 +79,18 @@ extension View {
     ///
     /// - Parameters:
     ///   - isPresented: A binding that controls whether the drawer is presented
-    ///   - productIDPrefix: The App Store Connect product ID prefix (e.g., "com.example.tip").
-    ///     The drawer will fetch all products matching this prefix.
+    ///   - productIDs: The exact App Store Connect product IDs to fetch.
+    ///     The drawer will fetch all products matching these IDs.
     ///   - theme: Optional theme. Defaults to `BuyMeCoffeeTheme.default`
     ///
     /// ## Product ID Configuration
     ///
-    /// Configure your tip products in App Store Connect with IDs following this pattern:
+    /// Configure your tip products in App Store Connect with IDs like:
     /// - `com.example.tip.small`
     /// - `com.example.tip.medium`
     /// - `com.example.tip.large`
     ///
-    /// Then pass `"com.example.tip"` as the prefix.
+    /// Then pass them as an array to `productIDs`.
     ///
     /// ## Theming
     ///
@@ -91,19 +99,19 @@ extension View {
     /// ```swift
     /// .buyMeCoffee(
     ///     isPresented: $showTipJar,
-    ///     productIDPrefix: "com.example.tip",
+    ///     productIDs: ["com.example.tip.small", "com.example.tip.large"],
     ///     theme: myCustomTheme
     /// )
     /// ```
     public func buyMeCoffee(
         isPresented: Binding<Bool>,
-        productIDPrefix: String,
+        productIDs: [String],
         theme: BuyMeCoffeeTheme = .default
     ) -> some View {
         modifier(
             BuyMeCoffeeViewModifier(
                 isPresented: isPresented,
-                productIDPrefix: productIDPrefix,
+                productIDs: productIDs,
                 theme: theme
             )
         )

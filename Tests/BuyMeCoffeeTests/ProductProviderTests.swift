@@ -9,7 +9,7 @@ final class ProductProviderTests: XCTestCase {
     func testProtocolConformance_mockCompiles() {
         // Given a simple mock that conforms to ProductProvider
         struct SimpleMock: ProductProvider {
-            func fetchProducts(prefix: String) async throws -> [TipProduct] {
+            func fetchProducts(productIDs: [String]) async throws -> [TipProduct] {
                 []
             }
 

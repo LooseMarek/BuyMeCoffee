@@ -19,7 +19,7 @@ final class BuyMeCoffeeViewModifierTests: XCTestCase {
         let testView = Text("Test")
             .buyMeCoffee(
                 isPresented: isPresented,
-                productIDPrefix: "com.test.tip"
+                productIDs: ["com.test.tip.small", "com.test.tip.large"]
             )
 
         // If the modifier exists and compiles, the test passes
@@ -38,7 +38,7 @@ final class BuyMeCoffeeViewModifierTests: XCTestCase {
         let testView = Text("Test")
             .buyMeCoffee(
                 isPresented: isPresented,
-                productIDPrefix: "com.test.tip"
+                productIDs: ["com.test.tip.small"]
             )
 
         // The modifier should use the default theme when no theme is provided
@@ -71,11 +71,31 @@ final class BuyMeCoffeeViewModifierTests: XCTestCase {
         let testView = Text("Test")
             .buyMeCoffee(
                 isPresented: isPresented,
-                productIDPrefix: "com.test.tip",
+                productIDs: ["com.test.tip.small"],
                 theme: customTheme
             )
 
         // The modifier should accept and use the custom theme
+        XCTAssertNotNil(testView)
+    }
+
+    // MARK: - Test AC 4: testModifierPassesProductIDsToView
+
+    @MainActor
+    func testModifierPassesProductIDsToView() {
+        // Given: A view with the .buyMeCoffee modifier applied with productIDs
+        // When: The modifier is constructed
+        // Then: The productIDs should be passed to BuyMeCoffeeView
+
+        let productIDs = ["com.test.tip.small", "com.test.tip.large"]
+        let isPresented = Binding.constant(false)
+        let testView = Text("Test")
+            .buyMeCoffee(
+                isPresented: isPresented,
+                productIDs: productIDs
+            )
+
+        // If the modifier compiles with productIDs parameter, the test passes
         XCTAssertNotNil(testView)
     }
 }

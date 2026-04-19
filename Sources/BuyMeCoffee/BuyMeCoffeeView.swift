@@ -21,8 +21,11 @@ import SwiftUI
 ///         isPresented = true
 ///     }
 ///     .sheet(isPresented: $isPresented) {
-///         BuyMeCoffeeView(productPrefix: "com.example.tip")
-///             .environment(\.buyMeCoffeeTheme, .default)
+///         BuyMeCoffeeView(
+///             provider: StoreKitProductProvider.live(),
+///             productIDs: ["com.example.tip.small", "com.example.tip.large"]
+///         )
+///         .environment(\.buyMeCoffeeTheme, .default)
 ///     }
 /// }
 /// ```
@@ -39,7 +42,7 @@ import SwiftUI
 /// ```swift
 /// BuyMeCoffeeView(
 ///     provider: MockProductProvider(products: [...]),
-///     productPrefix: "com.example.tip"
+///     productIDs: ["com.example.tip.small", "com.example.tip.large"]
 /// )
 /// ```
 public struct BuyMeCoffeeView: View {
@@ -90,12 +93,12 @@ public struct BuyMeCoffeeView: View {
 
     // MARK: - Initializers
 
-    /// Creates a BuyMeCoffeeView with the specified product provider and prefix.
+    /// Creates a BuyMeCoffeeView with the specified product provider and product IDs.
     ///
     /// - Parameters:
-    ///   - provider: The product provider. Use `StoreKitProductProvider.live(knownProductIDs:)` for production,
+    ///   - provider: The product provider. Use `StoreKitProductProvider.live()` for production,
     ///     or `MockProductProvider` for Previews/tests.
-    ///   - productPrefix: The product ID prefix to filter by (e.g., "com.example.tip").
+    ///   - productIDs: The exact product IDs to fetch (e.g., ["com.example.tip.small", "com.example.tip.large"]).
     ///   - headerIcon: Optional header icon. Default: SF Symbol "cup.and.saucer.fill"
     ///   - headerTitle: Optional header title. Default: "Buy Me a Coffee"
     ///   - headerSubtitle: Optional header subtitle. Default: "Support my work with a small tip"
@@ -109,7 +112,7 @@ public struct BuyMeCoffeeView: View {
     ///   - thankYouIconName: Thank you icon. Default: "cup.and.saucer.fill"
     public init(
         provider: ProductProvider,
-        productPrefix: String,
+        productIDs: [String],
         headerIcon: Image? = Image(systemName: "cup.and.saucer.fill"),
         headerTitle: String? = "Buy Me a Coffee",
         headerSubtitle: String? = "Support my work with a small tip",
@@ -122,7 +125,7 @@ public struct BuyMeCoffeeView: View {
         thankYouSubtitle: String = "Your support means a lot.",
         thankYouIconName: String = "cup.and.saucer.fill"
     ) {
-        _viewModel = StateObject(wrappedValue: ViewModel(provider: provider, productPrefix: productPrefix))
+        _viewModel = StateObject(wrappedValue: ViewModel(provider: provider, productIDs: productIDs))
         self.headerIcon = headerIcon
         self.headerTitle = headerTitle
         self.headerSubtitle = headerSubtitle
@@ -251,16 +254,16 @@ extension BuyMeCoffeeView {
         @Published var state: State = .loading
 
         private let provider: ProductProvider
-        private let productPrefix: String
+        private let productIDs: [String]
 
-        init(provider: ProductProvider, productPrefix: String) {
+        init(provider: ProductProvider, productIDs: [String]) {
             self.provider = provider
-            self.productPrefix = productPrefix
+            self.productIDs = productIDs
         }
 
         func fetchProducts() async {
             do {
-                let products = try await provider.fetchProducts(prefix: productPrefix)
+                let products = try await provider.fetchProducts(productIDs: productIDs)
                 if products.isEmpty {
                     state = .empty
                 } else {
@@ -304,20 +307,26 @@ extension BuyMeCoffeeView {
         purchaseOutcome: .success
     )
 
-    return BuyMeCoffeeView(provider: mockProvider, productPrefix: "mock.coffee")
-        .environment(\.buyMeCoffeeTheme, .default)
+    return BuyMeCoffeeView(
+        provider: mockProvider,
+        productIDs: ["mock.coffee.small", "mock.coffee.large"]
+    )
+    .environment(\.buyMeCoffeeTheme, .default)
 }
 
 #Preview("Empty State") {
     let mockProvider = MockProductProvider(products: [], purchaseOutcome: .success)
 
-    return BuyMeCoffeeView(provider: mockProvider, productPrefix: "mock.coffee")
-        .environment(\.buyMeCoffeeTheme, .default)
+    return BuyMeCoffeeView(
+        provider: mockProvider,
+        productIDs: []
+    )
+    .environment(\.buyMeCoffeeTheme, .default)
 }
 
 #Preview("Error State") {
     struct ErrorProvider: ProductProvider {
-        func fetchProducts(prefix: String) async throws -> [TipProduct] {
+        func fetchProducts(productIDs: [String]) async throws -> [TipProduct] {
             throw NSError(domain: "TestError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Network connection failed"])
         }
 
@@ -326,6 +335,9 @@ extension BuyMeCoffeeView {
         }
     }
 
-    return BuyMeCoffeeView(provider: ErrorProvider(), productPrefix: "mock.coffee")
-        .environment(\.buyMeCoffeeTheme, .default)
+    return BuyMeCoffeeView(
+        provider: ErrorProvider(),
+        productIDs: ["mock.coffee.small"]
+    )
+    .environment(\.buyMeCoffeeTheme, .default)
 }
