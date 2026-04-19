@@ -60,7 +60,5 @@
       "Bash(gh pr merge*)"
     ]
   },
-  "enabledPlugins": {
-    "project-development@mar-claude-plugins": true
-  }
+  "enabledPlugins": {}
 }
