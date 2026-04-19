@@ -38,13 +38,11 @@ struct DrawerHeaderView: View {
                 Text(labels.title)
                     .font(.system(size: 22, weight: .semibold))
                     .foregroundStyle(theme.primaryTextColor)
-                    .lineLimit(2)
                     .accessibilityHeading(.h1)
 
                 Text(labels.subtitle)
                     .font(.system(size: 15, weight: .regular))
                     .foregroundStyle(theme.secondaryTextColor)
-                    .lineLimit(3)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
