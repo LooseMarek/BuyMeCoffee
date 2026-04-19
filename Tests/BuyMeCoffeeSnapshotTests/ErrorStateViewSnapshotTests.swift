@@ -34,7 +34,7 @@ final class ErrorStateViewSnapshotTests: XCTestCase {
     func testErrorStateView_defaultTheme_iOS() {
         // Given
         let theme = BuyMeCoffeeTheme.default
-        let view = ErrorStateView()
+        let view = ErrorStateView(onDismiss: {})
             .environment(\.buyMeCoffeeTheme, theme)
             .frame(width: 375, height: 200)
 
@@ -54,7 +54,8 @@ final class ErrorStateViewSnapshotTests: XCTestCase {
         // Given
         let view = ErrorStateView(
             labels: ErrorStateLabels(iconName: "wifi.slash", headline: "Connection failed"),
-            errorMessage: "Custom error message for demonstration."
+            errorMessage: "Custom error message for demonstration.",
+            onDismiss: {}
         )
             .environment(\.buyMeCoffeeTheme, customTheme)
             .frame(width: 375, height: 200)
@@ -78,7 +79,7 @@ final class ErrorStateViewSnapshotTests: XCTestCase {
     func testErrorStateView_defaultTheme_macOS() {
         // Given
         let theme = BuyMeCoffeeTheme.default
-        let view = ErrorStateView()
+        let view = ErrorStateView(onDismiss: {})
             .environment(\.buyMeCoffeeTheme, theme)
             .frame(width: 375, height: 200)
 
@@ -98,7 +99,8 @@ final class ErrorStateViewSnapshotTests: XCTestCase {
         // Given
         let view = ErrorStateView(
             labels: ErrorStateLabels(iconName: "wifi.slash", headline: "Connection failed"),
-            errorMessage: "Custom error message for demonstration."
+            errorMessage: "Custom error message for demonstration.",
+            onDismiss: {}
         )
             .environment(\.buyMeCoffeeTheme, customTheme)
             .frame(width: 375, height: 200)

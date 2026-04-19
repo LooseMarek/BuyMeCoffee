@@ -15,7 +15,8 @@ final class DrawerHeaderViewSnapshotTests: XCTestCase {
                 iconImage: Image(systemName: "cup.and.saucer.fill"),
                 title: "Buy Me a Coffee",
                 subtitle: "Support my work with a small tip"
-            )
+            ),
+            onDismiss: {}
         )
         .environment(\.buyMeCoffeeTheme, .default)
         .frame(width: 360)
@@ -58,7 +59,8 @@ final class DrawerHeaderViewSnapshotTests: XCTestCase {
                 iconImage: Image(systemName: "heart.fill"),
                 title: "Support This App",
                 subtitle: "Your tips help keep development going"
-            )
+            ),
+            onDismiss: {}
         )
         .environment(\.buyMeCoffeeTheme, customTheme)
         .frame(width: 360)

@@ -102,9 +102,9 @@ public struct BuyMeCoffeeView: View {
                 case .loaded(let products):
                     loadedView(products: products)
                 case .empty:
-                    EmptyStateView(labels: emptyStateLabels)
+                    EmptyStateView(labels: emptyStateLabels, onDismiss: { dismiss() })
                 case .error(let message):
-                    ErrorStateView(labels: errorStateLabels, errorMessage: message)
+                    ErrorStateView(labels: errorStateLabels, errorMessage: message, onDismiss: { dismiss() })
                 case .thankYou:
                     ThankYouView(labels: thankYouLabels, onDismiss: { dismiss() })
                 }
@@ -132,7 +132,7 @@ public struct BuyMeCoffeeView: View {
     private func loadedView(products: [TipProduct]) -> some View {
         ScrollView {
             VStack(spacing: 0) {
-                DrawerHeaderView(labels: headerLabels)
+                DrawerHeaderView(labels: headerLabels, onDismiss: { dismiss() })
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
                     .padding(.bottom, 24)

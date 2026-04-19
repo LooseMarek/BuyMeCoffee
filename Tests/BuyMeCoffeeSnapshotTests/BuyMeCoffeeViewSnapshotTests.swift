@@ -29,7 +29,8 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
                         iconImage: Image(systemName: "cup.and.saucer.fill"),
                         title: "Buy Me a Coffee",
                         subtitle: "Support my work with a small tip"
-                    )
+                    ),
+                    onDismiss: {}
                 )
                 .padding(.horizontal, 16)
                 .padding(.top, 16)
@@ -69,7 +70,8 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
                         iconImage: Image(systemName: "cup.and.saucer.fill"),
                         title: "Buy Me a Coffee",
                         subtitle: "Support my work with a small tip"
-                    )
+                    ),
+                    onDismiss: {}
                 )
                 .padding(.horizontal, 16)
                 .padding(.top, 16)
@@ -100,7 +102,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
     func testBuyMeCoffeeView_emptyState_iOS() {
         #if os(iOS)
         // Snapshot EmptyStateView directly to avoid async loading state
-        let view = EmptyStateView()
+        let view = EmptyStateView(onDismiss: {})
             .environment(\.buyMeCoffeeTheme, .default)
             .frame(width: 375, height: 200)
 
@@ -115,7 +117,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
     func testBuyMeCoffeeView_emptyState_macOS() {
         #if os(macOS)
         // Snapshot EmptyStateView directly to avoid async loading state
-        let view = EmptyStateView()
+        let view = EmptyStateView(onDismiss: {})
             .environment(\.buyMeCoffeeTheme, .default)
             .frame(width: 360, height: 200)
 
@@ -132,7 +134,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
     func testBuyMeCoffeeView_errorState_iOS() {
         #if os(iOS)
         // Snapshot ErrorStateView directly
-        let view = ErrorStateView()
+        let view = ErrorStateView(onDismiss: {})
             .environment(\.buyMeCoffeeTheme, .default)
             .frame(width: 375, height: 200)
 
@@ -147,7 +149,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
     func testBuyMeCoffeeView_errorState_macOS() {
         #if os(macOS)
         // Snapshot ErrorStateView directly
-        let view = ErrorStateView()
+        let view = ErrorStateView(onDismiss: {})
             .environment(\.buyMeCoffeeTheme, .default)
             .frame(width: 360, height: 200)
 

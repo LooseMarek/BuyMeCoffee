@@ -18,6 +18,24 @@ struct DrawerHeaderView: View {
 
     /// Label customisation object.
     let labels: DrawerHeaderLabels
+    
+    /// Closure called when the view should dismiss.
+    let onDismiss: () -> Void
+
+    // MARK: - Initializer
+
+    /// Creates a drawer header  view with customizable content.
+    ///
+    /// - Parameters:
+    ///   - labels: Label customisation object. Defaults to `.init()`.
+    ///   - onDismiss: Closure called when the view dismisses.
+    init(
+        labels: DrawerHeaderLabels = .init(),
+        onDismiss: @escaping () -> Void
+    ) {
+        self.labels = labels
+        self.onDismiss = onDismiss
+    }
 
     // MARK: - Body
 
@@ -35,10 +53,26 @@ struct DrawerHeaderView: View {
 
             // Text block (title + subtitle)
             VStack(alignment: .leading, spacing: 4) {
+                #if os(macOS)
+                HStack {
+                    Text(labels.title)
+                        .font(.system(size: 22, weight: .semibold))
+                        .foregroundStyle(theme.primaryTextColor)
+                        .accessibilityHeading(.h1)
+                    Spacer()
+                    Image(systemName: "xmark")
+                        .foregroundStyle(theme.primaryTextColor)
+                        .frame(width: 32, height: 32)
+                        .onTapGesture {
+                            onDismiss()
+                        }
+                }
+                #else
                 Text(labels.title)
                     .font(.system(size: 22, weight: .semibold))
                     .foregroundStyle(theme.primaryTextColor)
                     .accessibilityHeading(.h1)
+                #endif
 
                 Text(labels.subtitle)
                     .font(.system(size: 15, weight: .regular))
@@ -53,7 +87,7 @@ struct DrawerHeaderView: View {
 // MARK: - Previews
 
 #Preview("Default Theme") {
-    DrawerHeaderView(labels: .init())
+    DrawerHeaderView(labels: .init(), onDismiss: {})
         .environment(\.buyMeCoffeeTheme, .default)
         .frame(width: 360)
         .padding()
@@ -80,7 +114,8 @@ struct DrawerHeaderView: View {
             iconImage: Image(systemName: "heart.fill"),
             title: "Support This App",
             subtitle: "Your tips help keep development going"
-        )
+        ),
+        onDismiss: {}
     )
     .environment(\.buyMeCoffeeTheme, customTheme)
     .frame(width: 360)
@@ -92,7 +127,8 @@ struct DrawerHeaderView: View {
     DrawerHeaderView(
         labels: DrawerHeaderLabels(
             title: "Support This Project"
-        )
+        ),
+        onDismiss: {}
     )
     .environment(\.buyMeCoffeeTheme, .default)
     .frame(width: 360)
