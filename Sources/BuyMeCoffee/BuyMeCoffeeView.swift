@@ -68,6 +68,7 @@ public struct BuyMeCoffeeView: View {
     /// Creates a BuyMeCoffeeView with the specified product provider and product IDs.
     ///
     /// - Parameters:
+    ///   - viewModel: Optional pre-configured ViewModel for testing. If nil, a new ViewModel is created.
     ///   - provider: The product provider. Use `StoreKitProductProvider.live()` for production.
     ///   - productIDs: The exact product IDs to fetch (e.g., ["com.example.tip.small", "com.example.tip.large"]).
     ///   - headerLabels: Header label customisation. Defaults to `.init()` (SPM defaults).
@@ -75,6 +76,7 @@ public struct BuyMeCoffeeView: View {
     ///   - errorStateLabels: Error state label customisation. Defaults to `.init()` (SPM defaults).
     ///   - thankYouLabels: Thank-you screen label customisation. Defaults to `.init()` (SPM defaults).
     public init(
+        viewModel: ViewModel? = nil,
         provider: ProductProvider,
         productIDs: [String],
         headerLabels: DrawerHeaderLabels = .init(),
@@ -82,7 +84,7 @@ public struct BuyMeCoffeeView: View {
         errorStateLabels: ErrorStateLabels = .init(),
         thankYouLabels: ThankYouLabels = .init()
     ) {
-        _viewModel = StateObject(wrappedValue: ViewModel(provider: provider, productIDs: productIDs))
+        _viewModel = viewModel.map { StateObject(wrappedValue: $0) } ?? StateObject(wrappedValue: ViewModel(provider: provider, productIDs: productIDs))
         self.headerLabels = headerLabels
         self.emptyStateLabels = emptyStateLabels
         self.errorStateLabels = errorStateLabels
@@ -160,7 +162,7 @@ public struct BuyMeCoffeeView: View {
 
 // MARK: - View Model
 
-extension BuyMeCoffeeView {
+public extension BuyMeCoffeeView {
     @MainActor
     final class ViewModel: ObservableObject {
         enum State: Equatable {
