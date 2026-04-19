@@ -1,7 +1,7 @@
 # UI Spec — ThankYouView
 
-**Version:** 1.0
-**Date:** 2026-04-16
+**Version:** 1.2
+**Date:** 2026-04-19
 **Status:** Approved
 
 ---
@@ -13,8 +13,9 @@
 | SwiftUI component | `ThankYouView` |
 | Role | Confirmation screen shown on successful StoreKit purchase |
 | Parent | `BuyMeCoffeeView` — replaces product list content area on purchase success |
-| Auto-dismiss | 3 seconds after appearance; or immediately on tap |
+| Dismiss | macOS: tap anywhere on the view; iOS: use system sheet gesture or host-app dismiss |
 | **v1.1 change** | No longer full-screen; sizes to its content with vertical padding |
+| **v1.2 change** | Removed auto-dismiss (3s timer); macOS gets minimum width 360pt, vertical `fixedSize`; tap-to-dismiss is macOS-only |
 
 ---
 
@@ -93,15 +94,19 @@ product list to the thank-you state.
 
 ---
 
-## Auto-Dismiss Behaviour
+## Dismiss Behaviour
 
-| Event | Action |
-|-------|--------|
-| 3 seconds elapsed | `isPresented` set to `false`; sheet dismisses with default sheet animation |
-| User taps anywhere on `ThankYouView` | Immediate dismiss (same action) |
-| User swipes down on iOS | Sheet dismisses naturally via system gesture; no conflict |
+| Event | Platform | Action |
+|-------|----------|--------|
+| User taps anywhere on `ThankYouView` | macOS only | Immediate dismiss (`isPresented` set to `false`) |
+| User swipes down | iOS only | Sheet dismisses naturally via system gesture; no conflict |
+| Host app sets `isPresented` to `false` | Both | Drawer closes |
 
-> There is no visible countdown timer. The dismiss is silent and smooth.
+> Auto-dismiss (3-second timer) was removed in v1.2. The drawer stays open until the user explicitly dismisses it.
+
+### macOS Sizing
+
+On macOS, `ThankYouView` is constrained with `frame(minWidth: 360)` and `fixedSize(horizontal: false, vertical: true)` to prevent content clipping when the product list was small before purchase.
 
 ---
 
@@ -129,13 +134,12 @@ the system sheet animation is sufficient.
 
 | Element | Role | Label |
 |---------|------|-------|
-| View container | `.button` (whole view is tappable to dismiss) | — |
+| View container (macOS) | `.button` (tappable to dismiss) | `accessibilityLabel("Dismiss")` |
+| View container (iOS) | Static | — |
 | Icon | `.decorative()` | — |
 | Headline | `.accessibilityHeading(.h1)` | "Thank you!" |
 | Body | Static text | "Your support means a lot." |
 | On appear | VoiceOver announcement | "Thank you! Purchase complete." |
-| Auto-dismiss | Not announced | — |
-| Tap to dismiss | — | `accessibilityLabel("Dismiss")` on container |
 
 > VoiceOver users: the announcement on appear ensures they receive confirmation even
 > if they cannot see the animation.

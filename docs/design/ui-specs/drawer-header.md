@@ -1,7 +1,7 @@
 # UI Spec — DrawerHeaderView
 
-**Version:** 1.0
-**Date:** 2026-04-16
+**Version:** 1.1
+**Date:** 2026-04-19
 **Status:** Approved
 
 ---
@@ -15,6 +15,7 @@
 | Parent | `BuyMeCoffeeView` |
 | Configurable by host app | Yes — icon image, title string, subtitle string are all optional |
 | **v1.1 customisation** | `DrawerHeaderLabels` is the new public API for customising header labels from `BuyMeCoffeeView` and `.buyMeCoffee()` |
+| **v1.1 macOS** | Close button (xmark) added to title row on macOS; `onDismiss` closure required at init |
 
 ---
 
@@ -35,6 +36,32 @@
 ```
 
 **Alignment:** Leading (left-aligned). Icon and text aligned to leading edge with `spacing.md` horizontal inset (inherited from parent). Icon and text block are vertically centred relative to each other in a horizontal stack.
+
+---
+
+## macOS Variant: Title Row with Close Button
+
+On macOS, the title is rendered inside an `HStack` with a trailing close button, giving users a visible affordance to dismiss the drawer:
+
+```
+┌──────────────────────────────────────────┐
+│                                          │
+│   ┌──────────┐                           │
+│   │          │   Title text          [✕] │
+│   │  [Icon]  │                           │
+│   │          │   Subtitle text           │
+│   └──────────┘   type.body               │
+│                                          │
+└──────────────────────────────────────────┘
+```
+
+| Property | Value |
+|----------|-------|
+| Button icon | SF Symbol `xmark` |
+| Button frame | 32 × 32pt |
+| Button colour | `color.text.primary` |
+| Action | Calls `onDismiss()` closure |
+| Platform guard | `#if os(macOS)` — not shown on iOS |
 
 ---
 

@@ -1,7 +1,7 @@
 # UX Flow — Purchase Flow
 
-**Version:** 1.0
-**Date:** 2026-04-16
+**Version:** 1.2
+**Date:** 2026-04-19
 **Status:** Approved
 
 ---
@@ -12,7 +12,7 @@
 |-------|-------|
 | Flow name | Purchase Flow |
 | Entry point | User taps a `ProductRowView` in the loaded drawer |
-| Exit points | Purchase succeeded → ThankYouView → auto-dismiss; Purchase cancelled → return to Loaded State; Purchase failed → inline error on row |
+| Exit points | Purchase succeeded → ThankYouView → user dismisses; Purchase cancelled → return to Loaded State; Purchase failed → inline error on row |
 | Platforms | iOS 17+, macOS 14+ |
 
 ---
@@ -49,10 +49,10 @@ friction as possible. Ideally: one tap → system authentication → confirmatio
 [ThankYouView animates in, replacing product list]
   (see ui-specs/thank-you-screen.md)
   v1.1 iOS: sized to content
-  v1.1 macOS: popup expands to show full thank-you content
+  v1.1 macOS: popup expands to show full thank-you content (minWidth 360pt)
      │
-     │  Auto-dismiss after 3 seconds
-     │  OR user taps anywhere to dismiss early
+     │  macOS: user taps anywhere on the view to dismiss
+     │  iOS:   user uses system sheet gesture (swipe down) to dismiss
      ▼
 [Drawer dismisses]
   isPresented set to false
@@ -123,7 +123,6 @@ Purchase returns .pending (e.g. Ask to Buy, parental approval)
 | Loading → error state | 0.20s | `easeOut` |
 | Error → reset | 0.20s | `easeOut` (after 4s delay) |
 | Product list → ThankYouView | 0.30s | Spring (dampingFraction 0.75) |
-| ThankYouView auto-dismiss | 0.30s | `easeIn` (after 3s delay) |
 
 ---
 
@@ -148,4 +147,4 @@ default
 - While a row is in error state: error message is announced via VoiceOver accessibility notification
 - Pending state caption: `.accessibilityLabel("Payment is pending approval")`
 - ThankYouView: announced as `.accessibilityLabel("Thank you! Purchase complete.")` on appear
-- Auto-dismiss countdown is not announced (would be noisy); only the dismiss action is announced
+- macOS: tap-to-dismiss container has `.accessibilityLabel("Dismiss")` and `.isButton` trait

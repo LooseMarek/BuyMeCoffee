@@ -1,7 +1,7 @@
 # UX Flow — Tip Drawer Presentation
 
-**Version:** 1.0
-**Date:** 2026-04-16
+**Version:** 1.2
+**Date:** 2026-04-19
 **Status:** Approved
 
 ---
@@ -12,7 +12,7 @@
 |-------|-------|
 | Flow name | Tip Drawer Presentation |
 | Entry points | Host app calls `.buyMeCoffee(isPresented:productIDs:)` on any view (v1.1: explicit product IDs); or sets `BuyMeCoffeeEnvironmentKey` to `true` from a descendant |
-| Exit points | User dismisses sheet (swipe down / close button / tap outside on macOS — v1.1); purchase completes and thank-you auto-dismisses |
+| Exit points | User dismisses sheet (iOS: swipe down; macOS: close button / tap outside / xmark in header); purchase completes and user dismisses thank-you screen |
 | Platforms | iOS 17+, macOS 14+ |
 
 ---
@@ -129,7 +129,7 @@ Host app or Xcode Preview injects MockProductProvider
 | `error` | Fetch threw error | Header + error state |
 | `purchasing` | User tapped a row | See purchase-flow.md |
 | `thankyou` | Purchase succeeded | Thank-you screen |
-| `dismissed` | Sheet closed by user or auto-dismiss | — |
+| `dismissed` | Sheet closed by user | — |
 
 ---
 
