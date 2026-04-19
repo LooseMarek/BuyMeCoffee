@@ -22,21 +22,17 @@ struct EmptyStateView: View {
 
     /// Creates an empty state view with customizable content.
     ///
-    /// - Parameter labels: Label customisation object. Defaults to `.default`.
-    init(labels: EmptyStateLabels = .default) {
+    /// - Parameter labels: Label customisation object. Defaults to `.init()`.
+    init(labels: EmptyStateLabels = .init()) {
         self.labels = labels
     }
 
     // MARK: - Body
 
     var body: some View {
-        let iconName = labels.iconName ?? EmptyStateLabels.default.iconName!
-        let headline = labels.headline ?? EmptyStateLabels.default.headline!
-        let bodyText = labels.bodyText ?? EmptyStateLabels.default.bodyText!
-
         VStack(spacing: 0) {
             // Icon
-            Image(systemName: iconName)
+            Image(systemName: labels.iconName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 40, height: 40)
@@ -44,13 +40,13 @@ struct EmptyStateView: View {
                 .accessibilityHidden(true)
 
             // Headline
-            Text(headline)
+            Text(labels.headline)
                 .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(theme.primaryTextColor)
                 .padding(.top, 16)
 
             // Body
-            Text(bodyText)
+            Text(labels.bodyText)
                 .font(.system(size: 13, weight: .regular))
                 .foregroundStyle(theme.secondaryTextColor)
                 .multilineTextAlignment(.center)

@@ -117,22 +117,18 @@ final class BuyMeCoffeeViewTests: XCTestCase {
 
     /// Verifies that nil label objects produce the same output as defaults
     func testNilLabelObjectsProduceSameOutputAsDefaults() {
-        // Given: A BuyMeCoffeeView with nil label objects
+        // Given: A BuyMeCoffeeView with default label objects
         let mockProvider = MockProductProvider(products: [], purchaseOutcome: .success)
 
-        // When: We create a view with nil labels (should use SPM defaults)
-        let viewWithNilLabels = BuyMeCoffeeView(
+        // When: We create a view with default labels (omitted, using .init() defaults)
+        let viewWithDefaultLabels = BuyMeCoffeeView(
             provider: mockProvider,
-            productIDs: ["test.product"],
-            headerLabels: nil,
-            emptyStateLabels: nil,
-            errorStateLabels: nil,
-            thankYouLabels: nil
+            productIDs: ["test.product"]
         )
 
         // Then: The view should compile and use default labels
         // (Full UI validation would require snapshot tests, but compilation confirms API contract)
-        XCTAssertNotNil(viewWithNilLabels)
+        XCTAssertNotNil(viewWithDefaultLabels)
     }
 }
 

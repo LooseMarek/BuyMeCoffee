@@ -35,10 +35,10 @@ struct BuyMeCoffeeViewModifier: ViewModifier {
     @Binding var isPresented: Bool
     let productIDs: [String]
     let theme: BuyMeCoffeeTheme
-    let headerLabels: DrawerHeaderLabels?
-    let emptyStateLabels: EmptyStateLabels?
-    let errorStateLabels: ErrorStateLabels?
-    let thankYouLabels: ThankYouLabels?
+    let headerLabels: DrawerHeaderLabels
+    let emptyStateLabels: EmptyStateLabels
+    let errorStateLabels: ErrorStateLabels
+    let thankYouLabels: ThankYouLabels
 
     func body(content: Content) -> some View {
         content
@@ -115,10 +115,10 @@ extension View {
         isPresented: Binding<Bool>,
         productIDs: [String],
         theme: BuyMeCoffeeTheme = .default,
-        headerLabels: DrawerHeaderLabels? = nil,
-        emptyStateLabels: EmptyStateLabels? = nil,
-        errorStateLabels: ErrorStateLabels? = nil,
-        thankYouLabels: ThankYouLabels? = nil
+        headerLabels: DrawerHeaderLabels = .init(),
+        emptyStateLabels: EmptyStateLabels = .init(),
+        errorStateLabels: ErrorStateLabels = .init(),
+        thankYouLabels: ThankYouLabels = .init()
     ) -> some View {
         modifier(
             BuyMeCoffeeViewModifier(

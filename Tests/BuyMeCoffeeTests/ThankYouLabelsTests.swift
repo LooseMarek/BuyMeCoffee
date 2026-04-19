@@ -3,9 +3,9 @@ import XCTest
 
 final class ThankYouLabelsTests: XCTestCase {
 
-    func testDefaultLabelsMatchExpectedValues() {
-        // Given: The .default static property
-        let labels = ThankYouLabels.default
+    func testDefaultInitContainsExpectedValues() {
+        // Given: A labels object created with .init() (all defaults)
+        let labels = ThankYouLabels()
 
         // Then: All properties should match expected default values
         XCTAssertEqual(labels.title, "Thank you!")
@@ -16,25 +16,18 @@ final class ThankYouLabelsTests: XCTestCase {
         XCTAssertEqual(labels.voiceOverAnnouncement, "Thank you! Purchase complete.")
     }
 
-    func testPartialLabelsUseDefaultsForNilProperties() {
+    func testPartialInitUsesDefaultsForOmittedParameters() {
         // Given: A partial labels object with only title set
-        let partialLabels = ThankYouLabels(
-            title: "Thanks!",
-            subtitle: nil,
-            iconName: nil,
-            dismissAccessibilityLabel: nil,
-            dismissAccessibilityHint: nil,
-            voiceOverAnnouncement: nil
-        )
+        let partialLabels = ThankYouLabels(title: "Thanks!")
 
         // When: We check the properties
-        // Then: Nil properties should be nil (defaults will be applied at view rendering)
+        // Then: Omitted properties should use their default values
         XCTAssertEqual(partialLabels.title, "Thanks!")
-        XCTAssertNil(partialLabels.subtitle)
-        XCTAssertNil(partialLabels.iconName)
-        XCTAssertNil(partialLabels.dismissAccessibilityLabel)
-        XCTAssertNil(partialLabels.dismissAccessibilityHint)
-        XCTAssertNil(partialLabels.voiceOverAnnouncement)
+        XCTAssertEqual(partialLabels.subtitle, "Your support means a lot.")
+        XCTAssertEqual(partialLabels.iconName, "cup.and.saucer.fill")
+        XCTAssertEqual(partialLabels.dismissAccessibilityLabel, "Dismiss")
+        XCTAssertEqual(partialLabels.dismissAccessibilityHint, "Tap to dismiss")
+        XCTAssertEqual(partialLabels.voiceOverAnnouncement, "Thank you! Purchase complete.")
     }
 
     func testInitWithAllProperties() {
@@ -56,7 +49,7 @@ final class ThankYouLabelsTests: XCTestCase {
             voiceOverAnnouncement: customAnnouncement
         )
 
-        // Then: All properties should be set
+        // Then: All properties should be set to custom values
         XCTAssertEqual(labels.title, customTitle)
         XCTAssertEqual(labels.subtitle, customSubtitle)
         XCTAssertEqual(labels.iconName, customIcon)

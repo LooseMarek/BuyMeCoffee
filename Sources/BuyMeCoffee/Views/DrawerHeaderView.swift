@@ -22,39 +22,29 @@ struct DrawerHeaderView: View {
     // MARK: - Body
 
     var body: some View {
-        let iconImage = labels.iconImage ?? DrawerHeaderLabels.default.iconImage
-        let title = labels.title ?? DrawerHeaderLabels.default.title
-        let subtitle = labels.subtitle ?? DrawerHeaderLabels.default.subtitle
-
         HStack(alignment: .center, spacing: 16) {
             // Icon container: 30pt icon centred in 56×56pt surface, 16pt corner radius
-            if let iconImage {
-                iconImage
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle(theme.primaryTextColor)
-                    .frame(width: 30, height: 30)
-                    .frame(width: 56, height: 56)
-                    .background(theme.productRowBackgroundColor)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-            }
+            labels.iconImage
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(theme.primaryTextColor)
+                .frame(width: 30, height: 30)
+                .frame(width: 56, height: 56)
+                .background(theme.productRowBackgroundColor)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
 
             // Text block (title + subtitle)
             VStack(alignment: .leading, spacing: 4) {
-                if let title {
-                    Text(title)
-                        .font(.system(size: 22, weight: .semibold))
-                        .foregroundStyle(theme.primaryTextColor)
-                        .lineLimit(2)
-                        .accessibilityHeading(.h1)
-                }
+                Text(labels.title)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundStyle(theme.primaryTextColor)
+                    .lineLimit(2)
+                    .accessibilityHeading(.h1)
 
-                if let subtitle {
-                    Text(subtitle)
-                        .font(.system(size: 15, weight: .regular))
-                        .foregroundStyle(theme.secondaryTextColor)
-                        .lineLimit(3)
-                }
+                Text(labels.subtitle)
+                    .font(.system(size: 15, weight: .regular))
+                    .foregroundStyle(theme.secondaryTextColor)
+                    .lineLimit(3)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -65,7 +55,7 @@ struct DrawerHeaderView: View {
 // MARK: - Previews
 
 #Preview("Default Theme") {
-    DrawerHeaderView(labels: .default)
+    DrawerHeaderView(labels: .init())
         .environment(\.buyMeCoffeeTheme, .default)
         .frame(width: 360)
         .padding()
@@ -100,26 +90,10 @@ struct DrawerHeaderView: View {
     .background(customTheme.backgroundColor)
 }
 
-#Preview("No Icon") {
+#Preview("Custom Title") {
     DrawerHeaderView(
         labels: DrawerHeaderLabels(
-            iconImage: nil,
-            title: "Buy Me a Coffee",
-            subtitle: "Support my work with a small tip"
-        )
-    )
-    .environment(\.buyMeCoffeeTheme, .default)
-    .frame(width: 360)
-    .padding()
-    .background(BuyMeCoffeeTheme.default.backgroundColor)
-}
-
-#Preview("Title Only") {
-    DrawerHeaderView(
-        labels: DrawerHeaderLabels(
-            iconImage: Image(systemName: "cup.and.saucer.fill"),
-            title: "Buy Me a Coffee",
-            subtitle: nil
+            title: "Support This Project"
         )
     )
     .environment(\.buyMeCoffeeTheme, .default)
