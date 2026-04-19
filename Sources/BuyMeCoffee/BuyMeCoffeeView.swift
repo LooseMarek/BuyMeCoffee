@@ -37,14 +37,7 @@ import SwiftUI
 ///
 /// ## Testing
 ///
-/// For Xcode Previews and unit tests, inject a `MockProductProvider`:
-///
-/// ```swift
-/// BuyMeCoffeeView(
-///     provider: MockProductProvider(products: [...]),
-///     productIDs: ["com.example.tip.small", "com.example.tip.large"]
-/// )
-/// ```
+/// For unit tests, use `@testable import BuyMeCoffee` to access the internal `MockProductProvider`.
 public struct BuyMeCoffeeView: View {
 
     // MARK: - Environment
@@ -75,8 +68,7 @@ public struct BuyMeCoffeeView: View {
     /// Creates a BuyMeCoffeeView with the specified product provider and product IDs.
     ///
     /// - Parameters:
-    ///   - provider: The product provider. Use `StoreKitProductProvider.live()` for production,
-    ///     or `MockProductProvider` for Previews/tests.
+    ///   - provider: The product provider. Use `StoreKitProductProvider.live()` for production.
     ///   - productIDs: The exact product IDs to fetch (e.g., ["com.example.tip.small", "com.example.tip.large"]).
     ///   - headerLabels: Header label customisation. Defaults to `.init()` (SPM defaults).
     ///   - emptyStateLabels: Empty state label customisation. Defaults to `.init()` (SPM defaults).

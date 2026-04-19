@@ -15,7 +15,7 @@ public enum PurchaseError: Error, Sendable {
 /// A protocol defining the contract for fetching products and processing purchases.
 ///
 /// This protocol decouples the UI layer from StoreKit, allowing both live (`StoreKitProductProvider`)
-/// and mock (`MockProductProvider`) implementations to be used interchangeably.
+/// and mock implementations to be used interchangeably.
 public protocol ProductProvider: Sendable {
     /// Fetches products for the given product IDs.
     ///
