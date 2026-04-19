@@ -11,8 +11,8 @@
 | Field | Value |
 |-------|-------|
 | Flow name | Tip Drawer Presentation |
-| Entry points | Host app calls `.buyMeCoffee(isPresented: $bool)` on any view; or sets `BuyMeCoffeeEnvironmentKey` to `true` from a descendant |
-| Exit points | User dismisses sheet (swipe down / close button / tap outside on macOS); purchase completes and thank-you auto-dismisses |
+| Entry points | Host app calls `.buyMeCoffee(isPresented:productIDs:)` on any view (v1.1: explicit product IDs); or sets `BuyMeCoffeeEnvironmentKey` to `true` from a descendant |
+| Exit points | User dismisses sheet (swipe down / close button / tap outside on macOS — v1.1); purchase completes and thank-you auto-dismisses |
 | Platforms | iOS 17+, macOS 14+ |
 
 ---
@@ -63,12 +63,12 @@ Host App View
 
 ```
 StoreKit returns empty product list
-(wrong prefix, App Store Connect not configured, sandbox issue)
+(wrong product IDs, App Store Connect not configured, sandbox issue)
      │
      ▼
 [Empty State — BuyMeCoffeeView]
   Header still visible
-  Product list area shows empty state message
+  Product list area shows empty state message (v1.1: sized to content)
   (see ui-specs/error-and-empty-states.md)
      │
      └──► User dismisses drawer (only option)
@@ -84,7 +84,7 @@ ProductProvider.fetchProducts throws / returns error
      ▼
 [Error State — BuyMeCoffeeView]
   Header still visible
-  Product list area shows error state message
+  Product list area shows error state message (v1.1: sized to content)
   (see ui-specs/error-and-empty-states.md)
      │
      └──► User dismisses drawer (only option)
@@ -111,8 +111,8 @@ Host app or Xcode Preview injects MockProductProvider
 
 | Transition | iOS | macOS |
 |-----------|-----|-------|
-| Sheet open | Spring slide-up from bottom (`easeOut`, 0.35s) | Fade + scale from 0.95 → 1.0 (`easeOut`, 0.25s) |
-| Sheet dismiss (user) | Swipe down / spring slide-down | Fade + scale out |
+| Sheet open | Spring slide-up from bottom (`easeOut`, 0.35s) — v1.1: sized to content | Fade + scale from 0.95 → 1.0 (`easeOut`, 0.25s) |
+| Sheet dismiss (user) | Swipe down / spring slide-down | Fade + scale out — v1.1: also dismisses on outside-click |
 | Loading → Loaded | Product rows fade in staggered (50ms delay per row) | Same |
 | Loaded → Loading (retry) | Crossfade | Same |
 

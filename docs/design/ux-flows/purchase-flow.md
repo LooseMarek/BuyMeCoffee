@@ -48,6 +48,8 @@ friction as possible. Ideally: one tap → system authentication → confirmatio
      ▼
 [ThankYouView animates in, replacing product list]
   (see ui-specs/thank-you-screen.md)
+  v1.1 iOS: sized to content
+  v1.1 macOS: popup expands to show full thank-you content
      │
      │  Auto-dismiss after 3 seconds
      │  OR user taps anywhere to dismiss early

@@ -42,20 +42,26 @@ BuyMeCoffee (module)
 │   ├── BuyMeCoffeeView              # Main drawer view (entry point)
 │   ├── buyMeCoffee(isPresented:)    # SwiftUI view modifier
 │   ├── BuyMeCoffeeTheme             # Visual token type
-│   └── BuyMeCoffeeEnvironmentKey   # Environment key for trigger-agnostic presentation
+│   ├── BuyMeCoffeeEnvironmentKey    # Environment key for trigger-agnostic presentation
+│   ├── DrawerHeaderLabels           # Per-screen label object: header icon, title, subtitle
+│   ├── EmptyStateLabels             # Per-screen label object: empty state icon, headline, body
+│   ├── ErrorStateLabels             # Per-screen label object: error state icon, headline
+│   └── ThankYouLabels               # Per-screen label object: thank-you title, subtitle, icon, accessibility
 ├── Providers
 │   ├── ProductProvider              # Protocol: fetch products + purchase
 │   ├── StoreKitProductProvider      # Concrete: wraps StoreKit 2 Product/Transaction APIs
-│   └── MockProductProvider          # Concrete: returns hardcoded mock products for Previews + tests
+│   └── MockProductProvider          # Concrete (internal-only): returns hardcoded mock products for Previews + tests
 ├── Models
 │   └── TipProduct                   # Value type wrapping StoreKit Product data
 └── Views (internal)
     ├── ProductRowView
     ├── ThankYouView
-    └── DrawerHeaderView
+    ├── DrawerHeaderView
+    ├── EmptyStateView
+    └── ErrorStateView
 ```
 
-`BuyMeCoffeeView` accepts a `ProductProvider` at its call site (defaulting to `StoreKitProductProvider`). Injecting `MockProductProvider` replaces all StoreKit calls — no conditional compilation required.
+`BuyMeCoffeeView` accepts a `ProductProvider` at its call site (defaulting to `StoreKitProductProvider`) and optional label customisation objects (`DrawerHeaderLabels`, `EmptyStateLabels`, `ErrorStateLabels`, `ThankYouLabels`). Injecting `MockProductProvider` replaces all StoreKit calls — no conditional compilation required. `MockProductProvider` is internal-only (v1.1+); consumers should use `.storekit` files for local testing.
 
 ---
 
@@ -114,4 +120,7 @@ BuyMeCoffee (module)
 
 - The library must use `#if os(iOS)` / `#if os(macOS)` conditionals for platform-specific sheet presentation (`presentationDetents` on iOS; standard `.sheet` on macOS).
 - Snapshot tests are sensitive to OS/simulator version. Snapshots must be committed and regenerated intentionally — never auto-accepted in CI.
-- The `MockProductProvider` must be part of the main module (not a separate test target) so it is available to consumers in their own Xcode Previews.
+- **v1.1:** `MockProductProvider` is `internal`-only; consumers use `.storekit` files for local testing. The mock remains in the main module for internal Previews and tests.
+- **v1.1:** `ProductProvider.fetchProducts(productIDs:)` accepts `[String]` directly (no prefix filtering); StoreKit 2 requires the full ID set upfront. `StoreKitProductProvider` passes IDs directly to `Product.products(for:)`.
+- **v1.1:** iOS drawer states size to their content. Loading, empty, error, and thank-you states use vertical padding instead of filling the full screen. Loaded state uses a static layout for small product counts and scrolls when the product list exceeds half the screen height.
+- **v1.1:** macOS popup dismisses on outside-click (not Esc-only). After purchase, the popup expands to show the full thank-you content without clipping.

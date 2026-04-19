@@ -11,9 +11,10 @@
 | Field | Value |
 |-------|-------|
 | SwiftUI component | `ThankYouView` |
-| Role | Full-drawer confirmation screen shown on successful StoreKit purchase |
+| Role | Confirmation screen shown on successful StoreKit purchase |
 | Parent | `BuyMeCoffeeView` — replaces product list content area on purchase success |
 | Auto-dismiss | 3 seconds after appearance; or immediately on tap |
+| **v1.1 change** | No longer full-screen; sizes to its content with vertical padding |
 
 ---
 
@@ -35,7 +36,7 @@
 └──────────────────────────────────────────┘
 ```
 
-**Alignment:** All elements centred horizontally. Vertically centred within the content area (below the drawer's top padding, above the bottom safe area inset).
+**Alignment:** All elements centred horizontally. **v1.1:** Vertically sized to content with vertical padding (no `Spacer()` elements); no longer full-screen.
 
 ---
 
