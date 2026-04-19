@@ -85,15 +85,18 @@ struct ThankYouView: View {
         .opacity(containerOpacity)
         .scaleEffect(containerScale)
         .contentShape(Rectangle())
+        #if os(macOS)
         .onTapGesture {
             onDismiss()
         }
+        .frame(minHeight: 360)
+        .fixedSize(horizontal: false, vertical: true)
         .accessibilityLabel(labels.dismissAccessibilityLabel)
         .accessibilityAddTraits(.isButton)
         .accessibilityHint(labels.dismissAccessibilityHint)
+        #endif
         .onAppear {
             playEntranceAnimation()
-            scheduleAutoDismiss()
             announceToVoiceOver()
         }
     }
@@ -118,13 +121,6 @@ struct ThankYouView: View {
             withAnimation(.spring(dampingFraction: 0.6, blendDuration: 0.40)) {
                 iconScale = 1.0
             }
-        }
-    }
-
-    /// Schedules auto-dismiss after 3 seconds.
-    private func scheduleAutoDismiss() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            onDismiss()
         }
     }
 

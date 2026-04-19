@@ -20,6 +20,9 @@ struct ErrorStateView: View {
 
     /// The error message to display as body text (derived from the thrown error).
     let errorMessage: String
+    
+    /// Closure called when the view should dismiss (either after timeout or on tap).
+    let onDismiss: () -> Void
 
     // MARK: - Initializer
 
@@ -28,12 +31,15 @@ struct ErrorStateView: View {
     /// - Parameters:
     ///   - labels: Label customisation object. Defaults to `.init()`.
     ///   - errorMessage: The error message to display as body text.
+    ///   - onDismiss: Closure called when the view dismisses.
     init(
         labels: ErrorStateLabels = .init(),
-        errorMessage: String = "Something went wrong. Please try again later."
+        errorMessage: String = "Something went wrong. Please try again later.",
+        onDismiss: @escaping () -> Void
     ) {
         self.labels = labels
         self.errorMessage = errorMessage
+        self.onDismiss = onDismiss
     }
 
     // MARK: - Body
@@ -65,13 +71,18 @@ struct ErrorStateView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 32)
         .background(theme.backgroundColor)
+        #if os(macOS)
+        .onTapGesture {
+            onDismiss()
+        }
+        #endif
     }
 }
 
 // MARK: - Previews
 
 #Preview("Default Theme") {
-    ErrorStateView()
+    ErrorStateView(onDismiss: {})
         .environment(\.buyMeCoffeeTheme, .default)
         .frame(width: 375, height: 200)
 }
@@ -93,7 +104,8 @@ struct ErrorStateView: View {
 
     ErrorStateView(
         labels: ErrorStateLabels(iconName: "wifi.slash", headline: "Connection failed"),
-        errorMessage: "Custom error message for demonstration."
+        errorMessage: "Custom error message for demonstration.",
+        onDismiss: {}
     )
         .environment(\.buyMeCoffeeTheme, customTheme)
         .frame(width: 375, height: 200)

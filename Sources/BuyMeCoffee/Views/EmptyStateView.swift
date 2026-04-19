@@ -17,14 +17,23 @@ struct EmptyStateView: View {
 
     /// Label customisation object.
     let labels: EmptyStateLabels
+    
+    /// Closure called when the view should dismiss.
+    let onDismiss: () -> Void
 
     // MARK: - Initializer
 
-    /// Creates an empty state view with customizable content.
+    /// Creates a empty state view with customizable content.
     ///
-    /// - Parameter labels: Label customisation object. Defaults to `.init()`.
-    init(labels: EmptyStateLabels = .init()) {
+    /// - Parameters:
+    ///   - labels: Label customisation object. Defaults to `.init()`.
+    ///   - onDismiss: Closure called when the view dismisses.
+    init(
+        labels: EmptyStateLabels = .init(),
+        onDismiss: @escaping () -> Void
+    ) {
         self.labels = labels
+        self.onDismiss = onDismiss
     }
 
     // MARK: - Body
@@ -56,13 +65,18 @@ struct EmptyStateView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 32)
         .background(theme.backgroundColor)
+        #if os(macOS)
+        .onTapGesture {
+            onDismiss()
+        }
+        #endif
     }
 }
 
 // MARK: - Previews
 
 #Preview("Default Theme") {
-    EmptyStateView()
+    EmptyStateView(onDismiss: {})
         .environment(\.buyMeCoffeeTheme, .default)
         .frame(width: 375, height: 200)
 }
@@ -87,7 +101,8 @@ struct EmptyStateView: View {
             iconName: "tray",
             headline: "Nothing here yet",
             bodyText: "Custom empty state message for demonstration."
-        )
+        ),
+        onDismiss: {}
     )
     .environment(\.buyMeCoffeeTheme, customTheme)
     .frame(width: 375, height: 200)
