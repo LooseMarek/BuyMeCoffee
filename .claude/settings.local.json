@@ -47,7 +47,9 @@
       "Bash(/opt/homebrew/opt/ruby/bin/bundle exec *)",
       "mcp__MCP_DOCKER__list_pull_requests",
       "Bash(grep -E \"\\\\.png$\")",
-      "Bash(export PATH=\"/opt/homebrew/opt/ruby/bin:$PATH\")"
+      "Bash(export PATH=\"/opt/homebrew/opt/ruby/bin:$PATH\")",
+      "Bash(gh milestone *)",
+      "mcp__MCP_DOCKER__sub_issue_write"
     ],
     "deny": [
       "Bash(git push --force*)",
