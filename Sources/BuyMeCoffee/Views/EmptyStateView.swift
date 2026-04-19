@@ -15,36 +15,25 @@ struct EmptyStateView: View {
 
     // MARK: - Properties
 
-    /// The SF Symbol name for the icon.
-    let iconName: String
-
-    /// The headline text.
-    let headline: String
-
-    /// The body text.
-    let bodyText: String
+    /// Label customisation object.
+    let labels: EmptyStateLabels
 
     // MARK: - Initializer
 
     /// Creates an empty state view with customizable content.
     ///
-    /// - Parameters:
-    ///   - iconName: SF Symbol name. Default: "cart.badge.questionmark"
-    ///   - headline: Headline text. Default: "No tips available"
-    ///   - bodyText: Body text. Default: "Check your product IDs are configured in App Store Connect."
-    init(
-        iconName: String = "cart.badge.questionmark",
-        headline: String = "No tips available",
-        bodyText: String = "Check your product IDs are configured in App Store Connect."
-    ) {
-        self.iconName = iconName
-        self.headline = headline
-        self.bodyText = bodyText
+    /// - Parameter labels: Label customisation object. Defaults to `.default`.
+    init(labels: EmptyStateLabels = .default) {
+        self.labels = labels
     }
 
     // MARK: - Body
 
     var body: some View {
+        let iconName = labels.iconName ?? EmptyStateLabels.default.iconName!
+        let headline = labels.headline ?? EmptyStateLabels.default.headline!
+        let bodyText = labels.bodyText ?? EmptyStateLabels.default.bodyText!
+
         VStack(spacing: 0) {
             // Icon
             Image(systemName: iconName)
@@ -98,11 +87,13 @@ struct EmptyStateView: View {
         errorColor: .red
     )
 
-    return EmptyStateView(
-        iconName: "tray",
-        headline: "Nothing here yet",
-        bodyText: "Custom empty state message for demonstration."
+    EmptyStateView(
+        labels: EmptyStateLabels(
+            iconName: "tray",
+            headline: "Nothing here yet",
+            bodyText: "Custom empty state message for demonstration."
+        )
     )
-        .environment(\.buyMeCoffeeTheme, customTheme)
-        .frame(width: 375, height: 200)
+    .environment(\.buyMeCoffeeTheme, customTheme)
+    .frame(width: 375, height: 200)
 }

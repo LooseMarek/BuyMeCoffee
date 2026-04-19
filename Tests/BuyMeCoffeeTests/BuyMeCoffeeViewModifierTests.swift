@@ -98,4 +98,48 @@ final class BuyMeCoffeeViewModifierTests: XCTestCase {
         // If the modifier compiles with productIDs parameter, the test passes
         XCTAssertNotNil(testView)
     }
+
+    // MARK: - Test AC 5: testLabelObjectsThreadedThroughToView
+
+    @MainActor
+    func testLabelObjectsThreadedThroughToView() {
+        // Given: Custom label objects
+        let headerLabels = DrawerHeaderLabels(
+            iconImage: Image(systemName: "heart.fill"),
+            title: "Support Us",
+            subtitle: "Your help matters"
+        )
+        let emptyLabels = EmptyStateLabels(
+            iconName: "tray",
+            headline: "Empty",
+            bodyText: "No products"
+        )
+        let errorLabels = ErrorStateLabels(
+            iconName: "xmark",
+            headline: "Error"
+        )
+        let thankYouLabels = ThankYouLabels(
+            title: "Thanks!",
+            subtitle: "You rock",
+            iconName: "star.fill",
+            dismissAccessibilityLabel: "Close",
+            dismissAccessibilityHint: "Tap to close",
+            voiceOverAnnouncement: "Purchase done"
+        )
+
+        // When: We apply the modifier with label objects
+        let isPresented = Binding.constant(false)
+        let testView = Text("Test")
+            .buyMeCoffee(
+                isPresented: isPresented,
+                productIDs: ["com.test.tip"],
+                headerLabels: headerLabels,
+                emptyStateLabels: emptyLabels,
+                errorStateLabels: errorLabels,
+                thankYouLabels: thankYouLabels
+            )
+
+        // Then: The modifier should compile and accept label objects
+        XCTAssertNotNil(testView)
+    }
 }
