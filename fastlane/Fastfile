@@ -9,8 +9,29 @@ platform :ios do
       package_path: ".",
       scheme: "BuyMeCoffee",
       destination: destination,
-      result_bundle: true,
-      xcodebuild_formatter: ""
+      result_bundle: true
+    )
+  end
+
+  desc "Record reference snapshots for iOS Simulator (CI use only)"
+  lane :record_snapshots do |options|
+    destination = options[:destination] || "platform=iOS Simulator,name=iPhone 17 Pro"
+    run_tests(
+      package_path: ".",
+      scheme: "BuyMeCoffee",
+      destination: destination,
+      result_bundle: true
+    )
+  end
+
+  desc "Build and test the Demo app for iOS Simulator"
+  lane :demo_ios_test do |options|
+    destination = options[:destination] || "platform=iOS Simulator,name=iPhone 17 Pro"
+    run_tests(
+      project: "demo/apple_app/DemoBuyMeCoffee.xcodeproj",
+      scheme: "DemoBuyMeCoffeeDefault",
+      destination: destination,
+      result_bundle: true
     )
   end
 
@@ -25,10 +46,33 @@ platform :mac do
       package_path: ".",
       scheme: "BuyMeCoffee",
       destination: destination,
-      result_bundle: true,
-      xcodebuild_formatter: ""
+      result_bundle: true
     )
   end
+
+  desc "Record reference snapshots for macOS (CI use only)"
+  lane :record_snapshots do |options|
+    destination = options[:destination] || "platform=macOS"
+    run_tests(
+      package_path: ".",
+      scheme: "BuyMeCoffee",
+      destination: destination,
+      result_bundle: true
+    )
+  end
+
+  desc "Build and test the Demo app for macOS"
+  lane :demo_mac_test do |options|
+    destination = options[:destination] || "platform=macOS"
+    run_tests(
+      project: "demo/apple_app/DemoBuyMeCoffee.xcodeproj",
+      scheme: "DemoBuyMeCoffeeDefault",
+      destination: destination,
+      result_bundle: true,
+      xcargs: "CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=NO DEVELOPMENT_TEAM=\"\""
+    )
+  end
+
 
 end
 
