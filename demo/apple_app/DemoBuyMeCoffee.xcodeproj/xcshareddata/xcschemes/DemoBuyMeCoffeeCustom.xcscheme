@@ -70,6 +70,9 @@
             ReferencedContainer = "container:DemoBuyMeCoffee.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <StoreKitConfigurationFileReference
+         identifier = "../../DemoBuyMeCoffee/TestProducts.storekit">
+      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

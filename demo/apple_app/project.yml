@@ -22,7 +22,7 @@ targets:
         SWIFT_VERSION: 6.2
         PRODUCT_BUNDLE_IDENTIFIER: com.marekloose.DemoBuyMeCoffee.default
         DEVELOPMENT_TEAM: 9JVYUSJU3D
-        EXCLUDED_SOURCE_FILE_NAMES: "DemoBuyMeCoffeeCustomApp.swift"
+        EXCLUDED_SOURCE_FILE_NAMES: "DemoBuyMeCoffeeCustomApp.swift CustomContentView.swift"
         INFOPLIST_FILE: "DemoBuyMeCoffee/Info.plist"
         SUPPORTED_PLATFORMS: "iphoneos iphonesimulator macosx"
         MACOSX_DEPLOYMENT_TARGET: "14.0"
@@ -57,7 +57,7 @@ targets:
         SWIFT_VERSION: 6.2
         PRODUCT_BUNDLE_IDENTIFIER: com.marekloose.DemoBuyMeCoffee.custom
         DEVELOPMENT_TEAM: 9JVYUSJU3D
-        EXCLUDED_SOURCE_FILE_NAMES: "DemoBuyMeCoffeeDefaultApp.swift"
+        EXCLUDED_SOURCE_FILE_NAMES: "DemoBuyMeCoffeeDefaultApp.swift DefaultContentView.swift"
         INFOPLIST_FILE: "DemoBuyMeCoffee/Info.plist"
         SUPPORTED_PLATFORMS: "iphoneos iphonesimulator macosx"
         MACOSX_DEPLOYMENT_TARGET: "14.0"
@@ -89,6 +89,7 @@ schemes:
         - DemoBuyMeCoffeeDefaultTests
     run:
       config: Debug
+      storeKitConfiguration: DemoBuyMeCoffee/TestProducts.storekit
     archive:
       config: Release
 
@@ -101,5 +102,6 @@ schemes:
         - DemoBuyMeCoffeeCustomTests
     run:
       config: Debug
+      storeKitConfiguration: DemoBuyMeCoffee/TestProducts.storekit
     archive:
       config: Release
