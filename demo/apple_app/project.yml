@@ -1,0 +1,105 @@
+name: DemoBuyMeCoffee
+options:
+  bundleIdPrefix: com.marekloose
+  deploymentTarget:
+    iOS: "17.0"
+
+packages:
+  BuyMeCoffee:
+    path: ../..
+
+targets:
+  DemoBuyMeCoffeeDefault:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources: ["DemoBuyMeCoffee"]
+    dependencies:
+      - package: BuyMeCoffee
+        product: BuyMeCoffee
+    settings:
+      base:
+        SWIFT_VERSION: 6.2
+        PRODUCT_BUNDLE_IDENTIFIER: com.marekloose.DemoBuyMeCoffee.default
+        DEVELOPMENT_TEAM: 9JVYUSJU3D
+        EXCLUDED_SOURCE_FILE_NAMES: "DemoBuyMeCoffeeCustomApp.swift"
+        INFOPLIST_FILE: "DemoBuyMeCoffee/Info.plist"
+        SUPPORTED_PLATFORMS: "iphoneos iphonesimulator macosx"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+
+  DemoBuyMeCoffeeDefaultTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources: ["DemoBuyMeCoffeeDefaultTests"]
+    dependencies:
+      - target: DemoBuyMeCoffeeDefault
+    settings:
+      base:
+        SWIFT_VERSION: 6.2
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_IDENTITY: ""
+        CODE_SIGNING_REQUIRED: NO
+        DEVELOPMENT_TEAM: ""
+        SUPPORTED_PLATFORMS: "iphoneos iphonesimulator macosx"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+
+  DemoBuyMeCoffeeCustom:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources: ["DemoBuyMeCoffee"]
+    dependencies:
+      - package: BuyMeCoffee
+        product: BuyMeCoffee
+    settings:
+      base:
+        SWIFT_VERSION: 6.2
+        PRODUCT_BUNDLE_IDENTIFIER: com.marekloose.DemoBuyMeCoffee.custom
+        DEVELOPMENT_TEAM: 9JVYUSJU3D
+        EXCLUDED_SOURCE_FILE_NAMES: "DemoBuyMeCoffeeDefaultApp.swift"
+        INFOPLIST_FILE: "DemoBuyMeCoffee/Info.plist"
+        SUPPORTED_PLATFORMS: "iphoneos iphonesimulator macosx"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+
+  DemoBuyMeCoffeeCustomTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources: ["DemoBuyMeCoffeeCustomTests"]
+    dependencies:
+      - target: DemoBuyMeCoffeeCustom
+    settings:
+      base:
+        SWIFT_VERSION: 6.2
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_IDENTITY: ""
+        CODE_SIGNING_REQUIRED: NO
+        DEVELOPMENT_TEAM: ""
+        SUPPORTED_PLATFORMS: "iphoneos iphonesimulator macosx"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+
+schemes:
+  DemoBuyMeCoffeeDefault:
+    build:
+      targets:
+        DemoBuyMeCoffeeDefault: all
+    test:
+      targets:
+        - DemoBuyMeCoffeeDefaultTests
+    run:
+      config: Debug
+    archive:
+      config: Release
+
+  DemoBuyMeCoffeeCustom:
+    build:
+      targets:
+        DemoBuyMeCoffeeCustom: all
+    test:
+      targets:
+        - DemoBuyMeCoffeeCustomTests
+    run:
+      config: Debug
+    archive:
+      config: Release
