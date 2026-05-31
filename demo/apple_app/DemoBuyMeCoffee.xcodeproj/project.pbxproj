@@ -34,15 +34,22 @@
 			remoteGlobalIDString = 7CF38E59875B5303EC742B1D;
 			remoteInfo = DemoBuyMeCoffeeCustom;
 		};
+		9D6F1AC62FCC401F00F52A99 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABC983DA3EF765C3627BBEC6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7CF38E59875B5303EC742B1D;
+			remoteInfo = DemoBuyMeCoffeeCustom;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0E82DE517B91815B81CC9044 /* DemoBuyMeCoffeeCustomTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DemoBuyMeCoffeeCustomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E82DE517B91815B81CC9044 /* DemoBuyMeCoffeeCustomTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoBuyMeCoffeeCustomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		14E3BEB0299AF5414BCC2F74 /* DemoBuyMeCoffeeDefaultApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoBuyMeCoffeeDefaultApp.swift; sourceTree = "<group>"; };
-		39FF2914603FDA3941887AA7 /* DemoBuyMeCoffeeDefaultTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DemoBuyMeCoffeeDefaultTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		48F5BC23852F1E6C78E02ED2 /* DemoBuyMeCoffeeCustom.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DemoBuyMeCoffeeCustom.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		39FF2914603FDA3941887AA7 /* DemoBuyMeCoffeeDefaultTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoBuyMeCoffeeDefaultTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		48F5BC23852F1E6C78E02ED2 /* DemoBuyMeCoffeeCustom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoBuyMeCoffeeCustom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		620DE1F9CFC3F8567A948804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		7EF074C4128E88B43C6EA420 /* DemoBuyMeCoffeeDefault.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DemoBuyMeCoffeeDefault.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EF074C4128E88B43C6EA420 /* DemoBuyMeCoffeeDefault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoBuyMeCoffeeDefault.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D8AC3919CE0318BA85F2201 /* BuyMeCoffee */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BuyMeCoffee; path = ../..; sourceTree = SOURCE_ROOT; };
 		B3CE3F5F2749AE5BE25338E4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BDBBDD0BAE9CC8E05E5A3B83 /* DemoBuyMeCoffeeCustomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoBuyMeCoffeeCustomApp.swift; sourceTree = "<group>"; };
@@ -140,6 +147,7 @@
 			);
 			dependencies = (
 				1A494AC72718EF8E07EA575E /* PBXTargetDependency */,
+				9D6F1AC72FCC401F00F52A99 /* PBXTargetDependency */,
 			);
 			name = DemoBuyMeCoffeeDefaultTests;
 			packageProductDependencies = (
@@ -215,6 +223,7 @@
 				TargetAttributes = {
 					1F59D5CA423393916F2FCF34 = {
 						DevelopmentTeam = "";
+						TestTargetID = 9EC789D69EBF2131BA72DE81;
 					};
 					7CF38E59875B5303EC742B1D = {
 						DevelopmentTeam = 9JVYUSJU3D;
@@ -297,6 +306,11 @@
 			target = 9EC789D69EBF2131BA72DE81 /* DemoBuyMeCoffeeDefault */;
 			targetProxy = 38C44554F9D102D247BB2401 /* PBXContainerItemProxy */;
 		};
+		9D6F1AC72FCC401F00F52A99 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7CF38E59875B5303EC742B1D /* DemoBuyMeCoffeeCustom */;
+			targetProxy = 9D6F1AC62FCC401F00F52A99 /* PBXContainerItemProxy */;
+		};
 		A3B029E7F7A1F07D4194473F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7CF38E59875B5303EC742B1D /* DemoBuyMeCoffeeCustom */;
@@ -323,9 +337,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.marekloose.DemoBuyMeCoffeeDefaultTests;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 6.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoBuyMeCoffeeDefault.app/DemoBuyMeCoffeeDefault";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoBuyMeCoffeeDefault.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DemoBuyMeCoffeeDefault";
 			};
 			name = Release;
 		};
@@ -346,6 +363,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.marekloose.DemoBuyMeCoffee.custom;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 6.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -369,6 +389,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.marekloose.DemoBuyMeCoffeeCustomTests;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 6.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoBuyMeCoffeeCustom.app/DemoBuyMeCoffeeCustom";
@@ -382,6 +405,9 @@
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -391,8 +417,12 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.marekloose.DemoBuyMeCoffeeCustomTests;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 6.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoBuyMeCoffeeCustom.app/DemoBuyMeCoffeeCustom";
@@ -468,6 +498,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 9JVYUSJU3D;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = DemoBuyMeCoffeeCustomApp.swift;
 				INFOPLIST_FILE = DemoBuyMeCoffee/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -477,8 +510,12 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.marekloose.DemoBuyMeCoffee.default;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 6.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -546,6 +583,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 9JVYUSJU3D;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = DemoBuyMeCoffeeDefaultApp.swift;
 				INFOPLIST_FILE = DemoBuyMeCoffee/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -555,8 +595,12 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.marekloose.DemoBuyMeCoffee.custom;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 6.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -579,6 +623,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.marekloose.DemoBuyMeCoffee.default;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 6.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -591,6 +638,9 @@
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -600,11 +650,15 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.marekloose.DemoBuyMeCoffeeDefaultTests;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 6.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoBuyMeCoffeeDefault.app/DemoBuyMeCoffeeDefault";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoBuyMeCoffeeDefault.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DemoBuyMeCoffeeDefault";
 			};
 			name = Debug;
 		};
