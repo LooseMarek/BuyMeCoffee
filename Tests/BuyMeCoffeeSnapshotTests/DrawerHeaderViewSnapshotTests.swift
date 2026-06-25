@@ -27,11 +27,11 @@ final class DrawerHeaderViewSnapshotTests: XCTestCase {
 #if canImport(AppKit)
         let hostingView = NSHostingView(rootView: testView)
         hostingView.frame = NSRect(x: 0, y: 0, width: 360, height: 120)
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "defaultTheme-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "defaultTheme-macOS")
 #elseif canImport(UIKit)
         let hostingController = UIHostingController(rootView: testView)
         hostingController.view.frame = CGRect(x: 0, y: 0, width: 360, height: 120)
-        assertSnapshot(of: hostingController.view, as: .image(perceptualPrecision: 0.98), named: "defaultTheme-iOS")
+        assertSnapshot(of: hostingController.view, as: .image, named: "defaultTheme-iOS")
 #endif
     }
 
@@ -71,11 +71,11 @@ final class DrawerHeaderViewSnapshotTests: XCTestCase {
 #if canImport(AppKit)
         let hostingView = NSHostingView(rootView: testView)
         hostingView.frame = NSRect(x: 0, y: 0, width: 360, height: 120)
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "customTheme-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "customTheme-macOS")
 #elseif canImport(UIKit)
         let hostingController = UIHostingController(rootView: testView)
         hostingController.view.frame = CGRect(x: 0, y: 0, width: 360, height: 120)
-        assertSnapshot(of: hostingController.view, as: .image(perceptualPrecision: 0.98), named: "customTheme-iOS")
+        assertSnapshot(of: hostingController.view, as: .image, named: "customTheme-iOS")
 #endif
     }
 }

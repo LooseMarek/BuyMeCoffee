@@ -43,7 +43,7 @@ final class BuyMeCoffeeSnapshotTests: XCTestCase {
 #if canImport(AppKit)
         let hostingView = NSHostingView(rootView: testView)
         hostingView.frame = NSRect(x: 0, y: 0, width: 300, height: 100)
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "customTheme-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "customTheme-macOS")
 #elseif canImport(UIKit)
         let hostingController = UIHostingController(rootView: testView)
         hostingController.view.frame = CGRect(x: 0, y: 0, width: 300, height: 100)

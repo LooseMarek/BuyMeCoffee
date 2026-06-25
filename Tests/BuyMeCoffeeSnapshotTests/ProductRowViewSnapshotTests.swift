@@ -55,7 +55,7 @@ final class ProductRowViewSnapshotTests: XCTestCase {
         let hostingController = UIHostingController(rootView: view)
         hostingController.view.bounds = CGRect(x: 0, y: 0, width: 375, height: 100)
 
-        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "defaultTheme-iOS")
+        assertSnapshot(of: hostingController, as: .image, named: "defaultTheme-iOS")
     }
 
     func testProductRowView_longProductName_iOS() {
@@ -67,7 +67,7 @@ final class ProductRowViewSnapshotTests: XCTestCase {
         let hostingController = UIHostingController(rootView: view)
         hostingController.view.bounds = CGRect(x: 0, y: 0, width: 375, height: 100)
 
-        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "longProductName-iOS")
+        assertSnapshot(of: hostingController, as: .image, named: "longProductName-iOS")
     }
 
     func testProductRowView_customTheme_iOS() {
@@ -79,7 +79,7 @@ final class ProductRowViewSnapshotTests: XCTestCase {
         let hostingController = UIHostingController(rootView: view)
         hostingController.view.bounds = CGRect(x: 0, y: 0, width: 375, height: 100)
 
-        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "customTheme-iOS")
+        assertSnapshot(of: hostingController, as: .image, named: "customTheme-iOS")
     }
     #endif
 
@@ -95,7 +95,7 @@ final class ProductRowViewSnapshotTests: XCTestCase {
         let hostingView = NSHostingView(rootView: view)
         hostingView.frame = CGRect(x: 0, y: 0, width: 375, height: 100)
 
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "defaultTheme-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "defaultTheme-macOS")
     }
 
     func testProductRowView_longProductName_macOS() {
@@ -107,7 +107,7 @@ final class ProductRowViewSnapshotTests: XCTestCase {
         let hostingView = NSHostingView(rootView: view)
         hostingView.frame = CGRect(x: 0, y: 0, width: 375, height: 100)
 
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "longProductName-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "longProductName-macOS")
     }
 
     func testProductRowView_customTheme_macOS() {
@@ -119,7 +119,7 @@ final class ProductRowViewSnapshotTests: XCTestCase {
         let hostingView = NSHostingView(rootView: view)
         hostingView.frame = CGRect(x: 0, y: 0, width: 375, height: 100)
 
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "customTheme-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "customTheme-macOS")
     }
     #endif
 }

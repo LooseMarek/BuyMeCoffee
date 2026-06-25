@@ -28,7 +28,7 @@ final class ThankYouViewSnapshotTests: XCTestCase {
         // When / Then
         assertSnapshot(
             of: hostingController.view,
-            as: .image(perceptualPrecision: 0.98),
+            as: .image,
             named: "defaultContent-iOS"
         )
     }
@@ -54,7 +54,7 @@ final class ThankYouViewSnapshotTests: XCTestCase {
         // When / Then
         assertSnapshot(
             of: hostingController.view,
-            as: .image(perceptualPrecision: 0.98),
+            as: .image,
             named: "customContent-iOS"
         )
     }
@@ -77,7 +77,7 @@ final class ThankYouViewSnapshotTests: XCTestCase {
         // When / Then
         assertSnapshot(
             of: hostingView,
-            as: .image(perceptualPrecision: 0.95),
+            as: .image,
             named: "defaultContent-macOS"
         )
     }
@@ -103,7 +103,7 @@ final class ThankYouViewSnapshotTests: XCTestCase {
         // When / Then
         assertSnapshot(
             of: hostingView,
-            as: .image(perceptualPrecision: 0.95),
+            as: .image,
             named: "customContent-macOS"
         )
     }

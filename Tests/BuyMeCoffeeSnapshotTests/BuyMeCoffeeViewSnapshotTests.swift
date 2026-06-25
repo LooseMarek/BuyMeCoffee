@@ -52,7 +52,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
-        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "loadingState-iOS")
+        assertSnapshot(of: hostingController, as: .image, named: "loadingState-iOS")
         #endif
     }
 
@@ -64,7 +64,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "loadingState-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "loadingState-macOS")
         #endif
     }
 
@@ -77,7 +77,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
-        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "emptyState-iOS")
+        assertSnapshot(of: hostingController, as: .image, named: "emptyState-iOS")
         #endif
     }
 
@@ -89,7 +89,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "emptyState-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "emptyState-macOS")
         #endif
     }
 
@@ -102,7 +102,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
-        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "errorState-iOS")
+        assertSnapshot(of: hostingController, as: .image, named: "errorState-iOS")
         #endif
     }
 
@@ -114,7 +114,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "errorState-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "errorState-macOS")
         #endif
     }
 
@@ -127,7 +127,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
-        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "thankYouState-iOS")
+        assertSnapshot(of: hostingController, as: .image, named: "thankYouState-iOS")
         #endif
     }
 
@@ -139,7 +139,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "thankYouState-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "thankYouState-macOS")
         #endif
     }
 
@@ -154,7 +154,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
-        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "loadedState-1Product-iOS")
+        assertSnapshot(of: hostingController, as: .image, named: "loadedState-1Product-iOS")
         #endif
     }
 
@@ -168,7 +168,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "loadedState-1Product-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "loadedState-1Product-macOS")
         #endif
     }
 
@@ -184,7 +184,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
-        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "loadedState-2Products-iOS")
+        assertSnapshot(of: hostingController, as: .image, named: "loadedState-2Products-iOS")
         #endif
     }
 
@@ -199,7 +199,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "loadedState-2Products-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "loadedState-2Products-macOS")
         #endif
     }
 
@@ -218,7 +218,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
-        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "loadedState-5Products-iOS")
+        assertSnapshot(of: hostingController, as: .image, named: "loadedState-5Products-iOS")
         #endif
     }
 
@@ -236,7 +236,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "loadedState-5Products-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "loadedState-5Products-macOS")
         #endif
     }
 
@@ -260,7 +260,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
-        assertSnapshot(of: hostingController, as: .image(perceptualPrecision: 0.98), named: "loadedState-10Products-iOS")
+        assertSnapshot(of: hostingController, as: .image, named: "loadedState-10Products-iOS")
         #endif
     }
 
@@ -283,7 +283,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
-        assertSnapshot(of: hostingView, as: .image(perceptualPrecision: 0.95), named: "loadedState-10Products-macOS")
+        assertSnapshot(of: hostingView, as: .image, named: "loadedState-10Products-macOS")
         #endif
     }
 }

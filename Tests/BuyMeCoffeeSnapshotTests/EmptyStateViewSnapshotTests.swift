@@ -44,7 +44,7 @@ final class EmptyStateViewSnapshotTests: XCTestCase {
         // When / Then
         assertSnapshot(
             of: hostingController.view,
-            as: .image(perceptualPrecision: 0.98),
+            as: .image,
             named: "defaultTheme-iOS"
         )
     }
@@ -69,7 +69,7 @@ final class EmptyStateViewSnapshotTests: XCTestCase {
         // When / Then
         assertSnapshot(
             of: hostingController.view,
-            as: .image(perceptualPrecision: 0.98),
+            as: .image,
             named: "customTheme-iOS"
         )
     }
@@ -92,7 +92,7 @@ final class EmptyStateViewSnapshotTests: XCTestCase {
         // When / Then
         assertSnapshot(
             of: hostingView,
-            as: .image(perceptualPrecision: 0.95),
+            as: .image,
             named: "defaultTheme-macOS"
         )
     }
@@ -117,7 +117,7 @@ final class EmptyStateViewSnapshotTests: XCTestCase {
         // When / Then
         assertSnapshot(
             of: hostingView,
-            as: .image(perceptualPrecision: 0.95),
+            as: .image,
             named: "customTheme-macOS"
         )
     }
