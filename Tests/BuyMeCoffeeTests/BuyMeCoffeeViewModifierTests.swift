@@ -142,4 +142,25 @@ final class BuyMeCoffeeViewModifierTests: XCTestCase {
         // Then: The modifier should compile and accept label objects
         XCTAssertNotNil(testView)
     }
+
+    // MARK: - Sort Order
+
+    @MainActor
+    func testSortOrderParameterThreadedToViewModel() {
+        // Given: A modifier constructed with an explicit descending sort order
+        let modifier = BuyMeCoffeeViewModifier(
+            isPresented: .constant(false),
+            productIDs: ["com.test.tip"],
+            theme: .default,
+            sortOrder: .descending,
+            headerLabels: .init(),
+            emptyStateLabels: .init(),
+            errorStateLabels: .init(),
+            thankYouLabels: .init()
+        )
+
+        // When: It builds the drawer it presents
+        // Then: The sort order is forwarded to the BuyMeCoffeeView
+        XCTAssertEqual(modifier.makeDrawerView().sortOrder, .descending)
+    }
 }

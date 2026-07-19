@@ -35,6 +35,7 @@ struct BuyMeCoffeeViewModifier: ViewModifier {
     @Binding var isPresented: Bool
     let productIDs: [String]
     let theme: BuyMeCoffeeTheme
+    let sortOrder: TipSortOrder
     let headerLabels: DrawerHeaderLabels
     let emptyStateLabels: EmptyStateLabels
     let errorStateLabels: ErrorStateLabels
@@ -44,17 +45,24 @@ struct BuyMeCoffeeViewModifier: ViewModifier {
         content
             .environment(\.buyMeCoffeeIsPresented, $isPresented)
             .sheet(isPresented: $isPresented) {
-                BuyMeCoffeeView(
-                    provider: StoreKitProductProvider.live(),
-                    productIDs: productIDs,
-                    headerLabels: headerLabels,
-                    emptyStateLabels: emptyStateLabels,
-                    errorStateLabels: errorStateLabels,
-                    thankYouLabels: thankYouLabels
-                )
-                .presentationDetents([.medium])
-                .environment(\.buyMeCoffeeTheme, theme)
+                makeDrawerView()
+                    .presentationDetents([.medium])
+                    .environment(\.buyMeCoffeeTheme, theme)
             }
+    }
+
+    /// Builds the drawer presented in the sheet. Kept separate so the `sortOrder` threading is
+    /// unit-testable without driving sheet presentation.
+    func makeDrawerView() -> BuyMeCoffeeView {
+        BuyMeCoffeeView(
+            provider: StoreKitProductProvider.live(),
+            productIDs: productIDs,
+            sortOrder: sortOrder,
+            headerLabels: headerLabels,
+            emptyStateLabels: emptyStateLabels,
+            errorStateLabels: errorStateLabels,
+            thankYouLabels: thankYouLabels
+        )
     }
 }
 
@@ -116,6 +124,7 @@ extension View {
         isPresented: Binding<Bool>,
         productIDs: [String],
         theme: BuyMeCoffeeTheme = .default,
+        sortOrder: TipSortOrder = .ascending,
         headerLabels: DrawerHeaderLabels = .init(),
         emptyStateLabels: EmptyStateLabels = .init(),
         errorStateLabels: ErrorStateLabels = .init(),
@@ -126,6 +135,7 @@ extension View {
                 isPresented: isPresented,
                 productIDs: productIDs,
                 theme: theme,
+                sortOrder: sortOrder,
                 headerLabels: headerLabels,
                 emptyStateLabels: emptyStateLabels,
                 errorStateLabels: errorStateLabels,

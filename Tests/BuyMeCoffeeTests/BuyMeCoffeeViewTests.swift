@@ -143,6 +143,21 @@ final class BuyMeCoffeeViewTests: XCTestCase {
         XCTAssertNotNil(view)
     }
 
+    // MARK: - Sort Order
+
+    /// Verifies that BuyMeCoffeeView.init defaults sortOrder to .ascending.
+    @MainActor
+    func testDefaultSortOrderParameterIsAscending() {
+        let mockProvider = MockProductProvider(products: [], purchaseOutcome: .success)
+
+        let view = BuyMeCoffeeView(
+            provider: mockProvider,
+            productIDs: ["test.product"]
+        )
+
+        XCTAssertEqual(view.sortOrder, .ascending)
+    }
+
     // MARK: - macOS Platform Tests
 
     /// Verifies that ThankYouView on macOS has minimum size constraints to prevent clipping.

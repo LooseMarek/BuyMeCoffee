@@ -50,6 +50,62 @@ final class TipListViewModelTests: XCTestCase {
         }
     }
 
+    // MARK: - Sort Order
+
+    @MainActor
+    func testDefaultSortOrderIsAscending() async {
+        let unsorted = [
+            TipProduct(id: "c", displayName: "C", description: "Desc", displayPrice: "$3", price: 3),
+            TipProduct(id: "a", displayName: "A", description: "Desc", displayPrice: "$1", price: 1),
+            TipProduct(id: "b", displayName: "B", description: "Desc", displayPrice: "$2", price: 2),
+        ]
+        let provider = MockProductProvider(products: unsorted, purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: provider, productIDs: [])
+
+        await viewModel.fetchProducts()
+
+        guard case .loaded(let products) = viewModel.state else {
+            return XCTFail("Expected .loaded, got \(viewModel.state)")
+        }
+        XCTAssertEqual(products.map(\.price), [1, 2, 3])
+    }
+
+    @MainActor
+    func testDescendingSortOrder() async {
+        let unsorted = [
+            TipProduct(id: "a", displayName: "A", description: "Desc", displayPrice: "$1", price: 1),
+            TipProduct(id: "c", displayName: "C", description: "Desc", displayPrice: "$3", price: 3),
+            TipProduct(id: "b", displayName: "B", description: "Desc", displayPrice: "$2", price: 2),
+        ]
+        let provider = MockProductProvider(products: unsorted, purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: provider, productIDs: [], sortOrder: .descending)
+
+        await viewModel.fetchProducts()
+
+        guard case .loaded(let products) = viewModel.state else {
+            return XCTFail("Expected .loaded, got \(viewModel.state)")
+        }
+        XCTAssertEqual(products.map(\.price), [3, 2, 1])
+    }
+
+    @MainActor
+    func testSortIsStableForEqualPrices() async {
+        let equalPriced = [
+            TipProduct(id: "first", displayName: "First", description: "Desc", displayPrice: "$1", price: 1),
+            TipProduct(id: "second", displayName: "Second", description: "Desc", displayPrice: "$1", price: 1),
+            TipProduct(id: "third", displayName: "Third", description: "Desc", displayPrice: "$1", price: 1),
+        ]
+        let provider = MockProductProvider(products: equalPriced, purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: provider, productIDs: [])
+
+        await viewModel.fetchProducts()
+
+        guard case .loaded(let products) = viewModel.state else {
+            return XCTFail("Expected .loaded, got \(viewModel.state)")
+        }
+        XCTAssertEqual(products.map(\.id), ["first", "second", "third"])
+    }
+
     // MARK: - Purchase
 
     @MainActor
