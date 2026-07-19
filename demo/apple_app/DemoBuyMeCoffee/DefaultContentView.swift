@@ -5,25 +5,31 @@ struct ContentView: View {
     @State private var isBuyMeCoffeePresented = false
 
     var body: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "cup.and.saucer.fill")
-                .font(.system(size: 60))
-                .foregroundStyle(.orange)
+        NavigationStack {
+            VStack(spacing: 24) {
+                Image(systemName: "cup.and.saucer.fill")
+                    .font(.system(size: 60))
+                    .foregroundStyle(.orange)
 
-            Text("Default Configuration")
-                .font(.title2.bold())
+                Text("Default Configuration")
+                    .font(.title2.bold())
 
-            Text("All default BuyMeCoffee settings — only productIDs and a custom subtitle are provided.")
-                .font(.body)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
+                Text("All default BuyMeCoffee settings — only productIDs and a custom subtitle are provided.")
+                    .font(.body)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.secondary)
 
-            Button("Buy Me a Coffee") {
-                isBuyMeCoffeePresented = true
+                Button("Buy Me a Coffee") {
+                    isBuyMeCoffeePresented = true
+                }
+                .buttonStyle(.borderedProminent)
+
+                NavigationLink("View Inline Example") {
+                    InlineContentView()
+                }
             }
-            .buttonStyle(.borderedProminent)
+            .padding(32)
         }
-        .padding(32)
         .buyMeCoffee(
             isPresented: $isBuyMeCoffeePresented,
             productIDs: [

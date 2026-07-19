@@ -12,7 +12,9 @@
 		3763E6DD9536317C13F5AA5E /* TestProducts.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 70CF7BD98812BC7329E6F5FC /* TestProducts.storekit */; };
 		39D58D493F064983E4F2A5D9 /* DefaultContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB999A90D45644AAB2B5650 /* DefaultContentView.swift */; };
 		4FC0C1D45D414CF9350660AD /* CustomContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1AC14313D46D6814660ABA /* CustomContentView.swift */; };
+		5A3E570482316499BB37E0EE /* InlineContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C451ED60166028E3C0DCD035 /* InlineContentView.swift */; };
 		616F11696E514F71D0869B64 /* DemoBuyMeCoffeeDefaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B1EB018019772CB808C93D /* DemoBuyMeCoffeeDefaultTests.swift */; };
+		659CB560AAD5F30E2F39FA7C /* InlineContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C451ED60166028E3C0DCD035 /* InlineContentView.swift */; };
 		66D8D1D9D4F0AB4C1B198DEB /* BuyMeCoffee in Frameworks */ = {isa = PBXBuildFile; productRef = 81BAD74D8EF0763C5213FD9A /* BuyMeCoffee */; };
 		741658A5B4BD59619BC06B3F /* CustomContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1AC14313D46D6814660ABA /* CustomContentView.swift */; };
 		8DE4A51974B5491173EEA825 /* DemoBuyMeCoffeeDefaultApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E3BEB0299AF5414BCC2F74 /* DemoBuyMeCoffeeDefaultApp.swift */; };
@@ -20,6 +22,7 @@
 		A3240981D09769BD3A7967D9 /* DemoBuyMeCoffeeCustomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBBDD0BAE9CC8E05E5A3B83 /* DemoBuyMeCoffeeCustomApp.swift */; };
 		B592E52E599BD5473E14449C /* DemoBuyMeCoffeeDefaultApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E3BEB0299AF5414BCC2F74 /* DemoBuyMeCoffeeDefaultApp.swift */; };
 		BBD13C8A177C4728C4991D39 /* DefaultContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB999A90D45644AAB2B5650 /* DefaultContentView.swift */; };
+		DF1B5E29EF107BC58F9C93FF /* InlineDemoScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B712EAD4063890290629CE96 /* InlineDemoScreenTests.swift */; };
 		EF655EA216108426019817A4 /* BuyMeCoffee in Frameworks */ = {isa = PBXBuildFile; productRef = 99C345BF09B3E39924257850 /* BuyMeCoffee */; };
 /* End PBXBuildFile section */
 
@@ -65,7 +68,9 @@
 		7EF074C4128E88B43C6EA420 /* DemoBuyMeCoffeeDefault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoBuyMeCoffeeDefault.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D8AC3919CE0318BA85F2201 /* BuyMeCoffee */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BuyMeCoffee; path = ../..; sourceTree = SOURCE_ROOT; };
 		9CB999A90D45644AAB2B5650 /* DefaultContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultContentView.swift; sourceTree = "<group>"; };
+		B712EAD4063890290629CE96 /* InlineDemoScreenTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InlineDemoScreenTests.swift; sourceTree = "<group>"; };
 		BDBBDD0BAE9CC8E05E5A3B83 /* DemoBuyMeCoffeeCustomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoBuyMeCoffeeCustomApp.swift; sourceTree = "<group>"; };
+		C451ED60166028E3C0DCD035 /* InlineContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InlineContentView.swift; sourceTree = "<group>"; };
 		D6B1EB018019772CB808C93D /* DemoBuyMeCoffeeDefaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoBuyMeCoffeeDefaultTests.swift; sourceTree = "<group>"; };
 		F7AFA9A86FE47E84058C5DC7 /* DemoBuyMeCoffeeCustomTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoBuyMeCoffeeCustomTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -99,6 +104,7 @@
 				14E3BEB0299AF5414BCC2F74 /* DemoBuyMeCoffeeDefaultApp.swift */,
 				620DE1F9CFC3F8567A948804 /* Info.plist */,
 				70CF7BD98812BC7329E6F5FC /* TestProducts.storekit */,
+				C451ED60166028E3C0DCD035 /* InlineContentView.swift */,
 			);
 			path = DemoBuyMeCoffee;
 			sourceTree = "<group>";
@@ -134,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				D6B1EB018019772CB808C93D /* DemoBuyMeCoffeeDefaultTests.swift */,
+				B712EAD4063890290629CE96 /* InlineDemoScreenTests.swift */,
 			);
 			path = DemoBuyMeCoffeeDefaultTests;
 			sourceTree = "<group>";
@@ -165,8 +172,6 @@
 				9DB470BD2FCC48DA004CDAAF /* PBXTargetDependency */,
 			);
 			name = DemoBuyMeCoffeeDefaultTests;
-			packageProductDependencies = (
-			);
 			productName = DemoBuyMeCoffeeDefaultTests;
 			productReference = 39FF2914603FDA3941887AA7 /* DemoBuyMeCoffeeDefaultTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -224,8 +229,6 @@
 				9DB470BF2FCC48E1004CDAAF /* PBXTargetDependency */,
 			);
 			name = DemoBuyMeCoffeeCustomTests;
-			packageProductDependencies = (
-			);
 			productName = DemoBuyMeCoffeeCustomTests;
 			productReference = 0E82DE517B91815B81CC9044 /* DemoBuyMeCoffeeCustomTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -265,7 +268,7 @@
 			mainGroup = BD87BEB65A8B51EE2A49ABBE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				BDF37736505F949E6E6D9D24 /* XCLocalSwiftPackageReference "../.." */,
+				BDF37736505F949E6E6D9D24 /* XCLocalSwiftPackageReference ".." */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6695179B4EB83D09EE78B183 /* Products */;
@@ -308,6 +311,7 @@
 				39D58D493F064983E4F2A5D9 /* DefaultContentView.swift in Sources */,
 				A3240981D09769BD3A7967D9 /* DemoBuyMeCoffeeCustomApp.swift in Sources */,
 				8DE4A51974B5491173EEA825 /* DemoBuyMeCoffeeDefaultApp.swift in Sources */,
+				659CB560AAD5F30E2F39FA7C /* InlineContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				616F11696E514F71D0869B64 /* DemoBuyMeCoffeeDefaultTests.swift in Sources */,
+				DF1B5E29EF107BC58F9C93FF /* InlineDemoScreenTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,6 +332,7 @@
 				BBD13C8A177C4728C4991D39 /* DefaultContentView.swift in Sources */,
 				04793D2FAA0F36A2FAA9A117 /* DemoBuyMeCoffeeCustomApp.swift in Sources */,
 				B592E52E599BD5473E14449C /* DemoBuyMeCoffeeDefaultApp.swift in Sources */,
+				5A3E570482316499BB37E0EE /* InlineContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -770,7 +776,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		BDF37736505F949E6E6D9D24 /* XCLocalSwiftPackageReference "../.." */ = {
+		BDF37736505F949E6E6D9D24 /* XCLocalSwiftPackageReference ".." */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../..;
 		};
