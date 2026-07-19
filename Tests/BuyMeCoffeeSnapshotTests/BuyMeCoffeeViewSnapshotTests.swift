@@ -149,7 +149,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         #if os(iOS)
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
-            TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99"),
+            TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99", price: 0.99),
         ])
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
@@ -162,7 +162,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         #if os(macOS)
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
-            TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99"),
+            TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99", price: 0.99),
         ])
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
@@ -178,8 +178,8 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         #if os(iOS)
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
-            TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99"),
-            TipProduct(id: "test.coffee.large", displayName: "Large Coffee", description: "A large cup", displayPrice: "$2.99"),
+            TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99", price: 0.99),
+            TipProduct(id: "test.coffee.large", displayName: "Large Coffee", description: "A large cup", displayPrice: "$2.99", price: 2.99),
         ])
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
@@ -192,8 +192,8 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         #if os(macOS)
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
-            TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99"),
-            TipProduct(id: "test.coffee.large", displayName: "Large Coffee", description: "A large cup", displayPrice: "$2.99"),
+            TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99", price: 0.99),
+            TipProduct(id: "test.coffee.large", displayName: "Large Coffee", description: "A large cup", displayPrice: "$2.99", price: 2.99),
         ])
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
@@ -209,11 +209,11 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         #if os(iOS)
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
-            TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99"),
-            TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99"),
-            TipProduct(id: "test.coffee.3", displayName: "Coffee 3", description: "A large cup", displayPrice: "$2.99"),
-            TipProduct(id: "test.coffee.4", displayName: "Coffee 4", description: "An extra large cup", displayPrice: "$4.99"),
-            TipProduct(id: "test.coffee.5", displayName: "Coffee 5", description: "A mega cup", displayPrice: "$9.99"),
+            TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99", price: 0.99),
+            TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99", price: 1.99),
+            TipProduct(id: "test.coffee.3", displayName: "Coffee 3", description: "A large cup", displayPrice: "$2.99", price: 2.99),
+            TipProduct(id: "test.coffee.4", displayName: "Coffee 4", description: "An extra large cup", displayPrice: "$4.99", price: 4.99),
+            TipProduct(id: "test.coffee.5", displayName: "Coffee 5", description: "A mega cup", displayPrice: "$9.99", price: 9.99),
         ])
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
@@ -226,11 +226,11 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         #if os(macOS)
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
-            TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99"),
-            TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99"),
-            TipProduct(id: "test.coffee.3", displayName: "Coffee 3", description: "A large cup", displayPrice: "$2.99"),
-            TipProduct(id: "test.coffee.4", displayName: "Coffee 4", description: "An extra large cup", displayPrice: "$4.99"),
-            TipProduct(id: "test.coffee.5", displayName: "Coffee 5", description: "A mega cup", displayPrice: "$9.99"),
+            TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99", price: 0.99),
+            TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99", price: 1.99),
+            TipProduct(id: "test.coffee.3", displayName: "Coffee 3", description: "A large cup", displayPrice: "$2.99", price: 2.99),
+            TipProduct(id: "test.coffee.4", displayName: "Coffee 4", description: "An extra large cup", displayPrice: "$4.99", price: 4.99),
+            TipProduct(id: "test.coffee.5", displayName: "Coffee 5", description: "A mega cup", displayPrice: "$9.99", price: 9.99),
         ])
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
@@ -246,16 +246,16 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         #if os(iOS)
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
-            TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99"),
-            TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99"),
-            TipProduct(id: "test.coffee.3", displayName: "Coffee 3", description: "A large cup", displayPrice: "$2.99"),
-            TipProduct(id: "test.coffee.4", displayName: "Coffee 4", description: "An extra large cup", displayPrice: "$4.99"),
-            TipProduct(id: "test.coffee.5", displayName: "Coffee 5", description: "A mega cup", displayPrice: "$9.99"),
-            TipProduct(id: "test.coffee.6", displayName: "Coffee 6", description: "A cup 6", displayPrice: "$0.49"),
-            TipProduct(id: "test.coffee.7", displayName: "Coffee 7", description: "A cup 7", displayPrice: "$1.49"),
-            TipProduct(id: "test.coffee.8", displayName: "Coffee 8", description: "A cup 8", displayPrice: "$2.49"),
-            TipProduct(id: "test.coffee.9", displayName: "Coffee 9", description: "A cup 9", displayPrice: "$3.49"),
-            TipProduct(id: "test.coffee.10", displayName: "Coffee 10", description: "A cup 10", displayPrice: "$4.49"),
+            TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99", price: 0.99),
+            TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99", price: 1.99),
+            TipProduct(id: "test.coffee.3", displayName: "Coffee 3", description: "A large cup", displayPrice: "$2.99", price: 2.99),
+            TipProduct(id: "test.coffee.4", displayName: "Coffee 4", description: "An extra large cup", displayPrice: "$4.99", price: 4.99),
+            TipProduct(id: "test.coffee.5", displayName: "Coffee 5", description: "A mega cup", displayPrice: "$9.99", price: 9.99),
+            TipProduct(id: "test.coffee.6", displayName: "Coffee 6", description: "A cup 6", displayPrice: "$0.49", price: 0.49),
+            TipProduct(id: "test.coffee.7", displayName: "Coffee 7", description: "A cup 7", displayPrice: "$1.49", price: 1.49),
+            TipProduct(id: "test.coffee.8", displayName: "Coffee 8", description: "A cup 8", displayPrice: "$2.49", price: 2.49),
+            TipProduct(id: "test.coffee.9", displayName: "Coffee 9", description: "A cup 9", displayPrice: "$3.49", price: 3.49),
+            TipProduct(id: "test.coffee.10", displayName: "Coffee 10", description: "A cup 10", displayPrice: "$4.49", price: 4.49),
         ])
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
@@ -268,16 +268,16 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         #if os(macOS)
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
-            TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99"),
-            TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99"),
-            TipProduct(id: "test.coffee.3", displayName: "Coffee 3", description: "A large cup", displayPrice: "$2.99"),
-            TipProduct(id: "test.coffee.4", displayName: "Coffee 4", description: "An extra large cup", displayPrice: "$4.99"),
-            TipProduct(id: "test.coffee.5", displayName: "Coffee 5", description: "A mega cup", displayPrice: "$9.99"),
-            TipProduct(id: "test.coffee.6", displayName: "Coffee 6", description: "A cup 6", displayPrice: "$0.49"),
-            TipProduct(id: "test.coffee.7", displayName: "Coffee 7", description: "A cup 7", displayPrice: "$1.49"),
-            TipProduct(id: "test.coffee.8", displayName: "Coffee 8", description: "A cup 8", displayPrice: "$2.49"),
-            TipProduct(id: "test.coffee.9", displayName: "Coffee 9", description: "A cup 9", displayPrice: "$3.49"),
-            TipProduct(id: "test.coffee.10", displayName: "Coffee 10", description: "A cup 10", displayPrice: "$4.49"),
+            TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99", price: 0.99),
+            TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99", price: 1.99),
+            TipProduct(id: "test.coffee.3", displayName: "Coffee 3", description: "A large cup", displayPrice: "$2.99", price: 2.99),
+            TipProduct(id: "test.coffee.4", displayName: "Coffee 4", description: "An extra large cup", displayPrice: "$4.99", price: 4.99),
+            TipProduct(id: "test.coffee.5", displayName: "Coffee 5", description: "A mega cup", displayPrice: "$9.99", price: 9.99),
+            TipProduct(id: "test.coffee.6", displayName: "Coffee 6", description: "A cup 6", displayPrice: "$0.49", price: 0.49),
+            TipProduct(id: "test.coffee.7", displayName: "Coffee 7", description: "A cup 7", displayPrice: "$1.49", price: 1.49),
+            TipProduct(id: "test.coffee.8", displayName: "Coffee 8", description: "A cup 8", displayPrice: "$2.49", price: 2.49),
+            TipProduct(id: "test.coffee.9", displayName: "Coffee 9", description: "A cup 9", displayPrice: "$3.49", price: 3.49),
+            TipProduct(id: "test.coffee.10", displayName: "Coffee 10", description: "A cup 10", displayPrice: "$4.49", price: 4.49),
         ])
 
         let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)

@@ -12,7 +12,7 @@ enum StoreKitProductProviderError: Error {
 /// Inject `fetcher` and `purchaser` in tests to avoid live StoreKit calls.
 public final class StoreKitProductProvider: ProductProvider, @unchecked Sendable {
 
-    public typealias ProductTuple = (id: String, displayName: String, description: String, displayPrice: String)
+    public typealias ProductTuple = (id: String, displayName: String, description: String, displayPrice: String, price: Decimal)
     public typealias Fetcher = @Sendable ([String]) async throws -> [ProductTuple]
     public typealias Purchaser = @Sendable (TipProduct) async throws -> Void
 
@@ -33,7 +33,7 @@ public final class StoreKitProductProvider: ProductProvider, @unchecked Sendable
         StoreKitProductProvider(
             fetcher: { ids in
                 try await Product.products(for: ids).map {
-                    (id: $0.id, displayName: $0.displayName, description: $0.description, displayPrice: $0.displayPrice)
+                    (id: $0.id, displayName: $0.displayName, description: $0.description, displayPrice: $0.displayPrice, price: $0.price)
                 }
             },
             purchaser: { product in
@@ -63,7 +63,7 @@ public final class StoreKitProductProvider: ProductProvider, @unchecked Sendable
 
     public func fetchProducts(productIDs: [String]) async throws -> [TipProduct] {
         let tuples = try await fetcher(productIDs)
-        return tuples.map { TipProduct(id: $0.id, displayName: $0.displayName, description: $0.description, displayPrice: $0.displayPrice) }
+        return tuples.map { TipProduct(id: $0.id, displayName: $0.displayName, description: $0.description, displayPrice: $0.displayPrice, price: $0.price) }
     }
 
     public func purchase(_ product: TipProduct) async throws {

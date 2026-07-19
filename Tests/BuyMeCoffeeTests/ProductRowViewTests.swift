@@ -8,7 +8,8 @@ final class ProductRowViewTests: XCTestCase {
         id: "com.example.tip.small",
         displayName: "Small Coffee",
         description: "A little thank you for your support",
-        displayPrice: "$0.99"
+        displayPrice: "$0.99",
+        price: 0.99
     )
 
     func testOnTap_calledOnce() {

@@ -4,8 +4,8 @@ import XCTest
 final class MockProductProviderTests: XCTestCase {
 
     private let products = [
-        TipProduct(id: "mock.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99"),
-        TipProduct(id: "mock.coffee.large", displayName: "Large Coffee", description: "A large cup", displayPrice: "$2.99"),
+        TipProduct(id: "mock.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99", price: 0.99),
+        TipProduct(id: "mock.coffee.large", displayName: "Large Coffee", description: "A large cup", displayPrice: "$2.99", price: 2.99),
     ]
 
     func testFetchProducts_returnsConfiguredProducts() async throws {
@@ -20,6 +20,20 @@ final class MockProductProviderTests: XCTestCase {
         let provider = MockProductProvider(products: products, purchaseOutcome: .success)
 
         try await provider.purchase(products[0])
+    }
+
+    func testMockProductsIncludeRawPrice() {
+        let expectedPrices: [String: Decimal] = [
+            "mock.coffee.small": 0.99,
+            "mock.coffee.large": 2.99,
+            "mock.coffee.mega": 4.99,
+        ]
+
+        for product in MockProductProvider.defaultProducts {
+            let expected = expectedPrices[product.id]
+            XCTAssertNotNil(expected, "Unexpected mock product id: \(product.id)")
+            XCTAssertEqual(product.price, expected)
+        }
     }
 
     func testPurchase_failureMode_throwsError() async {

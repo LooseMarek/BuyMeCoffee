@@ -10,8 +10,8 @@ final class BuyMeCoffeeViewTests: XCTestCase {
     @MainActor
     func testStateMachine_loadingToLoaded() async throws {
         let mockProducts = [
-            TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1"),
-            TipProduct(id: "test.coffee.large", displayName: "Large", description: "Desc", displayPrice: "$2"),
+            TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1),
+            TipProduct(id: "test.coffee.large", displayName: "Large", description: "Desc", displayPrice: "$2", price: 2),
         ]
         let mockProvider = MockProductProvider(products: mockProducts, purchaseOutcome: .success)
         let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small", "test.coffee.large"])
@@ -73,7 +73,7 @@ final class BuyMeCoffeeViewTests: XCTestCase {
     @MainActor
     func testStateMachine_purchaseSuccess_showsThankYou() async throws {
         let mockProducts = [
-            TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1"),
+            TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1),
         ]
         let mockProvider = MockProductProvider(products: mockProducts, purchaseOutcome: .success)
         let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
@@ -103,8 +103,8 @@ final class BuyMeCoffeeViewTests: XCTestCase {
     func testFetchProductsCallsProviderWithCorrectIDs() async throws {
         let requestedIDs = ["com.example.tip.small", "com.example.tip.large"]
         let mockProducts = [
-            TipProduct(id: "com.example.tip.small", displayName: "Small", description: "Desc", displayPrice: "$1"),
-            TipProduct(id: "com.example.tip.large", displayName: "Large", description: "Desc", displayPrice: "$2"),
+            TipProduct(id: "com.example.tip.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1),
+            TipProduct(id: "com.example.tip.large", displayName: "Large", description: "Desc", displayPrice: "$2", price: 2),
         ]
 
         let capturingProvider = CapturingProductProvider(products: mockProducts)

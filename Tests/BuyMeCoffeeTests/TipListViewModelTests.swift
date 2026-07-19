@@ -6,8 +6,8 @@ import XCTest
 final class TipListViewModelTests: XCTestCase {
 
     private let sampleProducts = [
-        TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1"),
-        TipProduct(id: "test.coffee.large", displayName: "Large", description: "Desc", displayPrice: "$2"),
+        TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1),
+        TipProduct(id: "test.coffee.large", displayName: "Large", description: "Desc", displayPrice: "$2", price: 2),
     ]
 
     // MARK: - Fetch

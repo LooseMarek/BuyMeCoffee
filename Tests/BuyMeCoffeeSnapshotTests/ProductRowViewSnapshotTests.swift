@@ -19,14 +19,16 @@ final class ProductRowViewSnapshotTests: XCTestCase {
         id: "com.example.tip.small",
         displayName: "Small Coffee",
         description: "A little thank you for your support",
-        displayPrice: "$0.99"
+        displayPrice: "$0.99",
+        price: 0.99
     )
 
     private let longNameProduct = TipProduct(
         id: "com.example.tip.large",
         displayName: "Extra Large Premium Coffee with Extended Name That Should Truncate",
         description: "This is a very long product description that should wrap to two lines and then truncate with ellipsis at the end",
-        displayPrice: "$4.99"
+        displayPrice: "$4.99",
+        price: 4.99
     )
 
     private let customTheme = BuyMeCoffeeTheme(
