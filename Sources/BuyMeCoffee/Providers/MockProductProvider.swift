@@ -17,9 +17,9 @@ final class MockProductProvider: ProductProvider, @unchecked Sendable {
     }
 
     static let defaultProducts: [TipProduct] = [
-        TipProduct(id: "mock.coffee.small", displayName: "Small Coffee", description: "A small cup of coffee", displayPrice: "$0.99"),
-        TipProduct(id: "mock.coffee.large", displayName: "Large Coffee", description: "A large cup of coffee", displayPrice: "$2.99"),
-        TipProduct(id: "mock.coffee.mega", displayName: "Mega Coffee", description: "An extra large cup of coffee", displayPrice: "$4.99"),
+        TipProduct(id: "mock.coffee.small", displayName: "Small Coffee", description: "A small cup of coffee", displayPrice: "$0.99", price: 0.99),
+        TipProduct(id: "mock.coffee.large", displayName: "Large Coffee", description: "A large cup of coffee", displayPrice: "$2.99", price: 2.99),
+        TipProduct(id: "mock.coffee.mega", displayName: "Mega Coffee", description: "An extra large cup of coffee", displayPrice: "$4.99", price: 4.99),
     ]
 
     func fetchProducts(productIDs: [String]) async throws -> [TipProduct] {

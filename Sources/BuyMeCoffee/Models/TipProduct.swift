@@ -17,6 +17,9 @@ public struct TipProduct: Equatable, Identifiable, Sendable {
     /// The localised price string (e.g., "$0.99")
     public let displayPrice: String
 
+    /// The raw, comparable price value (matches StoreKit `Product.price`)
+    public let price: Decimal
+
     /// Initializes a TipProduct with raw string values.
     ///
     /// - Parameters:
@@ -24,16 +27,19 @@ public struct TipProduct: Equatable, Identifiable, Sendable {
     ///   - displayName: The localised display name
     ///   - description: The localised description
     ///   - displayPrice: The localised price string
+    ///   - price: The raw, comparable price value
     public init(
         id: String,
         displayName: String,
         description: String,
-        displayPrice: String
+        displayPrice: String,
+        price: Decimal
     ) {
         self.id = id
         self.displayName = displayName
         self.description = description
         self.displayPrice = displayPrice
+        self.price = price
     }
 
     // MARK: - Equatable

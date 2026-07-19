@@ -17,9 +17,9 @@ final class StoreKitProductProviderTests: XCTestCase {
         }
         let capture = IDCapture()
 
-        let allProducts: [(id: String, displayName: String, description: String, displayPrice: String)] = [
-            (id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99"),
-            (id: "com.example.tip.large", displayName: "Large", description: "L", displayPrice: "$2.99"),
+        let allProducts: [(id: String, displayName: String, description: String, displayPrice: String, price: Decimal)] = [
+            (id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99", price: 0.99),
+            (id: "com.example.tip.large", displayName: "Large", description: "L", displayPrice: "$2.99", price: 2.99),
         ]
 
         let provider = StoreKitProductProvider(
@@ -37,9 +37,9 @@ final class StoreKitProductProviderTests: XCTestCase {
 
     func testFetchProductsReturnsAllProductsForGivenIDs() async throws {
         let productIDs = ["com.example.tip.small", "com.example.tip.large"]
-        let allProducts: [(id: String, displayName: String, description: String, displayPrice: String)] = [
-            (id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99"),
-            (id: "com.example.tip.large", displayName: "Large", description: "L", displayPrice: "$2.99"),
+        let allProducts: [(id: String, displayName: String, description: String, displayPrice: String, price: Decimal)] = [
+            (id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99", price: 0.99),
+            (id: "com.example.tip.large", displayName: "Large", description: "L", displayPrice: "$2.99", price: 2.99),
         ]
 
         let provider = StoreKitProductProvider(
@@ -77,10 +77,26 @@ final class StoreKitProductProviderTests: XCTestCase {
         }
     }
 
+    func testFetchProductsMapsRawPrice() async throws {
+        let allProducts: [StoreKitProductProvider.ProductTuple] = [
+            (id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99", price: 0.99),
+            (id: "com.example.tip.large", displayName: "Large", description: "L", displayPrice: "$2.99", price: 2.99),
+        ]
+
+        let provider = StoreKitProductProvider(
+            fetcher: { _ in allProducts }
+        )
+
+        let results = try await provider.fetchProducts(productIDs: ["com.example.tip.small", "com.example.tip.large"])
+
+        XCTAssertEqual(results[0].price, 0.99)
+        XCTAssertEqual(results[1].price, 2.99)
+    }
+
     // MARK: - Purchase tests
 
     func testPurchase_successMode_returnsSuccess() async throws {
-        let product = TipProduct(id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99")
+        let product = TipProduct(id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99", price: 0.99)
         let provider = StoreKitProductProvider(
             fetcher: { _ in [] },
             purchaser: { _ in }
@@ -90,7 +106,7 @@ final class StoreKitProductProviderTests: XCTestCase {
     }
 
     func testPurchase_userCancelledThrowsCancelled() async {
-        let product = TipProduct(id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99")
+        let product = TipProduct(id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99", price: 0.99)
         let provider = StoreKitProductProvider(
             fetcher: { _ in [] },
             purchaser: { _ in throw PurchaseError.cancelled }
@@ -108,7 +124,7 @@ final class StoreKitProductProviderTests: XCTestCase {
 
     func testPurchase_failureThrowsFailed() async {
         struct UnderlyingError: Error {}
-        let product = TipProduct(id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99")
+        let product = TipProduct(id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99", price: 0.99)
         let provider = StoreKitProductProvider(
             fetcher: { _ in [] },
             purchaser: { _ in throw PurchaseError.failed(UnderlyingError()) }
@@ -125,7 +141,7 @@ final class StoreKitProductProviderTests: XCTestCase {
     }
 
     func testPurchase_pendingReturnsPending() async {
-        let product = TipProduct(id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99")
+        let product = TipProduct(id: "com.example.tip.small", displayName: "Small", description: "S", displayPrice: "$0.99", price: 0.99)
         let provider = StoreKitProductProvider(
             fetcher: { _ in [] },
             purchaser: { _ in throw PurchaseError.pending }
