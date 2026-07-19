@@ -26,6 +26,8 @@ A SwiftUI-native StoreKit 2 tip-jar Swift Package that any iOS or macOS app can 
 BuyMeCoffee/
 ├── docs/                       # Architecture, ADRs, product, and design docs
 └── Sources/BuyMeCoffee/
+    ├── BuyMeCoffeeView.swift        # Public sheet/drawer entry point
+    ├── BuyMeCoffeeInlineView.swift  # Public embeddable tip list (no sheet chrome)
     ├── API/                    # Protocols & shared contracts (ProductProvider, PurchaseError)
     ├── Models/                 # Value types (TipProduct, label configs)
     ├── Providers/              # ProductProvider implementations (StoreKit, Mock)
@@ -35,6 +37,11 @@ BuyMeCoffee/
 ```
 
 > Add component folders here as they are created.
+>
+> **Public API surface:** `BuyMeCoffeeView` (sheet/drawer presentation) and
+> `BuyMeCoffeeInlineView` (embeddable tip list for host layouts — no sheet/modal chrome). Both
+> are backed by the shared `TipListViewModel` and take the same `provider` / `productIDs` /
+> `sortOrder` inputs.
 >
 > **Shared view models live in `ViewModels/`.** Product-fetch/purchase logic belongs in a
 > presentation-agnostic `ObservableObject` here (e.g. `TipListViewModel`) so multiple views can
