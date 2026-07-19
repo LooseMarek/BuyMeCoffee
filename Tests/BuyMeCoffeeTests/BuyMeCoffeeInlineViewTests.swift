@@ -225,6 +225,117 @@ final class BuyMeCoffeeInlineViewTests: XCTestCase {
         assertRendersWithoutCrash(view)
     }
 
+    // MARK: - Purchase Flow & States
+
+    /// A successful purchase transitions the shared view model to `.thankYou`, and the inline view
+    /// renders that state (via `ThankYouView`) without crashing — no sheet is presented or dismissed.
+    @MainActor
+    func testPurchaseSuccessShowsThankYouInline() async {
+        let product = TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1)
+        let mockProvider = MockProductProvider(products: [product], purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+        viewModel.state = .loaded([product])
+
+        await viewModel.purchase(product)
+
+        XCTAssertEqual(viewModel.state, .thankYou, "A successful purchase should transition to .thankYou")
+
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel)
+        assertRendersWithoutCrash(view)
+    }
+
+    /// A cancelled purchase must NOT change state — the user stays on the loaded product list,
+    /// identical to the drawer's error semantics.
+    @MainActor
+    func testPurchaseCancelledStaysInLoadedState() async {
+        let product = TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1)
+        let mockProvider = MockProductProvider(products: [product], purchaseOutcome: .failure(.cancelled))
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+        viewModel.state = .loaded([product])
+
+        await viewModel.purchase(product)
+
+        XCTAssertEqual(viewModel.state, .loaded([product]), "A cancelled purchase must leave the loaded state unchanged")
+    }
+
+    /// A failed purchase transitions to an inline `.error` state, and the inline view renders it
+    /// (via `ErrorStateView`) without crashing.
+    @MainActor
+    func testPurchaseFailedShowsErrorInline() async {
+        let product = TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1)
+        let mockProvider = MockProductProvider(products: [product], purchaseOutcome: .failure(.failed(NSError(domain: "Test", code: 1))))
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+        viewModel.state = .loaded([product])
+
+        await viewModel.purchase(product)
+
+        guard case .error = viewModel.state else {
+            XCTFail("A failed purchase should transition to .error, got \(viewModel.state)")
+            return
+        }
+
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel)
+        assertRendersWithoutCrash(view)
+    }
+
+    /// A pending purchase maps to an inline `.error` state (per the shared view model), and the
+    /// inline view renders it without crashing.
+    @MainActor
+    func testPurchasePendingShowsErrorInline() async {
+        let product = TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1)
+        let mockProvider = MockProductProvider(products: [product], purchaseOutcome: .failure(.pending))
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+        viewModel.state = .loaded([product])
+
+        await viewModel.purchase(product)
+
+        guard case .error = viewModel.state else {
+            XCTFail("A pending purchase should transition to .error, got \(viewModel.state)")
+            return
+        }
+
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel)
+        assertRendersWithoutCrash(view)
+    }
+
+    /// An empty product list transitions to `.empty`, and the inline view renders that state
+    /// (via `EmptyStateView`) without crashing.
+    @MainActor
+    func testEmptyProductListShowsEmptyStateInline() async {
+        let mockProvider = MockProductProvider(products: [])
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: [])
+
+        await viewModel.fetchProducts()
+
+        XCTAssertEqual(viewModel.state, .empty, "An empty product list should transition to .empty")
+
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel)
+        assertRendersWithoutCrash(view)
+    }
+
+    /// The embedded-context reset mechanism (`reset()`) returns a thank-you state to the loaded
+    /// product list by re-fetching. Also verifies the host-facing `onThankYouDismiss` closure is
+    /// stored when supplied at init.
+    @MainActor
+    func testThankYouResetMechanismReturnsToLoadedState() async {
+        let products = [
+            TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1),
+            TipProduct(id: "test.coffee.large", displayName: "Large", description: "Desc", displayPrice: "$2", price: 2),
+        ]
+        let mockProvider = MockProductProvider(products: products, purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small", "test.coffee.large"])
+        viewModel.state = .thankYou
+
+        var dismissNotified = false
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel, onThankYouDismiss: { dismissNotified = true })
+        XCTAssertNotNil(view.onThankYouDismiss, "A supplied onThankYouDismiss closure should be stored")
+        _ = dismissNotified // silence unused warning; closure identity is what we assert on
+
+        await viewModel.reset()
+
+        XCTAssertEqual(viewModel.state, .loaded(products), "reset() should return the view model to the loaded product list")
+    }
+
     // MARK: - Rendering Helper
 
     /// Hosts a view in a platform hosting container and forces a layout pass, proving the view's

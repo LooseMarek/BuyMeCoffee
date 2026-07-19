@@ -87,6 +87,8 @@ BuyMeCoffee/
 
 **Always provide snapshots for both platforms.** Every snapshot test must cover iOS (`UIHostingController`) and macOS (`NSHostingView`) — CI runs separate pipelines for each via `fastlane ios test` and `fastlane mac test`.
 
+**Snapshot reference filenames must be globally unique across ALL snapshot test classes.** SPM copies every reference `.png` into a single flat resource bundle for the `BuyMeCoffeeSnapshotTests` target, keyed by basename (`<testMethodName>.<named>.png`) — regardless of the `__Snapshots__/<ClassName>/` subdirectory it lives in. Two classes with the same method name AND the same `named:` value produce colliding basenames and fail package resolution with `multiple resources named '…png'` before any test runs. When a new test class needs a state another class already snapshots (e.g. inline vs. drawer both covering `thankYou`/`empty`/`error`), give the `named:` value a class-specific prefix (e.g. `inlineThankYouState-iOS` vs. the drawer's `thankYouState-iOS`) so the basenames differ.
+
 **Snapshots compare exactly — no `perceptualPrecision` override.** CI and local
 development both run on the same Apple Silicon (arm64) Mac mini, so there is no
 architecture-driven rendering delta to absorb. Use plain `.image`:

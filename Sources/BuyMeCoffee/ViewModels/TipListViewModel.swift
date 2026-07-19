@@ -70,6 +70,12 @@ final class TipListViewModel: ObservableObject {
         }
     }
 
+    /// Returns to the loaded product list after a thank-you (embedded contexts have no sheet to
+    /// dismiss). Re-fetches products, matching the drawer's "reopen triggers a fresh fetch" model.
+    func reset() async {
+        await fetchProducts()
+    }
+
     func purchase(_ product: TipProduct) async {
         do {
             try await provider.purchase(product)

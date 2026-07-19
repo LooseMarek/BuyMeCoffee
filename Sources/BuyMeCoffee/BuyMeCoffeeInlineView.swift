@@ -45,9 +45,13 @@ import SwiftUI
 ///
 /// ## Scope
 ///
-/// This component renders the loaded product list with an optional header; background theming and
-/// full purchase/state wiring are provided by other components in this package. The inline view
-/// renders rows for the `.loaded` state and nothing for other states.
+/// This component renders the full `TipListViewModel` state machine — loading, loaded, empty,
+/// error, and thank-you — with the same subviews as the drawer, but wired for an embedded
+/// (non-modal) context. Because there is no sheet to close, the empty/error dismiss affordances
+/// are no-ops, and the thank-you state returns to the product list via the macOS tap-to-dismiss
+/// (which calls the view model's `reset()` to re-fetch) and/or the optional `onThankYouDismiss`
+/// host closure. On iOS, where `ThankYouView` has no tap affordance, the host relies on
+/// `onThankYouDismiss` / view reconstruction to leave the thank-you state.
 public struct BuyMeCoffeeInlineView: View {
 
     // MARK: - Environment
@@ -78,6 +82,23 @@ public struct BuyMeCoffeeInlineView: View {
     /// Header label customisation used when `showHeader` is `true`. Defaults to `.init()`.
     let headerLabels: DrawerHeaderLabels
 
+    /// Empty state label customisation. Defaults to `.init()`.
+    let emptyStateLabels: EmptyStateLabels
+
+    /// Error state label customisation. Defaults to `.init()`.
+    let errorStateLabels: ErrorStateLabels
+
+    /// Thank-you screen label customisation. Defaults to `.init()`.
+    let thankYouLabels: ThankYouLabels
+
+    // MARK: - Host Callbacks
+
+    /// Optional host-facing closure invoked when the thank-you state is cleared. Because the inline
+    /// view has no sheet to dismiss, this is the documented mechanism for a host to know the
+    /// thank-you state was dismissed / should reset (e.g. to scroll away or re-construct the view).
+    /// Defaults to `nil`.
+    let onThankYouDismiss: (() -> Void)?
+
     // MARK: - Initializers
 
     /// Creates a `BuyMeCoffeeInlineView` with the specified product provider and product IDs.
@@ -95,20 +116,34 @@ public struct BuyMeCoffeeInlineView: View {
     ///     bare list of tip rows when the host screen already provides its own title/context.
     ///   - headerLabels: Header label customisation applied when `showHeader` is `true`. Defaults
     ///     to `.init()` (SPM defaults).
+    ///   - emptyStateLabels: Empty state label customisation. Defaults to `.init()` (SPM defaults).
+    ///   - errorStateLabels: Error state label customisation. Defaults to `.init()` (SPM defaults).
+    ///   - thankYouLabels: Thank-you screen label customisation. Defaults to `.init()` (SPM defaults).
+    ///   - onThankYouDismiss: Optional closure invoked when the thank-you state is cleared. Since
+    ///     the inline view has no sheet to dismiss, this lets the host respond (e.g. reset or
+    ///     re-construct the view). Defaults to `nil`.
     public init(
         provider: ProductProvider,
         productIDs: [String],
         sortOrder: TipSortOrder = .ascending,
         background: BuyMeCoffeeInlineBackground = .transparent,
         showHeader: Bool = true,
-        headerLabels: DrawerHeaderLabels = .init()
+        headerLabels: DrawerHeaderLabels = .init(),
+        emptyStateLabels: EmptyStateLabels = .init(),
+        errorStateLabels: ErrorStateLabels = .init(),
+        thankYouLabels: ThankYouLabels = .init(),
+        onThankYouDismiss: (() -> Void)? = nil
     ) {
         self.init(
             viewModel: TipListViewModel(provider: provider, productIDs: productIDs, sortOrder: sortOrder),
             sortOrder: sortOrder,
             background: background,
             showHeader: showHeader,
-            headerLabels: headerLabels
+            headerLabels: headerLabels,
+            emptyStateLabels: emptyStateLabels,
+            errorStateLabels: errorStateLabels,
+            thankYouLabels: thankYouLabels,
+            onThankYouDismiss: onThankYouDismiss
         )
     }
 
@@ -121,13 +156,21 @@ public struct BuyMeCoffeeInlineView: View {
         sortOrder: TipSortOrder = .ascending,
         background: BuyMeCoffeeInlineBackground = .transparent,
         showHeader: Bool = true,
-        headerLabels: DrawerHeaderLabels = .init()
+        headerLabels: DrawerHeaderLabels = .init(),
+        emptyStateLabels: EmptyStateLabels = .init(),
+        errorStateLabels: ErrorStateLabels = .init(),
+        thankYouLabels: ThankYouLabels = .init(),
+        onThankYouDismiss: (() -> Void)? = nil
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.sortOrder = sortOrder
         self.background = background
         self.showHeader = showHeader
         self.headerLabels = headerLabels
+        self.emptyStateLabels = emptyStateLabels
+        self.errorStateLabels = errorStateLabels
+        self.thankYouLabels = thankYouLabels
+        self.onThankYouDismiss = onThankYouDismiss
     }
 
     // MARK: - Body
@@ -135,10 +178,19 @@ public struct BuyMeCoffeeInlineView: View {
     public var body: some View {
         Group {
             switch viewModel.state {
+            case .loading:
+                loadingView
             case .loaded(let products):
                 loadedView(products: products)
-            case .loading, .empty, .error, .thankYou:
-                EmptyView()
+            case .empty:
+                EmptyStateView(labels: emptyStateLabels, onDismiss: {})
+            case .error(let message):
+                ErrorStateView(labels: errorStateLabels, errorMessage: message, onDismiss: {})
+            case .thankYou:
+                ThankYouView(labels: thankYouLabels, onDismiss: {
+                    Task { await viewModel.reset() }
+                    onThankYouDismiss?()
+                })
             }
         }
         .background(background.resolvedColor(theme: theme))
@@ -148,6 +200,18 @@ public struct BuyMeCoffeeInlineView: View {
     }
 
     // MARK: - Subviews
+
+    /// Loading spinner shown during product fetch. Copied from the drawer's `loadingView` for
+    /// parity — a centered `ProgressView` tinted with the theme's secondary text colour.
+    private var loadingView: some View {
+        VStack {
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: theme.secondaryTextColor))
+                .scaleEffect(1.2)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 32)
+    }
 
     /// The tip product row list, optionally preceded by the shared `DrawerHeaderView`.
     ///

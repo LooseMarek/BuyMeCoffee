@@ -210,6 +210,84 @@ final class BuyMeCoffeeInlineViewSnapshotTests: XCTestCase {
         #endif
     }
 
+    // MARK: - Thank-You State
+
+    func testThankYouState_iOS() {
+        #if os(iOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .thankYou
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel)
+        let hostingController = UIHostingController(rootView: host(inlineView))
+        hostingController.view.frame = CGRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingController.view, as: .image, named: "inlineThankYouState-iOS")
+        #endif
+    }
+
+    func testThankYouState_macOS() {
+        #if os(macOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .thankYou
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel)
+        let hostingView = NSHostingView(rootView: host(inlineView))
+        hostingView.frame = NSRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingView, as: .image, named: "inlineThankYouState-macOS")
+        #endif
+    }
+
+    // MARK: - Empty State
+
+    func testEmptyState_iOS() {
+        #if os(iOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .empty
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel)
+        let hostingController = UIHostingController(rootView: host(inlineView))
+        hostingController.view.frame = CGRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingController.view, as: .image, named: "inlineEmptyState-iOS")
+        #endif
+    }
+
+    func testEmptyState_macOS() {
+        #if os(macOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .empty
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel)
+        let hostingView = NSHostingView(rootView: host(inlineView))
+        hostingView.frame = NSRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingView, as: .image, named: "inlineEmptyState-macOS")
+        #endif
+    }
+
+    // MARK: - Error State
+
+    func testErrorState_iOS() {
+        #if os(iOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .error("Something went wrong. Please try again later.")
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel)
+        let hostingController = UIHostingController(rootView: host(inlineView))
+        hostingController.view.frame = CGRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingController.view, as: .image, named: "inlineErrorState-iOS")
+        #endif
+    }
+
+    func testErrorState_macOS() {
+        #if os(macOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .error("Something went wrong. Please try again later.")
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel)
+        let hostingView = NSHostingView(rootView: host(inlineView))
+        hostingView.frame = NSRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingView, as: .image, named: "inlineErrorState-macOS")
+        #endif
+    }
+
     // MARK: - Without Header
 
     func testWithoutHeader_iOS() {
