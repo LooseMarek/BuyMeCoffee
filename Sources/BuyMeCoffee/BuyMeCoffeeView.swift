@@ -49,6 +49,11 @@ public struct BuyMeCoffeeView: View {
 
     @StateObject private var viewModel: TipListViewModel
 
+    // MARK: - Sort Order
+
+    /// The order tip products are displayed in, by price. Defaults to `.ascending`.
+    let sortOrder: TipSortOrder
+
     // MARK: - Customizable Labels
 
     /// Header label customisation. Defaults to `.init()`.
@@ -77,13 +82,15 @@ public struct BuyMeCoffeeView: View {
     public init(
         provider: ProductProvider,
         productIDs: [String],
+        sortOrder: TipSortOrder = .ascending,
         headerLabels: DrawerHeaderLabels = .init(),
         emptyStateLabels: EmptyStateLabels = .init(),
         errorStateLabels: ErrorStateLabels = .init(),
         thankYouLabels: ThankYouLabels = .init()
     ) {
         self.init(
-            viewModel: TipListViewModel(provider: provider, productIDs: productIDs),
+            viewModel: TipListViewModel(provider: provider, productIDs: productIDs, sortOrder: sortOrder),
+            sortOrder: sortOrder,
             headerLabels: headerLabels,
             emptyStateLabels: emptyStateLabels,
             errorStateLabels: errorStateLabels,
@@ -97,12 +104,14 @@ public struct BuyMeCoffeeView: View {
     /// specific state. The type is intentionally not exposed to host apps.
     init(
         viewModel: TipListViewModel,
+        sortOrder: TipSortOrder = .ascending,
         headerLabels: DrawerHeaderLabels = .init(),
         emptyStateLabels: EmptyStateLabels = .init(),
         errorStateLabels: ErrorStateLabels = .init(),
         thankYouLabels: ThankYouLabels = .init()
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        self.sortOrder = sortOrder
         self.headerLabels = headerLabels
         self.emptyStateLabels = emptyStateLabels
         self.errorStateLabels = errorStateLabels

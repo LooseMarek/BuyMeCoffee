@@ -286,4 +286,35 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
         assertSnapshot(of: hostingView, as: .image, named: "loadedState-10Products-macOS")
         #endif
     }
+
+    // MARK: - Loaded State — Descending Order
+
+    private let descendingProducts = [
+        TipProduct(id: "test.coffee.large", displayName: "Large Coffee", description: "A large cup", displayPrice: "$9.99", price: 9.99),
+        TipProduct(id: "test.coffee.medium", displayName: "Medium Coffee", description: "A medium cup", displayPrice: "$4.99", price: 4.99),
+        TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99", price: 0.99),
+    ]
+
+    func testLoadedStateDescendingOrder_iOS() {
+        #if os(iOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs, sortOrder: .descending)
+        viewModel.state = .loaded(descendingProducts)
+
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
+        let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
+        assertSnapshot(of: hostingController, as: .image, named: "loadedStateDescendingOrder-iOS")
+        #endif
+    }
+
+    func testLoadedStateDescendingOrder_macOS() {
+        #if os(macOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs, sortOrder: .descending)
+        viewModel.state = .loaded(descendingProducts)
+
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
+        let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
+        hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
+        assertSnapshot(of: hostingView, as: .image, named: "loadedStateDescendingOrder-macOS")
+        #endif
+    }
 }

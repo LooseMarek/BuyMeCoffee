@@ -36,10 +36,12 @@ final class TipListViewModel: ObservableObject {
 
     private let provider: ProductProvider
     private let productIDs: [String]
+    private let sortOrder: TipSortOrder
 
-    init(provider: ProductProvider, productIDs: [String]) {
+    init(provider: ProductProvider, productIDs: [String], sortOrder: TipSortOrder = .ascending) {
         self.provider = provider
         self.productIDs = productIDs
+        self.sortOrder = sortOrder
     }
 
     func fetchProducts() async {
@@ -48,10 +50,23 @@ final class TipListViewModel: ObservableObject {
             if products.isEmpty {
                 state = .empty
             } else {
-                state = .loaded(products)
+                state = .loaded(sorted(products))
             }
         } catch {
             state = .error(error.localizedDescription)
+        }
+    }
+
+    /// Sorts products by price for the configured order. `sorted(by:)` is a guaranteed-stable
+    /// sort, so equal-price products keep the provider's original order.
+    private func sorted(_ products: [TipProduct]) -> [TipProduct] {
+        products.sorted { lhs, rhs in
+            switch sortOrder {
+            case .ascending:
+                return lhs.price < rhs.price
+            case .descending:
+                return lhs.price > rhs.price
+            }
         }
     }
 
