@@ -63,7 +63,9 @@ final class BuyMeCoffeeInlineViewSnapshotTests: XCTestCase {
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded(loadedProducts)
 
-        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel)
+        // Explicit `showHeader: false` preserves this test's original bare-list intent now that
+        // the inline view defaults `showHeader` to `true`. Header coverage lives in testWithHeader.
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: false)
         let hostingController = UIHostingController(rootView: host(inlineView))
         hostingController.view.frame = CGRect(x: 0, y: 0, width: 390, height: 400)
         assertSnapshot(of: hostingController.view, as: .image, named: "loadedState-iOS")
@@ -75,7 +77,9 @@ final class BuyMeCoffeeInlineViewSnapshotTests: XCTestCase {
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded(loadedProducts)
 
-        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel)
+        // Explicit `showHeader: false` preserves this test's original bare-list intent now that
+        // the inline view defaults `showHeader` to `true`. Header coverage lives in testWithHeader.
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: false)
         let hostingView = NSHostingView(rootView: host(inlineView))
         hostingView.frame = NSRect(x: 0, y: 0, width: 390, height: 400)
         assertSnapshot(of: hostingView, as: .image, named: "loadedState-macOS")
@@ -89,7 +93,7 @@ final class BuyMeCoffeeInlineViewSnapshotTests: XCTestCase {
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded(loadedProducts)
 
-        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel)
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: false)
             .environment(\.buyMeCoffeeTheme, customTheme)
         let hostingController = UIHostingController(rootView: host(inlineView))
         hostingController.view.frame = CGRect(x: 0, y: 0, width: 390, height: 400)
@@ -102,11 +106,63 @@ final class BuyMeCoffeeInlineViewSnapshotTests: XCTestCase {
         let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded(loadedProducts)
 
-        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel)
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: false)
             .environment(\.buyMeCoffeeTheme, customTheme)
         let hostingView = NSHostingView(rootView: host(inlineView))
         hostingView.frame = NSRect(x: 0, y: 0, width: 390, height: 400)
         assertSnapshot(of: hostingView, as: .image, named: "customTheme-macOS")
+        #endif
+    }
+
+    // MARK: - With Header
+
+    func testWithHeader_iOS() {
+        #if os(iOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .loaded(loadedProducts)
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: true)
+        let hostingController = UIHostingController(rootView: host(inlineView))
+        hostingController.view.frame = CGRect(x: 0, y: 0, width: 390, height: 500)
+        assertSnapshot(of: hostingController.view, as: .image, named: "withHeader-iOS")
+        #endif
+    }
+
+    func testWithHeader_macOS() {
+        #if os(macOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .loaded(loadedProducts)
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: true)
+        let hostingView = NSHostingView(rootView: host(inlineView))
+        hostingView.frame = NSRect(x: 0, y: 0, width: 390, height: 500)
+        assertSnapshot(of: hostingView, as: .image, named: "withHeader-macOS")
+        #endif
+    }
+
+    // MARK: - Without Header
+
+    func testWithoutHeader_iOS() {
+        #if os(iOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .loaded(loadedProducts)
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: false)
+        let hostingController = UIHostingController(rootView: host(inlineView))
+        hostingController.view.frame = CGRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingController.view, as: .image, named: "withoutHeader-iOS")
+        #endif
+    }
+
+    func testWithoutHeader_macOS() {
+        #if os(macOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .loaded(loadedProducts)
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: false)
+        let hostingView = NSHostingView(rootView: host(inlineView))
+        hostingView.frame = NSRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingView, as: .image, named: "withoutHeader-macOS")
         #endif
     }
 }
