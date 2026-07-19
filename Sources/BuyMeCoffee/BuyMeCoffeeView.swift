@@ -47,7 +47,7 @@ public struct BuyMeCoffeeView: View {
 
     // MARK: - State
 
-    @StateObject private var viewModel: ViewModel
+    @StateObject private var viewModel: TipListViewModel
 
     // MARK: - Customizable Labels
 
@@ -68,7 +68,6 @@ public struct BuyMeCoffeeView: View {
     /// Creates a BuyMeCoffeeView with the specified product provider and product IDs.
     ///
     /// - Parameters:
-    ///   - viewModel: Optional pre-configured ViewModel for testing. If nil, a new ViewModel is created.
     ///   - provider: The product provider. Use `StoreKitProductProvider.live()` for production.
     ///   - productIDs: The exact product IDs to fetch (e.g., ["com.example.tip.small", "com.example.tip.large"]).
     ///   - headerLabels: Header label customisation. Defaults to `.init()` (SPM defaults).
@@ -76,7 +75,6 @@ public struct BuyMeCoffeeView: View {
     ///   - errorStateLabels: Error state label customisation. Defaults to `.init()` (SPM defaults).
     ///   - thankYouLabels: Thank-you screen label customisation. Defaults to `.init()` (SPM defaults).
     public init(
-        viewModel: ViewModel? = nil,
         provider: ProductProvider,
         productIDs: [String],
         headerLabels: DrawerHeaderLabels = .init(),
@@ -84,7 +82,27 @@ public struct BuyMeCoffeeView: View {
         errorStateLabels: ErrorStateLabels = .init(),
         thankYouLabels: ThankYouLabels = .init()
     ) {
-        _viewModel = viewModel.map { StateObject(wrappedValue: $0) } ?? StateObject(wrappedValue: ViewModel(provider: provider, productIDs: productIDs))
+        self.init(
+            viewModel: TipListViewModel(provider: provider, productIDs: productIDs),
+            headerLabels: headerLabels,
+            emptyStateLabels: emptyStateLabels,
+            errorStateLabels: errorStateLabels,
+            thankYouLabels: thankYouLabels
+        )
+    }
+
+    /// Creates a BuyMeCoffeeView with a pre-configured `TipListViewModel`.
+    ///
+    /// Module-internal so tests (via `@testable import BuyMeCoffee`) can inject a view model in a
+    /// specific state. The type is intentionally not exposed to host apps.
+    init(
+        viewModel: TipListViewModel,
+        headerLabels: DrawerHeaderLabels = .init(),
+        emptyStateLabels: EmptyStateLabels = .init(),
+        errorStateLabels: ErrorStateLabels = .init(),
+        thankYouLabels: ThankYouLabels = .init()
+    ) {
+        _viewModel = StateObject(wrappedValue: viewModel)
         self.headerLabels = headerLabels
         self.emptyStateLabels = emptyStateLabels
         self.errorStateLabels = errorStateLabels
@@ -155,77 +173,6 @@ public struct BuyMeCoffeeView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 16)
-            }
-        }
-    }
-}
-
-// MARK: - View Model
-
-public extension BuyMeCoffeeView {
-    @MainActor
-    final class ViewModel: ObservableObject {
-        enum State: Equatable {
-            case loading
-            case loaded([TipProduct])
-            case empty
-            case error(String)
-            case thankYou
-
-            static func == (lhs: State, rhs: State) -> Bool {
-                switch (lhs, rhs) {
-                case (.loading, .loading), (.empty, .empty), (.thankYou, .thankYou):
-                    return true
-                case (.loaded(let l), .loaded(let r)):
-                    return l == r
-                case (.error(let l), .error(let r)):
-                    return l == r
-                default:
-                    return false
-                }
-            }
-        }
-
-        @Published var state: State = .loading
-
-        private let provider: ProductProvider
-        private let productIDs: [String]
-
-        init(provider: ProductProvider, productIDs: [String]) {
-            self.provider = provider
-            self.productIDs = productIDs
-        }
-
-        func fetchProducts() async {
-            do {
-                let products = try await provider.fetchProducts(productIDs: productIDs)
-                if products.isEmpty {
-                    state = .empty
-                } else {
-                    state = .loaded(products)
-                }
-            } catch {
-                state = .error(error.localizedDescription)
-            }
-        }
-
-        func purchase(_ product: TipProduct) async {
-            do {
-                try await provider.purchase(product)
-                state = .thankYou
-            } catch let error as PurchaseError {
-                // Handle purchase-specific errors
-                switch error {
-                case .cancelled:
-                    // User cancelled - no action needed, stay in loaded state
-                    break
-                case .failed(let underlyingError):
-                    state = .error("Purchase failed: \(underlyingError.localizedDescription)")
-                case .pending:
-                    state = .error("Purchase is pending approval.")
-                }
-            } catch {
-                state = .error("Purchase failed: \(error.localizedDescription)")
             }
         }
     }

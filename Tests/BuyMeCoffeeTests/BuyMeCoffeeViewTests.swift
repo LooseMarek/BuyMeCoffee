@@ -14,7 +14,7 @@ final class BuyMeCoffeeViewTests: XCTestCase {
             TipProduct(id: "test.coffee.large", displayName: "Large", description: "Desc", displayPrice: "$2"),
         ]
         let mockProvider = MockProductProvider(products: mockProducts, purchaseOutcome: .success)
-        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productIDs: ["test.coffee.small", "test.coffee.large"])
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small", "test.coffee.large"])
 
         // Initial state should be loading
         XCTAssertEqual(viewModel.state, .loading)
@@ -36,7 +36,7 @@ final class BuyMeCoffeeViewTests: XCTestCase {
     @MainActor
     func testStateMachine_loadingToEmpty() async throws {
         let mockProvider = MockProductProvider(products: [], purchaseOutcome: .success)
-        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productIDs: [])
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: [])
 
         // Initial state should be loading
         XCTAssertEqual(viewModel.state, .loading)
@@ -53,7 +53,7 @@ final class BuyMeCoffeeViewTests: XCTestCase {
     func testStateMachine_loadingToError() async throws {
         struct TestError: Error {}
         let mockProvider = ThrowingMockProductProvider(error: TestError())
-        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
 
         // Initial state should be loading
         XCTAssertEqual(viewModel.state, .loading)
@@ -76,7 +76,7 @@ final class BuyMeCoffeeViewTests: XCTestCase {
             TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1"),
         ]
         let mockProvider = MockProductProvider(products: mockProducts, purchaseOutcome: .success)
-        let viewModel = BuyMeCoffeeViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
 
         // Fetch products first
         await viewModel.fetchProducts()
@@ -108,7 +108,7 @@ final class BuyMeCoffeeViewTests: XCTestCase {
         ]
 
         let capturingProvider = CapturingProductProvider(products: mockProducts)
-        let viewModel = BuyMeCoffeeViewModel(provider: capturingProvider, productIDs: requestedIDs)
+        let viewModel = TipListViewModel(provider: capturingProvider, productIDs: requestedIDs)
 
         await viewModel.fetchProducts()
 
@@ -129,6 +129,18 @@ final class BuyMeCoffeeViewTests: XCTestCase {
         // Then: The view should compile and use default labels
         // (Full UI validation would require snapshot tests, but compilation confirms API contract)
         XCTAssertNotNil(viewWithDefaultLabels)
+    }
+
+    /// Verifies that BuyMeCoffeeView still accepts an injected TipListViewModel after the extraction.
+    @MainActor
+    func testViewModelInjectionStillWorks() {
+        let mockProvider = MockProductProvider(products: [], purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.product"])
+        viewModel.state = .thankYou
+
+        let view = BuyMeCoffeeView(viewModel: viewModel)
+
+        XCTAssertNotNil(view)
     }
 
     // MARK: - macOS Platform Tests
@@ -184,63 +196,5 @@ private final class CapturingProductProvider: ProductProvider, @unchecked Sendab
     }
 
     func purchase(_ product: TipProduct) async throws {
-    }
-}
-
-/// Minimal view model to test state transitions in isolation.
-@MainActor
-private final class BuyMeCoffeeViewModel: ObservableObject {
-    enum State: Equatable {
-        case loading
-        case loaded([TipProduct])
-        case empty
-        case error(String)
-        case thankYou
-
-        static func == (lhs: State, rhs: State) -> Bool {
-            switch (lhs, rhs) {
-            case (.loading, .loading), (.empty, .empty), (.thankYou, .thankYou):
-                return true
-            case (.loaded(let l), .loaded(let r)):
-                return l == r
-            case (.error, .error):
-                return true
-            default:
-                return false
-            }
-        }
-    }
-
-    @Published var state: State = .loading
-
-    private let provider: ProductProvider
-    private let productIDs: [String]
-
-    init(provider: ProductProvider, productIDs: [String]) {
-        self.provider = provider
-        self.productIDs = productIDs
-    }
-
-    func fetchProducts() async {
-        do {
-            let products = try await provider.fetchProducts(productIDs: productIDs)
-            if products.isEmpty {
-                state = .empty
-            } else {
-                state = .loaded(products)
-            }
-        } catch {
-            state = .error(error.localizedDescription)
-        }
-    }
-
-    func purchase(_ product: TipProduct) async {
-        do {
-            try await provider.purchase(product)
-            state = .thankYou
-        } catch {
-            // In a full implementation, we'd handle purchase errors
-            // For this test, we just verify the happy path
-        }
     }
 }

@@ -24,10 +24,25 @@ A SwiftUI-native StoreKit 2 tip-jar Swift Package that any iOS or macOS app can 
 
 ```
 BuyMeCoffee/
-├── docs/               # Architecture, ADRs, product, and design docs
+├── docs/                       # Architecture, ADRs, product, and design docs
+└── Sources/BuyMeCoffee/
+    ├── API/                    # Protocols & shared contracts (ProductProvider, PurchaseError)
+    ├── Models/                 # Value types (TipProduct, label configs)
+    ├── Providers/              # ProductProvider implementations (StoreKit, Mock)
+    ├── Theme/                  # Theming (BuyMeCoffeeTheme, environment keys)
+    ├── ViewModels/             # Shared, presentation-agnostic view models (TipListViewModel)
+    └── Views/                  # SwiftUI views
 ```
 
 > Add component folders here as they are created.
+>
+> **Shared view models live in `ViewModels/`.** Product-fetch/purchase logic belongs in a
+> presentation-agnostic `ObservableObject` here (e.g. `TipListViewModel`) so multiple views can
+> reuse it. Keep such view models module-**internal** (not `public`) — they are shared building
+> blocks for views in this package, not part of the host-app-facing API surface. Test injection
+> into a `public` view is done via a separate internal initializer overload reachable through
+> `@testable import`, not by making the view model `public` (Swift forbids a public initializer
+> from exposing a less-visible type).
 
 ---
 

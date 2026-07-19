@@ -47,10 +47,10 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testLoadingState_iOS() {
         #if os(iOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loading
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
         assertSnapshot(of: hostingController, as: .image, named: "loadingState-iOS")
         #endif
@@ -58,10 +58,10 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testLoadingState_macOS() {
         #if os(macOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loading
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
         assertSnapshot(of: hostingView, as: .image, named: "loadingState-macOS")
@@ -72,10 +72,10 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testEmptyState_iOS() {
         #if os(iOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .empty
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
         assertSnapshot(of: hostingController, as: .image, named: "emptyState-iOS")
         #endif
@@ -83,10 +83,10 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testEmptyState_macOS() {
         #if os(macOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .empty
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
         assertSnapshot(of: hostingView, as: .image, named: "emptyState-macOS")
@@ -97,10 +97,10 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testErrorState_iOS() {
         #if os(iOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .error("Something went wrong")
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
         assertSnapshot(of: hostingController, as: .image, named: "errorState-iOS")
         #endif
@@ -108,10 +108,10 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testErrorState_macOS() {
         #if os(macOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .error("Something went wrong")
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
         assertSnapshot(of: hostingView, as: .image, named: "errorState-macOS")
@@ -122,10 +122,10 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testThankYouState_iOS() {
         #if os(iOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .thankYou
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
         assertSnapshot(of: hostingController, as: .image, named: "thankYouState-iOS")
         #endif
@@ -133,10 +133,10 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testThankYouState_macOS() {
         #if os(macOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .thankYou
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
         assertSnapshot(of: hostingView, as: .image, named: "thankYouState-macOS")
@@ -147,12 +147,12 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testLoadedState_1Product_iOS() {
         #if os(iOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
             TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99"),
         ])
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
         assertSnapshot(of: hostingController, as: .image, named: "loadedState-1Product-iOS")
         #endif
@@ -160,12 +160,12 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testLoadedState_1Product_macOS() {
         #if os(macOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
             TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99"),
         ])
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
         assertSnapshot(of: hostingView, as: .image, named: "loadedState-1Product-macOS")
@@ -176,13 +176,13 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testLoadedState_2Products_iOS() {
         #if os(iOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
             TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99"),
             TipProduct(id: "test.coffee.large", displayName: "Large Coffee", description: "A large cup", displayPrice: "$2.99"),
         ])
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
         assertSnapshot(of: hostingController, as: .image, named: "loadedState-2Products-iOS")
         #endif
@@ -190,13 +190,13 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testLoadedState_2Products_macOS() {
         #if os(macOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
             TipProduct(id: "test.coffee.small", displayName: "Small Coffee", description: "A small cup", displayPrice: "$0.99"),
             TipProduct(id: "test.coffee.large", displayName: "Large Coffee", description: "A large cup", displayPrice: "$2.99"),
         ])
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
         assertSnapshot(of: hostingView, as: .image, named: "loadedState-2Products-macOS")
@@ -207,7 +207,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testLoadedState_5Products_iOS() {
         #if os(iOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
             TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99"),
             TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99"),
@@ -216,7 +216,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
             TipProduct(id: "test.coffee.5", displayName: "Coffee 5", description: "A mega cup", displayPrice: "$9.99"),
         ])
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
         assertSnapshot(of: hostingController, as: .image, named: "loadedState-5Products-iOS")
         #endif
@@ -224,7 +224,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testLoadedState_5Products_macOS() {
         #if os(macOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
             TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99"),
             TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99"),
@@ -233,7 +233,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
             TipProduct(id: "test.coffee.5", displayName: "Coffee 5", description: "A mega cup", displayPrice: "$9.99"),
         ])
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
         assertSnapshot(of: hostingView, as: .image, named: "loadedState-5Products-macOS")
@@ -244,7 +244,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testLoadedState_10Products_iOS() {
         #if os(iOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
             TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99"),
             TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99"),
@@ -258,7 +258,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
             TipProduct(id: "test.coffee.10", displayName: "Coffee 10", description: "A cup 10", displayPrice: "$4.49"),
         ])
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingController = UIHostingController(rootView: wrapForIOS(buyMeCoffeeView))
         assertSnapshot(of: hostingController, as: .image, named: "loadedState-10Products-iOS")
         #endif
@@ -266,7 +266,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
 
     func testLoadedState_10Products_macOS() {
         #if os(macOS)
-        let viewModel = BuyMeCoffeeView.ViewModel(provider: provider, productIDs: productIDs)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
         viewModel.state = .loaded([
             TipProduct(id: "test.coffee.1", displayName: "Coffee 1", description: "A small cup", displayPrice: "$0.99"),
             TipProduct(id: "test.coffee.2", displayName: "Coffee 2", description: "A medium cup", displayPrice: "$1.99"),
@@ -280,7 +280,7 @@ final class BuyMeCoffeeViewSnapshotTests: XCTestCase {
             TipProduct(id: "test.coffee.10", displayName: "Coffee 10", description: "A cup 10", displayPrice: "$4.49"),
         ])
 
-        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel, provider: provider, productIDs: productIDs)
+        let buyMeCoffeeView = BuyMeCoffeeView(viewModel: viewModel)
         let hostingView = NSHostingView(rootView: wrapForMacOS(buyMeCoffeeView))
         hostingView.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
         assertSnapshot(of: hostingView, as: .image, named: "loadedState-10Products-macOS")
