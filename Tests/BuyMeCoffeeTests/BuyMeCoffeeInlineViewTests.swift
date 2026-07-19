@@ -1,5 +1,12 @@
 import XCTest
+import SwiftUI
 @testable import BuyMeCoffee
+
+#if os(iOS)
+import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
 
 /// Unit tests for `BuyMeCoffeeInlineView` — the embeddable tip list component.
 ///
@@ -75,5 +82,97 @@ final class BuyMeCoffeeInlineViewTests: XCTestCase {
         }
 
         XCTAssertEqual(products.map(\.id), ["test.coffee.small", "test.coffee.large"], "Products should be sorted ascending by price")
+    }
+
+    // MARK: - Header Toggle
+
+    /// Verifies `showHeader` defaults to `true`, giving parity with the drawer's always-visible
+    /// header when a host does not explicitly opt out.
+    @MainActor
+    func testShowHeaderDefaultsToTrue() {
+        let mockProvider = MockProductProvider(products: [], purchaseOutcome: .success)
+
+        let view = BuyMeCoffeeInlineView(
+            provider: mockProvider,
+            productIDs: ["test.coffee.small"]
+        )
+
+        XCTAssertTrue(view.showHeader, "showHeader should default to true for drawer parity")
+    }
+
+    /// Verifies that when `showHeader` is `true`, the view is configured to render the header and
+    /// the supplied `DrawerHeaderLabels` are stored for the header to consume. The view is hosted
+    /// and laid out to prove the header renders without crashing.
+    @MainActor
+    func testShowHeaderTrueRendersHeader() {
+        let mockProducts = [
+            TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1),
+        ]
+        let mockProvider = MockProductProvider(products: mockProducts, purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+        viewModel.state = .loaded(mockProducts)
+
+        let customLabels = DrawerHeaderLabels(title: "Support Us", subtitle: "Thanks!")
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: true, headerLabels: customLabels)
+
+        XCTAssertTrue(view.showHeader, "showHeader should be true")
+        XCTAssertEqual(view.headerLabels.title, "Support Us", "Supplied header labels should be stored")
+        XCTAssertEqual(view.headerLabels.subtitle, "Thanks!", "Supplied header labels should be stored")
+
+        assertRendersWithoutCrash(view)
+    }
+
+    /// Verifies that when `showHeader` is `false`, the view is configured to omit the header.
+    @MainActor
+    func testShowHeaderFalseHidesHeader() {
+        let mockProducts = [
+            TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1),
+        ]
+        let mockProvider = MockProductProvider(products: mockProducts, purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+        viewModel.state = .loaded(mockProducts)
+
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: false)
+
+        XCTAssertFalse(view.showHeader, "showHeader should be false")
+
+        assertRendersWithoutCrash(view)
+    }
+
+    /// Verifies the macOS header dismiss control, when shown inside the embedded inline view,
+    /// is wired to a no-op — hosting and laying out the view with a visible header in a context
+    /// that has no sheet presentation must not crash (there is no `\.dismiss` to call).
+    @MainActor
+    func testHeaderDismissControlIsNoOpWhenEmbedded() {
+        let mockProducts = [
+            TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1),
+        ]
+        let mockProvider = MockProductProvider(products: mockProducts, purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+        viewModel.state = .loaded(mockProducts)
+
+        // Header shown, but there is no enclosing sheet — must not attempt to dismiss / crash.
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: true)
+
+        assertRendersWithoutCrash(view)
+    }
+
+    // MARK: - Rendering Helper
+
+    /// Hosts a view in a platform hosting container and forces a layout pass, proving the view's
+    /// `body` (including any header) evaluates without crashing outside a sheet presentation.
+    @MainActor
+    private func assertRendersWithoutCrash(_ view: some View) {
+        #if os(iOS)
+        let controller = UIHostingController(rootView: view)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 390, height: 400)
+        controller.view.layoutIfNeeded()
+        XCTAssertNotNil(controller.view)
+        #elseif os(macOS)
+        let hosting = NSHostingView(rootView: view)
+        hosting.frame = NSRect(x: 0, y: 0, width: 390, height: 400)
+        hosting.layoutSubtreeIfNeeded()
+        XCTAssertNotNil(hosting)
+        #endif
     }
 }
