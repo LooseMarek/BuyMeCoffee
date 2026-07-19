@@ -35,9 +35,13 @@ import SwiftUI
 ///
 /// ## Background & Theming
 ///
-/// The inline view intentionally does **not** paint a full-bleed background — it inherits the
-/// host's background so it blends into your layout. `ProductRowView` children pick up the
-/// `BuyMeCoffeeTheme` from the environment exactly like the drawer does.
+/// The inline view's background defaults to ``BuyMeCoffeeInlineBackground/transparent`` — it does
+/// **not** paint a full-bleed background, so it inherits the host's background and blends into your
+/// layout. To opt into a fill, pass a `background`: use
+/// ``BuyMeCoffeeInlineBackground/themed`` for drawer-parity (`theme.backgroundColor`) or
+/// ``BuyMeCoffeeInlineBackground/custom(_:)`` for any solid colour (e.g. inside a card). This is
+/// separate from `BuyMeCoffeeTheme`, whose contract is unchanged. `ProductRowView` children pick up
+/// the `BuyMeCoffeeTheme` from the environment exactly like the drawer does.
 ///
 /// ## Scope
 ///
@@ -59,6 +63,13 @@ public struct BuyMeCoffeeInlineView: View {
     /// The order tip products are displayed in, by price. Defaults to `.ascending`.
     let sortOrder: TipSortOrder
 
+    // MARK: - Background Configuration
+
+    /// The background fill painted behind the inline content. Defaults to `.transparent` so the
+    /// host app's own background shows through — unlike the drawer, which always fills
+    /// `theme.backgroundColor`.
+    let background: BuyMeCoffeeInlineBackground
+
     // MARK: - Header Configuration
 
     /// Whether the `DrawerHeaderView` is rendered above the product rows. Defaults to `true`.
@@ -76,6 +87,9 @@ public struct BuyMeCoffeeInlineView: View {
     ///     or `MockProductProvider` in previews and tests.
     ///   - productIDs: The exact product IDs to fetch (e.g., ["com.example.tip.small", "com.example.tip.large"]).
     ///   - sortOrder: The order products are displayed in, by price. Defaults to `.ascending`.
+    ///   - background: The background fill painted behind the inline content. Defaults to
+    ///     `.transparent` so the host app's own background shows through. Pass `.themed` for
+    ///     drawer-parity (`theme.backgroundColor`) or `.custom(_:)` for any solid colour.
     ///   - showHeader: Whether to render the `DrawerHeaderView` above the product rows. Defaults
     ///     to `true` for parity with the drawer's always-visible header. Pass `false` to render a
     ///     bare list of tip rows when the host screen already provides its own title/context.
@@ -85,12 +99,14 @@ public struct BuyMeCoffeeInlineView: View {
         provider: ProductProvider,
         productIDs: [String],
         sortOrder: TipSortOrder = .ascending,
+        background: BuyMeCoffeeInlineBackground = .transparent,
         showHeader: Bool = true,
         headerLabels: DrawerHeaderLabels = .init()
     ) {
         self.init(
             viewModel: TipListViewModel(provider: provider, productIDs: productIDs, sortOrder: sortOrder),
             sortOrder: sortOrder,
+            background: background,
             showHeader: showHeader,
             headerLabels: headerLabels
         )
@@ -103,11 +119,13 @@ public struct BuyMeCoffeeInlineView: View {
     init(
         viewModel: TipListViewModel,
         sortOrder: TipSortOrder = .ascending,
+        background: BuyMeCoffeeInlineBackground = .transparent,
         showHeader: Bool = true,
         headerLabels: DrawerHeaderLabels = .init()
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.sortOrder = sortOrder
+        self.background = background
         self.showHeader = showHeader
         self.headerLabels = headerLabels
     }
@@ -123,6 +141,7 @@ public struct BuyMeCoffeeInlineView: View {
                 EmptyView()
             }
         }
+        .background(background.resolvedColor(theme: theme))
         .task {
             await viewModel.fetchProducts()
         }

@@ -56,6 +56,20 @@ final class BuyMeCoffeeInlineViewSnapshotTests: XCTestCase {
         .background(Color.white)
     }
 
+    /// Embeds the inline view over a distinctive, non-default (yellow) host background so that a
+    /// transparent inline background lets the host colour show through, while a solid/custom inline
+    /// background visibly covers it. Used by the background-focused snapshots.
+    private func transparencyHost<Content: View>(_ inlineView: Content) -> some View {
+        VStack(spacing: 16) {
+            Text("Host App Content")
+            inlineView
+            Text("More Host Content")
+        }
+        .padding(.vertical, 24)
+        .frame(width: 390)
+        .background(Color.yellow)
+    }
+
     // MARK: - Loaded State
 
     func testLoadedState_iOS() {
@@ -137,6 +151,62 @@ final class BuyMeCoffeeInlineViewSnapshotTests: XCTestCase {
         let hostingView = NSHostingView(rootView: host(inlineView))
         hostingView.frame = NSRect(x: 0, y: 0, width: 390, height: 500)
         assertSnapshot(of: hostingView, as: .image, named: "withHeader-macOS")
+        #endif
+    }
+
+    // MARK: - Transparent Background (default)
+
+    /// Rendered over a non-default (yellow) host background to visually confirm the inline view's
+    /// default `.transparent` background lets the host colour show through behind the tip rows.
+    func testTransparentBackground_iOS() {
+        #if os(iOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .loaded(loadedProducts)
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: false)
+        let hostingController = UIHostingController(rootView: transparencyHost(inlineView))
+        hostingController.view.frame = CGRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingController.view, as: .image, named: "transparentBackground-iOS")
+        #endif
+    }
+
+    func testTransparentBackground_macOS() {
+        #if os(macOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .loaded(loadedProducts)
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, showHeader: false)
+        let hostingView = NSHostingView(rootView: transparencyHost(inlineView))
+        hostingView.frame = NSRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingView, as: .image, named: "transparentBackground-macOS")
+        #endif
+    }
+
+    // MARK: - Custom Background Colour
+
+    /// A host supplies a solid custom background colour; the inline view fills that colour behind
+    /// the rows instead of letting the host background show through.
+    func testCustomBackgroundColor_iOS() {
+        #if os(iOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .loaded(loadedProducts)
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, background: .custom(.green), showHeader: false)
+        let hostingController = UIHostingController(rootView: transparencyHost(inlineView))
+        hostingController.view.frame = CGRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingController.view, as: .image, named: "customBackgroundColor-iOS")
+        #endif
+    }
+
+    func testCustomBackgroundColor_macOS() {
+        #if os(macOS)
+        let viewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        viewModel.state = .loaded(loadedProducts)
+
+        let inlineView = BuyMeCoffeeInlineView(viewModel: viewModel, background: .custom(.green), showHeader: false)
+        let hostingView = NSHostingView(rootView: transparencyHost(inlineView))
+        hostingView.frame = NSRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: hostingView, as: .image, named: "customBackgroundColor-macOS")
         #endif
     }
 

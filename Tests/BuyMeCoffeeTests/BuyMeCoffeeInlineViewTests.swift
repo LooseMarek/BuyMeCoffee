@@ -157,6 +157,74 @@ final class BuyMeCoffeeInlineViewTests: XCTestCase {
         assertRendersWithoutCrash(view)
     }
 
+    // MARK: - Background
+
+    /// Verifies the inline view's background defaults to `.transparent`, so the host app's own
+    /// background shows through unless the host opts into a solid colour. This is the key
+    /// divergence from the drawer, which always fills `theme.backgroundColor`.
+    @MainActor
+    func testDefaultBackgroundIsTransparent() {
+        let mockProvider = MockProductProvider(products: [], purchaseOutcome: .success)
+
+        let view = BuyMeCoffeeInlineView(
+            provider: mockProvider,
+            productIDs: ["test.coffee.small"]
+        )
+
+        XCTAssertEqual(view.background, .transparent, "Inline view background should default to .transparent")
+        XCTAssertEqual(
+            BuyMeCoffeeInlineBackground.transparent.resolvedColor(theme: .default),
+            .clear,
+            ".transparent must resolve to Color.clear regardless of theme"
+        )
+    }
+
+    /// Verifies that when a host supplies a `.custom` colour, the view stores it and it resolves
+    /// to exactly that colour (independent of the theme's own background).
+    @MainActor
+    func testCustomBackgroundColorApplied() {
+        let mockProducts = [
+            TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1),
+        ]
+        let mockProvider = MockProductProvider(products: mockProducts, purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+        viewModel.state = .loaded(mockProducts)
+
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel, background: .custom(.red))
+
+        XCTAssertEqual(view.background, .custom(.red), "Supplied custom background should be stored")
+        XCTAssertEqual(
+            BuyMeCoffeeInlineBackground.custom(.red).resolvedColor(theme: .default),
+            .red,
+            ".custom(color) must resolve to that exact colour"
+        )
+
+        assertRendersWithoutCrash(view)
+    }
+
+    /// Verifies the `.themed` option resolves to the environment theme's own `backgroundColor`,
+    /// giving drawer-parity background without changing `BuyMeCoffeeTheme` itself.
+    @MainActor
+    func testThemedBackgroundOptionAppliesThemeBackgroundColor() {
+        let mockProducts = [
+            TipProduct(id: "test.coffee.small", displayName: "Small", description: "Desc", displayPrice: "$1", price: 1),
+        ]
+        let mockProvider = MockProductProvider(products: mockProducts, purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+        viewModel.state = .loaded(mockProducts)
+
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel, background: .themed)
+
+        XCTAssertEqual(view.background, .themed, "Supplied themed background should be stored")
+        XCTAssertEqual(
+            BuyMeCoffeeInlineBackground.themed.resolvedColor(theme: .default),
+            BuyMeCoffeeTheme.default.backgroundColor,
+            ".themed must resolve to the theme's own backgroundColor"
+        )
+
+        assertRendersWithoutCrash(view)
+    }
+
     // MARK: - Rendering Helper
 
     /// Hosts a view in a platform hosting container and forces a layout pass, proving the view's
