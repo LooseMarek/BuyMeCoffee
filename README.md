@@ -126,7 +126,63 @@ struct DeepChildView: View {
 }
 ```
 
-### 4. Alternative: Direct sheet presentation
+### 4. Alternative: Embed the tip list inline
+
+If you want the tip list to live *inside* your own layout — on a settings or about screen, for example — instead of being presented as a sheet, use `BuyMeCoffeeInlineView`. It renders the same product rows (and, optionally, the same header) as the drawer, but with no sheet, popover, or modal chrome, so it flows with the surrounding content.
+
+```swift
+import SwiftUI
+import BuyMeCoffee
+
+struct AboutView: View {
+    private let productIDs = [
+        "com.yourapp.tip.small",
+        "com.yourapp.tip.medium",
+        "com.yourapp.tip.large"
+    ]
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                Text("Enjoying the app?")
+                    .font(.headline)
+
+                BuyMeCoffeeInlineView(
+                    provider: StoreKitProductProvider.live(),
+                    productIDs: productIDs,
+                    sortOrder: .ascending,
+                    background: .themed,
+                    showHeader: false
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                Text("Thanks for your support!")
+                    .foregroundStyle(.secondary)
+            }
+            .padding(24)
+        }
+        .environment(\.buyMeCoffeeTheme, .default)
+    }
+}
+```
+
+The inline view takes the same `provider` / `productIDs` / `sortOrder` inputs as the drawer and adds two presentation options:
+
+| Parameter    | Type                        | Default        | Description |
+|--------------|-----------------------------|----------------|-------------|
+| `sortOrder`  | `TipSortOrder`              | `.ascending`   | Order tip products are displayed in, by price (`.ascending` or `.descending`) |
+| `showHeader` | `Bool`                      | `true`         | Whether the drawer's header (icon, title, subtitle) is rendered above the rows. Pass `false` for a bare list of tip rows when your screen already provides its own title/context |
+| `background` | `BuyMeCoffeeInlineBackground`| `.transparent` | Background fill painted behind the content (see below) |
+
+Unlike the drawer — which always fills `theme.backgroundColor` — the inline view is **transparent by default** so it inherits the host's background and blends into your layout. Opt into a fill via `background`:
+
+- `.transparent` (default): host background shows through.
+- `.themed`: drawer-parity fill using the environment `BuyMeCoffeeTheme`'s `backgroundColor`.
+- `.custom(Color)`: any solid colour, e.g. `.custom(.white)` inside a card.
+
+`ProductRowView` children pick up the `BuyMeCoffeeTheme` from the environment exactly like the drawer does, so theming is configured the same way (see [Theming](#theming) below).
+
+### 5. Alternative: Direct sheet presentation
 
 For custom presentation control, use `BuyMeCoffeeView` directly in a sheet:
 
@@ -167,6 +223,7 @@ struct ContentView: View {
 | `isPresented`     | `Binding<Bool>`        | —                        | Controls whether the drawer is presented |
 | `productIDs`      | `[String]`             | —                        | Exact App Store Connect product IDs to fetch |
 | `theme`           | `BuyMeCoffeeTheme`     | `.default`               | Visual theme for the drawer |
+| `sortOrder`       | `TipSortOrder`         | `.ascending`             | Order tip products are displayed in, by price (`.ascending` or `.descending`) |
 | `headerLabels`    | `DrawerHeaderLabels`   | `.init()`                | Header label customisation (icon, title, subtitle) |
 | `emptyStateLabels`| `EmptyStateLabels`     | `.init()`                | Empty state label customisation |
 | `errorStateLabels`| `ErrorStateLabels`     | `.init()`                | Error state label customisation |
@@ -200,6 +257,18 @@ Button("Support") { showTipJar = true }
 ```
 
 All colours are fixed (not adaptive to system appearance) so the drawer looks consistent in both light and dark mode.
+
+### Sort Order
+
+Tip products are displayed sorted by price. `sortOrder` defaults to `.ascending` (cheapest first); pass `.descending` for most-expensive first. It is accepted by the `.buyMeCoffee` modifier, `BuyMeCoffeeView`, and `BuyMeCoffeeInlineView` alike:
+
+```swift
+.buyMeCoffee(
+    isPresented: $showTipJar,
+    productIDs: ["com.yourapp.tip.small", "com.yourapp.tip.large"],
+    sortOrder: .descending
+)
+```
 
 ### Label Customisation
 
