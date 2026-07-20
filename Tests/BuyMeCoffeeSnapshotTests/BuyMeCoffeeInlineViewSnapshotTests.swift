@@ -210,6 +210,48 @@ final class BuyMeCoffeeInlineViewSnapshotTests: XCTestCase {
         #endif
     }
 
+    // MARK: - Transparent Background — No Padding (flush layout)
+
+    /// With the default `.transparent` background there is no visible card edge, so the inline
+    /// content must sit flush against the host layout with no surrounding padding. Rendered over a
+    /// non-default (yellow) host background — both with and without the header — so the flush,
+    /// no-inset layout is visible against the host colour.
+    func testTransparentBackgroundNoPadding_iOS() {
+        #if os(iOS)
+        let withHeaderViewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        withHeaderViewModel.state = .loaded(loadedProducts)
+        let withHeaderView = BuyMeCoffeeInlineView(viewModel: withHeaderViewModel, background: .transparent, showHeader: true)
+        let withHeaderController = UIHostingController(rootView: transparencyHost(withHeaderView))
+        withHeaderController.view.frame = CGRect(x: 0, y: 0, width: 390, height: 500)
+        assertSnapshot(of: withHeaderController.view, as: .image, named: "transparentNoPaddingWithHeader-iOS")
+
+        let noHeaderViewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        noHeaderViewModel.state = .loaded(loadedProducts)
+        let noHeaderView = BuyMeCoffeeInlineView(viewModel: noHeaderViewModel, background: .transparent, showHeader: false)
+        let noHeaderController = UIHostingController(rootView: transparencyHost(noHeaderView))
+        noHeaderController.view.frame = CGRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: noHeaderController.view, as: .image, named: "transparentNoPaddingNoHeader-iOS")
+        #endif
+    }
+
+    func testTransparentBackgroundNoPadding_macOS() {
+        #if os(macOS)
+        let withHeaderViewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        withHeaderViewModel.state = .loaded(loadedProducts)
+        let withHeaderView = BuyMeCoffeeInlineView(viewModel: withHeaderViewModel, background: .transparent, showHeader: true)
+        let withHeaderHosting = NSHostingView(rootView: transparencyHost(withHeaderView))
+        withHeaderHosting.frame = NSRect(x: 0, y: 0, width: 390, height: 500)
+        assertSnapshot(of: withHeaderHosting, as: .image, named: "transparentNoPaddingWithHeader-macOS")
+
+        let noHeaderViewModel = TipListViewModel(provider: provider, productIDs: productIDs)
+        noHeaderViewModel.state = .loaded(loadedProducts)
+        let noHeaderView = BuyMeCoffeeInlineView(viewModel: noHeaderViewModel, background: .transparent, showHeader: false)
+        let noHeaderHosting = NSHostingView(rootView: transparencyHost(noHeaderView))
+        noHeaderHosting.frame = NSRect(x: 0, y: 0, width: 390, height: 400)
+        assertSnapshot(of: noHeaderHosting, as: .image, named: "transparentNoPaddingNoHeader-macOS")
+        #endif
+    }
+
     // MARK: - Thank-You State
 
     func testThankYouState_iOS() {

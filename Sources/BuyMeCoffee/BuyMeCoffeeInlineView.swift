@@ -199,6 +199,27 @@ public struct BuyMeCoffeeInlineView: View {
         }
     }
 
+    // MARK: - Padding
+
+    /// Whether a visible background fill is painted behind the content. When `false`
+    /// (`.transparent`), there is no card edge to separate content from, so the inline view sits
+    /// flush against the host layout with no surrounding padding.
+    var hasVisibleBackground: Bool {
+        background != .transparent
+    }
+
+    /// Padding applied around the header. Preserves the card-appropriate insets when a background
+    /// fill is visible; collapses to zero when the background is `.transparent`.
+    var headerPadding: EdgeInsets {
+        hasVisibleBackground ? EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16) : EdgeInsets()
+    }
+
+    /// Padding applied around the tip row list. Preserves the card-appropriate insets when a
+    /// background fill is visible; collapses to zero when the background is `.transparent`.
+    var rowListPadding: EdgeInsets {
+        hasVisibleBackground ? EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16) : EdgeInsets()
+    }
+
     // MARK: - Subviews
 
     /// Loading spinner shown during product fetch. Copied from the drawer's `loadingView` for
@@ -227,9 +248,7 @@ public struct BuyMeCoffeeInlineView: View {
             VStack(spacing: 0) {
                 if showHeader {
                     DrawerHeaderView(labels: headerLabels, onDismiss: {})
-                        .padding(.horizontal, 16)
-                        .padding(.top, 16)
-                        .padding(.bottom, 24)
+                        .padding(headerPadding)
                 }
 
                 VStack(spacing: 12) {
@@ -246,8 +265,7 @@ public struct BuyMeCoffeeInlineView: View {
                         )
                     }
                 }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 16)
+                .padding(rowListPadding)
             }
         }
     }
