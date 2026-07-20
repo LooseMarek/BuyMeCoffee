@@ -33,6 +33,7 @@ struct ContentView: View {
                 "com.marekloose.DemoBuyMeCoffee.tip.large"
             ],
             theme: .light,
+            sortOrder: .descending,
             headerLabels: .init(
                 iconImage: Image(systemName: "heart.fill"),
                 title: "Support the Dev",
