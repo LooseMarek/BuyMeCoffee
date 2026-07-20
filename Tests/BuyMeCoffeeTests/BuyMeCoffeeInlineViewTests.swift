@@ -225,6 +225,71 @@ final class BuyMeCoffeeInlineViewTests: XCTestCase {
         assertRendersWithoutCrash(view)
     }
 
+    // MARK: - Padding vs Background
+
+    /// With a `.transparent` background there is no visible card edge. The row list sits flush
+    /// (no insets), but the header retains a 24pt bottom gap so the header title doesn't sit
+    /// directly on top of the tip rows even when there's no card background.
+    @MainActor
+    func testTransparentBackgroundAppliesNoPadding() {
+        let mockProvider = MockProductProvider(products: [], purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel, background: .transparent)
+
+        XCTAssertEqual(view.background, .transparent)
+        XCTAssertEqual(
+            view.headerPadding,
+            EdgeInsets(top: 0, leading: 0, bottom: 24, trailing: 0),
+            "Transparent background must collapse horizontal/vertical padding but preserve 24pt bottom gap below the header"
+        )
+        XCTAssertEqual(view.rowListPadding, EdgeInsets(), "Transparent background must apply no padding around the row list")
+    }
+
+    /// With a `.themed` background there is a visible card, so today's padding is preserved:
+    /// header 16pt horizontal, 16pt top, 24pt bottom; row list 16pt horizontal, 16pt bottom.
+    @MainActor
+    func testThemedBackgroundPreservesPadding() {
+        let mockProvider = MockProductProvider(products: [], purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel, background: .themed)
+
+        XCTAssertEqual(view.background, .themed)
+        XCTAssertEqual(
+            view.headerPadding,
+            EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16),
+            "Themed background must preserve the existing header padding"
+        )
+        XCTAssertEqual(
+            view.rowListPadding,
+            EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16),
+            "Themed background must preserve the existing row list padding"
+        )
+    }
+
+    /// A `.custom(_:)` background is also a visible card, so it preserves the same padding as
+    /// the `.themed` case.
+    @MainActor
+    func testCustomBackgroundPreservesPadding() {
+        let mockProvider = MockProductProvider(products: [], purchaseOutcome: .success)
+        let viewModel = TipListViewModel(provider: mockProvider, productIDs: ["test.coffee.small"])
+
+        let view = BuyMeCoffeeInlineView(viewModel: viewModel, background: .custom(.red))
+
+        XCTAssertEqual(view.background, .custom(.red))
+        XCTAssertEqual(
+            view.headerPadding,
+            EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16),
+            "Custom background must preserve the existing header padding"
+        )
+        XCTAssertEqual(
+            view.rowListPadding,
+            EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16),
+            "Custom background must preserve the existing row list padding"
+        )
+    }
+
     // MARK: - Purchase Flow & States
 
     /// A successful purchase transitions the shared view model to `.thankYou`, and the inline view
