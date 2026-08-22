@@ -1,0 +1,55 @@
+{
+    "hubVersion": 1,
+    "kind": "promo",
+    "slug": "buy-me-coffee",
+    "displayName": "Buy Me Coffee",
+    "domain": "software",
+    "state": "established",
+    "version": "1.1.3",
+    "hostingScope": "public",
+    "githubLink": null,
+    "relatedSlugs": ["word-tracker"],
+    "tagline": "A SwiftUI-native StoreKit 2 tip-jar Swift Package that any iOS or macOS app can drop in to present a configurable \"Buy Me a Coffee\" bottom drawer with zero boilerplate.",
+    "overview": "BuyMeCoffee is a dependency-free Swift Package that gives any iOS or macOS app a complete, StoreKit 2-native tip jar in under 10 lines of integration code. It ships a configurable drawer UI, an embeddable inline tip list, full theming, and a built-in mock mode for Previews and CI — filling a gap where existing tip-jar libraries are archived, StoreKit-1-only, UI-less, or subscription-focused. It's already integrated into Word Tracker in production.",
+    "features": [
+        "StoreKit 2 native — no external services, no server required",
+        "Complete drawer UI — bottom sheet (iOS) / floating sheet (macOS) with configurable header, product list, and animated thank-you screen",
+        "Embeddable inline view (BuyMeCoffeeInlineView) for the same tip list without sheet/modal chrome",
+        "Explicit product ID configuration — no prefix-filtering conflicts with other IAP types",
+        "Trigger-agnostic presentation via a SwiftUI view modifier or environment key",
+        "Per-screen label customization (header, empty, error, thank-you states)",
+        "Full custom theming via BuyMeCoffeeTheme, with a built-in dark-mode default",
+        "Built-in mock product provider for Xcode Previews and CI — no live StoreKit calls needed"
+    ],
+    "platforms": [
+        {
+            "name": "ios",
+            "techStack": ["Swift 6.2", "SwiftUI", "StoreKit 2"],
+            "linkToStore": null,
+            "screenshots": [
+                "loaded-state-5-products.png",
+                "thank-you-state.png",
+                "empty-state.png",
+                "error-state.png"
+            ]
+        },
+        {
+            "name": "macos",
+            "techStack": ["Swift 6.2", "SwiftUI", "StoreKit 2"],
+            "linkToStore": null,
+            "screenshots": [
+                "loaded-state-5-products.png",
+                "thank-you-state.png",
+                "empty-state.png",
+                "error-state.png"
+            ]
+        },
+        {
+            "name": "spm",
+            "techStack": ["Swift 6.2", "SwiftUI", "StoreKit 2"],
+            "linkToStore": null,
+            "screenshots": []
+        }
+    ],
+    "updatedAt": "2026-07-20T23:15:27Z"
+}
